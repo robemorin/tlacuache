@@ -1,0 +1,61 @@
+<html>
+<head>
+  <script type="text/javascript"  src="https://math-ca5.pages.dev/src/lib/Core.js"></script>
+  <script type="text/javascript"  src="https://math-ca5.pages.dev/src/lib/Stat.js"></script>
+  <script type="text/javascript"  src="https://math-ca5.pages.dev/src/lib/Comun.js"></script>
+  <script type="text/javascript"  src="https://math-ca5.pages.dev/temas.js"></script>
+  <script type="text/javascript"  src="https://math-ca5.pages.dev/src/lib/complejos.js"></script>
+  <script type="text/javascript"  src="https://math-ca5.pages.dev/src/lib/ft.js"></script>
+  <script type="text/javascript"  src="https://unpkg.com/mathjs/lib/browser/math.js"></script>
+  
+  <!--script type="text/javascript"  src="https://math-ca5.pages.dev/GraphOP.js"></script-->
+  <!--script type="text/javascript"  src="https://math-ca5.pages.dev/src/lib/Graficos.js"></script-->
+  <script type="text/javascript"  src="../Math/Math/src/lib/Graficos.js"></script>
+  <script type="text/javascript"  src="../Math/Math/src/lib/tlacuache.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+<link rel="stylesheet" href="./src/general.css">
+
+<style>
+
+
+</style>
+
+<!--script src="./ejercicios/temp.js"></script-->
+
+<script src="./ejercicios/build.js"></script>
+<script>
+  function run(){
+    document.getElementById("cont").innerHTML=`Vamos a graficar unos cuartiles<br>
+    <center>
+      ${plotCuartiles([-1,2,5,6,8],[-5,10,2],[280,400],'eje x')}<br>
+      plotCuartiles([-1,2,5,6,8],[-5,10,2],[280,400],'eje x')<br>
+      <tlacuache-cuartil Q ="[-1,2,5,6,8]" lim="-5,10,2" dim="280,400" xlabel='eje x'></tlacuache-cuartil>
+      </center>`
+  }
+</script>
+</head>
+<body onload="">
+
+<div id="cont">
+  <tlacuache-cuartil q="[-4.1,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' />
+  <tlacuache-cuartil></tlacuache-cuartil>
+</div>
+</body>
+</html>
