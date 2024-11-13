@@ -1,0 +1,93 @@
+<html>
+<head>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
+ 
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/railscasts.min.css">       
+ 
+<script>hljs.initHighlightingOnLoad();</script> 
+<script type="text/javascript"  src="./src/lib/tlacuache-elements.js"></script>
+<script type="text/javascript"  src="./src/mod/tlacuache-modulo.js"></script>
+<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+</script>
+<style>
+  code{
+    margin: 10px 50px 20px;
+    border:solid 2px black;
+  }
+</style>
+
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+
+
+
+</head>
+<body onload="">
+
+<center><h1>Tlacuache</h1></center>
+<div class="contenido">Esta librería permite crear gráficos de manera rápida y con pocos conocimientos de programación. El mínimo código necesario es:</div>
+<pre>
+  <code class="language-html">
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;script type="text/javascript"  src="./src/lib/tlacuache-elements.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"  src="./src/mod/tlacuache-modulo.js"&gt;&lt;/script&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+  .
+  .
+  .
+  &lt;/body&gt;
+&lt;/html&gt;
+  </code>
+</pre>
+<div class="contenido">Cada uno de los elemento cuenta con ayuda con solo invocarlo sin parámetros</div>
+<pre>
+  <code class="language-html">
+    &lt;tlacuache-milimetrado/&gt;
+  </code>
+</pre>
+Resultado<br><br>
+<tlacuache-milimetrado/>
+
+<h3>Papel milimetrado</h3>
+Código:
+<pre><code class="language-html">
+    &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
+   </code></pre>
+ Resultado:
+ <center><tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/></center>
+
+ <h3>Distribución normal</h3>
+Código:
+<pre><code class="language-html">
+    &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
+  </code></pre>
+ Resultado:
+ <center><tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/></center>
+ <h3>Distribución normal</h3>
+Código:
+<pre><code class="language-html">
+    &lt;tlacuache-cuartil q="[-4,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /&gt;
+    &lt;tlacuache-cuartil q="[-4,-0,0,6,8],[-3,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /&gt;
+  </code></pre>
+ Resultado:
+ <center>
+  <table><tr> <td><tlacuache-cuartil q="[-4,-0,1,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td>
+              <td><tlacuache-cuartil q="[-4,-0,1,6,8],[-5,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td><tr></tr></tr></table>
+  </center>
+</body>
+</html>
