@@ -43,7 +43,7 @@ MathJax.Hub.Config({
   <code class="language-html">
 &lt;html&gt;
   &lt;head&gt;
-    &lt;script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/lib/tlacuache-elements.js/src/lib/tlacuache-elements.js"&gt;&lt;/script&gt;
+    &lt;script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/lib/tlacuache-elements.js"&gt;&lt;/script&gt;
     &lt;script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/mod/tlacuache-modulo.js"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
@@ -66,7 +66,7 @@ Resultado<br><br>
 <h3>Papel milimetrado</h3>
 Código:
 <pre><code class="language-html">
-    &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
+    &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
    </code></pre>
  Resultado:
  <center><tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/></center>
@@ -74,11 +74,11 @@ Código:
  <h3>Distribución normal</h3>
 Código:
 <pre><code class="language-html">
-    &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
+    &lt;tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/&gt;
   </code></pre>
  Resultado:
  <center><tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/></center>
- <h3>Distribución normal</h3>
+ <h3>Cuartiles</h3>
 Código:
 <pre><code class="language-html">
     &lt;tlacuache-cuartil q="[-4,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /&gt;

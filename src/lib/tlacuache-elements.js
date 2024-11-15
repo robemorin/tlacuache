@@ -246,9 +246,9 @@ class Milimetrado extends HTMLElement
           
 
           <b>Ejemplos:</b><br/><br/>
-          &lt;tlacuache-milimetrado dim="400,800" /&gt;<br/>
+          &lt;tlacuache-milimetrado size="400,800" /&gt;<br/>
           &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'
-  stroke = ".7" stroke2 = ".2"//&gt;
+  stroke = ".7" stroke2 = ".2"/&gt;
           
         </fieldset></div>`
         return
