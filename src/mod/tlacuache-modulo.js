@@ -6,19 +6,30 @@ const tlacu = (function() {
             const h=(x_max-x_min)/(n-1)
             for(let k=0;k<n;++k) x.push(x_min+k*h)
             return x
-          },
-          evaluar: function (expresion,X){
+        },
+        tick: function(vmin,vmax,step){
+            /*
+            Ejemplo
+            tlacu.tick(10,20,3)
+            */
+            let list=[vmin]
+            while(list[list.length-1]+step<vmax){
+                list.push(list[list.length-1]+step)
+            }
+            return list
+        },
+        evaluar: function (expresion,X){
             const y = []
             X.forEach((x) => {
               y.push(eval(expresion));
               });
               return y
-          },
-          NotacionCientifica: function(num){
+        },
+        NotacionCientifica: function(num){
             var numInSciNot = {};
             [numInSciNot.coefficient, numInSciNot.exponent] =num.toExponential().split('e').map(item => Number(item));
             return (numInSciNot.coefficient).toFixed(2)+"&times;10<sup>"+numInSciNot.exponent+'</sup>';
-         },
+        },
          polinomio: function(v){
             //Se debe modificar para que imprima con fracciones en caso de ser
             while(v[0]==0){
@@ -153,6 +164,15 @@ function evaluar(expresion,X){
 	  return y
 }
           */
+        graph:{
+            lienzo: function(size,xlim,ylim,tick, label=["",""]){
+                
+                let S=`<svg height="${size[0]}" width="${size[1]}" style="border: solid red 2px">
+                </svg>`
+                let L=[]
+                return[L,S]
+            }
+        },
         pruebas:{
             test: function() {
                 console.log("works!")

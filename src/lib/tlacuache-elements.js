@@ -1,4 +1,4 @@
-class cuartil extends HTMLElement {
+class tlacuache_cuartil extends HTMLElement {
     constructor() {
       super();
       // element created
@@ -95,8 +95,8 @@ return
       }
     }
   }
-window.customElements.define('tlacuache-cuartil',cuartil)
-class distNormal extends HTMLElement
+window.customElements.define('tlacuache-cuartil',tlacuache_cuartil)
+class tlacuache_distNormal extends HTMLElement
   {
     constructor() {
       super();
@@ -207,9 +207,9 @@ class distNormal extends HTMLElement
       }
     }
   }
-window.customElements.define('tlacuache-dist-normal',distNormal)
+window.customElements.define('tlacuache-dist-normal',tlacuache_distNormal)
 //
-class Milimetrado extends HTMLElement
+class tlacuache_Milimetrado extends HTMLElement
   {
     constructor() {
       super();
@@ -253,7 +253,6 @@ class Milimetrado extends HTMLElement
         </fieldset></div>`
         return
       }
-      console.log(this.cuadricula)
       let step = Math.min(this.size[0]/this.cuadricula[0],this.size[1]/this.cuadricula[1])
       let c = ''
       for (let k=0;k<=this.cuadricula[0];++k) c += `<line style="stroke-width:${this.stroke};stroke:${this.color}" x1="0" x2="${step*this.cuadricula[1]}" y1="${step*k}" y2="${step*k}"/>`
@@ -292,4 +291,107 @@ class Milimetrado extends HTMLElement
       }
     }
   }
-window.customElements.define('tlacuache-milimetrado',Milimetrado)
+window.customElements.define('tlacuache-milimetrado',tlacuache_Milimetrado)
+//
+class tlacuache_ejes extends HTMLElement
+  {
+    constructor() {
+      super();
+      // element created
+      this.size = null
+      this.xlabel = null
+      this.ylabel = null
+    }
+    connectedCallback() {
+      let Safter=``, Sbefore=``
+      let minSpace=[0.1*this.size[0],0.1*this.size[1]]
+      
+      
+      //Inicio Temporal
+      Safter +=`<rect x="0" y="0" height="${this.size[0]-minSpace[0]}" width="${minSpace[1]}" style="fill:none;stroke-width:3;stroke:yellow" />
+                
+                <rect y="${this.size[0]-minSpace[0]}" x="${minSpace[1]}" height="${minSpace[0]}" width="${this.size[1]-minSpace[1]}" style="fill:none;stroke-width:3;stroke:orange" />`
+      //Fin temporal
+      console.log(this.xlabel)
+      if(this.xlabel != null){
+        Safter += `<text x="${this.size[1]/2+minSpace[1]}" y="${this.size[0]}" text-anchor="middle" font-size="${minSpace[1]*.4}">${this.xlabel}</text>`
+      }
+      if(this.ylabel != null){
+        Safter += `<g transform="matrix(0 -1 1 0 0 ${this.size[0]/2-minSpace[0]})"><text x="0" y="0" text-anchor="middle" alignment-baseline="hanging" font-size="${minSpace[1]*.4}">${this.ylabel}</text></g>`
+      }
+      
+      this.setAttribute('Lx','m,b')
+
+      this.innerHTML += `<svg width="${this.size[1]}" height="${this.size[0]}" style="border: solid 3px red">${Sbefore} ${Safter}</svg>`
+    }
+  
+    static get observedAttributes() {
+      return ['size','xlabel', 'ylabel','xmin', 'xmax','lineWidth','lineWidth2','color','Dx','xtick','Dy','ytick']
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch(name){
+        case 'size':
+            this.size = eval(`[${newValue}]`)
+            break
+        case 'xlabel':
+            this.xlabel = newValue
+            break
+        case 'ylabel':
+            this.ylabel = newValue
+            break
+        case 'xmin':
+            this.xmin = eval(`${newValue}`)
+            break
+        case 'xmax':
+            this.xmax = eval(`${newValue}`)
+            break
+        case 'lineWidth':
+              this.xmin = eval(`${newValue}`)
+              break
+        case 'lineWidth2':
+              this.xmax = eval(`${newValue}`)
+              break
+        case 'color':
+            this.color = newValue
+            break
+        case 'Dx':
+            newValue = tlacu.tick(this.xmin,this.xmax,newValue)
+        case 'xtick'://Falta probar
+            this.xtick = newValue
+            break
+        case 'Dy':
+              newValue = tlacu.tick(this.xmin,this.xmax,newValue)
+          case 'ytick'://Falta probar
+              this.xtick = newValue
+              break
+            
+      }
+    }
+  }
+window.customElements.define('tlacuache-ejes',tlacuache_ejes)
+class tlacuache_histograma extends HTMLElement {
+  constructor() {
+    super();
+  }
+  connectedCallback(){
+    //Esta pendiente este elemento
+    const padre = this.parentElement;
+    const svg = padre.getElementsByTagName('svg')[0];
+    svg.innerHTML +=`<line x1="0" y1="80" x2="100" y2="20" stroke="black" />`
+    console.log(`Lx = ${padre.getAttribute('Lx')}`)
+  }
+  static get observedAttributes() {
+    return ['x'];
+  }
+}
+window.customElements.define('tlacuache-histograma', tlacuache_histograma);
+class tlacuache_plot extends HTMLElement {
+  constructor() {
+    super();
+  }
+  static get observedAttributes() {
+    return ['x'];
+  }
+}
+window.customElements.define('tlacuache-plot', tlacuache_plot);

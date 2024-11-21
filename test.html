@@ -24,18 +24,16 @@ MathJax.Hub.Config({
 
 
 </head>
-<body onload="">
-
-<div id="cont">
-  <tlacuache-milimetrado/>
-  <tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'
-  stroke = ".7" stroke2 = ".2"/><br/>
-  <tlacuache-dist-normal />
-  <tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/>
-  <tlacuache-cuartil q="[-4.1,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' />
-  <tlacuache-cuartil />
-  <script>
-  </script>
+<body>
+<div>
+  <div id="hijo"></div>
 </div>
+  Hola
+
+  <tlacuache-ejes size="320,400" xlabel="Eje x" ylabel="Eje y">
+    <tlacuache-histograma x="1,2,4,5,6" ></tlacuache-histograma>
+    <tlacuache-grafica x="x**2+1"></tlacuache-grafica>
+  </tlacuache-ejes>
+
 </body>
 </html>
