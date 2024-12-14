@@ -1,3 +1,4 @@
+/* Actualización 13-12-2024 */
 class tlacuache_cuartil extends HTMLElement {
     constructor() {
       super();
