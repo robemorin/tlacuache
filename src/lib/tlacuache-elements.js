@@ -147,7 +147,7 @@ class tlacuache_distNormal extends HTMLElement
       if(!(this.xmax == null && this.xmin == null)){
         this.xmax = this.xmax == null ? this.mean+2.5*this.s:this.xmax
         this.xmin = this.xmin == null ? this.mean-2.5*this.s:this.xmin
-        console.log(`[ ${this.xmin} , ${this.xmax}]`)
+        //console.log(`[ ${this.xmin} , ${this.xmax}]`)
 
         xv = tlacu.linspace((this.xmin-this.mean)/this.s,(this.xmax-this.mean)/this.s)
         yv = tlacu.evaluar('-Math.exp(-0.5*x**2)',xv)
@@ -301,32 +301,136 @@ class tlacuache_ejes extends HTMLElement
       this.size = null
       this.xlabel = null
       this.ylabel = null
+      this.xlim=[-1,1]
+      this.ylim=[-1,1]
+      this.xtick=[]
+      this.ytick=[]
+      this.grid=true
+      this.bcolor= 'GhostWhite';
+      this.dpx=false
+      this.dpy=false
+      
     }
     connectedCallback() {
+      function coor2px(coor,px){
+        const L=[(px[1]-px[0])/(coor[1]-coor[0])]
+        L.push(px[0]-L[0]*coor[0])
+        return L
+      }
+
+      this.setAttribute('xlim',this.xlim)
+      this.setAttribute('ylim',this.ylim)
+
       let Safter=``, Sbefore=``
       let minSpace=[0.1*this.size[0],0.1*this.size[1]]
-      
-      
+      const sizeFont=[Math.min(...minSpace)*.5,Math.min(...minSpace)*.5/1.6]
+      let subSVGsize=[sizeFont[1],minSpace[1],(this.size[0]-2)-minSpace[0]-sizeFont[1],.9*this.size[1]-2]      
+      let Origen=[0,0], labels=``
+
+      //console.log(`x lim: ${this.xlim}`) posicion subsvg eje x
+      if(this.xlim[0]>0){
+        subSVGsize[1]=2*minSpace[1]
+        subSVGsize[3]=(this.size[1]-2)-2*minSpace[1]
+        Origen[0]=minSpace[1]+2
+      }else if(this.xlim[1]<0){
+        subSVGsize[3]=(this.size[1]-2)-2*minSpace[1]
+        Origen[0]=this.size[1]-2
+      }else{
+        Origen[0]=coor2px(this.xlim,[0,subSVGsize[3]])[1]+minSpace[1]
+      }
+
+      //console.log(`y lim: ${this.ylim}`) posicion subsvg eje y
+      if(this.ylim[0]>0){
+        subSVGsize[2] = (this.size[0]-2)-2*minSpace[0]
+        Origen[1]=this.size[0]-minSpace[0]-2
+      }else if(this.ylim[1]<0){
+        subSVGsize[0] = minSpace[0]
+        subSVGsize[2]=(this.size[0]-2)-2*minSpace[0]
+        Origen[1]=2
+      }else{
+        Origen[1]=coor2px(this.ylim,[subSVGsize[2],0])[1]+subSVGsize[0]
+      }
+      //Calculamos las conversiones
+      const Lx=coor2px(this.xlim,[0,subSVGsize[3]]), Ly=coor2px(this.ylim,[subSVGsize[2],0])
+      this.setAttribute('l_x',Lx)
+      this.setAttribute('l_y',Ly)
+      //Calculamos los ejes principales
+      let ejexP, ejeyP
+      if(this.xlim[0]>0){
+        ejexP = `${minSpace[1]},${Origen[1]}
+                 ${7*minSpace[1]/6},${Origen[1]} 
+                 ${8*minSpace[1]/6},${Origen[1]-minSpace[1]/6}  
+                 ${10*minSpace[1]/6},${Origen[1]+minSpace[1]/6}  
+                 ${11*minSpace[1]/6},${Origen[1]}  
+                 ${this.size[1]-2},${Origen[1]}`
+      }else if(this.xlim[1]<0){
+        ejexP = `${minSpace[1]},${Origen[1]}
+                 ${this.size[1]-5*minSpace[1]/6},${Origen[1]} 
+                 ${this.size[1]-4*minSpace[1]/6},${Origen[1]-minSpace[1]/6}  
+                 ${this.size[1]-2*minSpace[1]/6},${Origen[1]+minSpace[1]/6}  
+                 ${this.size[1]-minSpace[1]/6},${Origen[1]}  
+                 ${this.size[1]-2},${Origen[1]}`
+      }else{
+        ejexP = `${minSpace[1]},${Origen[1]} ${this.size[1]-2},${Origen[1]}`
+      }
+      if(this.ylim[0]>0){
+        ejeyP = `${Origen[0]},0
+                  ${Origen[0]},${subSVGsize[2]+minSpace[0]/6}
+                  ${Origen[0]+minSpace[0]/6},${subSVGsize[2]+2*minSpace[0]/6}
+                  ${Origen[0]-minSpace[0]/6},${subSVGsize[2]+4*minSpace[0]/6}
+                  ${Origen[0]},${subSVGsize[2]+5*minSpace[0]/6}
+         ${Origen[0]},${Origen[1]}`
+      }else if(this.ylim[1]<0){
+        ejeyP = `${Origen[0]},0
+                  ${Origen[0]},${minSpace[0]/6}
+                  ${Origen[0]+minSpace[0]/6},${2*minSpace[0]/6}
+                  ${Origen[0]-minSpace[0]/6},${4*minSpace[0]/6}
+                  ${Origen[0]},${5*minSpace[0]/6}
+         ${Origen[0]},${subSVGsize[2]+subSVGsize[0]}`
+      }else{
+        ejeyP = `${Origen[0]},0 ${Origen[0]},${subSVGsize[2]+subSVGsize[0]}`
+      }
+      //Calculamos las etiquetas y la malla
+      //xtick
+      for(let k=0;k<this.xtick.length;++k){
+        if(this.grid){
+          labels += `<line x1="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" x2="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" y1="0" y2="${this.size[0]-minSpace[0]}"   style="fill:none;stroke-width:.5;stroke:dimgray"/>`
+        }
+        labels +=(Math.abs(this.xtick[k])<1e-15)?'': `<text x="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" y="${Origen[1]+0.15*minSpace[0]}" text-anchor="middle" alignment-baseline="hanging" font-size="${sizeFont[1]}">${(this.dpx==false)?this.xtick[k]:this.xtick[k].toPrecision(this.dpx)}</text>
+        <line x1="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" x2="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" y1="${Origen[1]+0.15*minSpace[0]}" y2="${Origen[1]-0.15*minSpace[0]}"   style="fill:none;stroke-width:1.5;stroke:black"/>`
+      }
+      //ytick
+      for(let k=0;k<this.ytick.length;++k){
+        if(this.grid){
+          labels += `<line x1="${minSpace[1]}" x2="${this.size[1]}" y1="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}" y2="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}"   style="fill:none;stroke-width:.5;stroke:dimgray"/>`
+        }
+        labels +=(Math.abs(this.ytick[k])<1e-15)?'': `<text x="${Origen[0]-0.15*minSpace[1]}" y="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}" text-anchor="end" alignment-baseline="middle" font-size="${sizeFont[1]}">${(this.dpy==false)?this.ytick[k]:this.ytick[k].toPrecision(this.dpy)}</text>
+        <line x1="${Origen[0]-0.15*minSpace[0]}" x2="${Origen[0]+0.15*minSpace[0]}" y1="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}" y2="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}"   style="fill:none;stroke-width:1.5;stroke:black"/>`
+      }
+        
       //Inicio Temporal
-      Safter +=`<rect x="0" y="0" height="${this.size[0]-minSpace[0]}" width="${minSpace[1]}" style="fill:none;stroke-width:3;stroke:yellow" />
+      Safter +=`<!--rect x="0" y="0" height="${this.size[0]-minSpace[0]}" width="${minSpace[1]}" style="fill:none;stroke-width:3;stroke:yellow" /-->
+                <!--rect y="${this.size[0]-minSpace[0]}" x="${minSpace[1]}" height="${minSpace[0]}" width="${this.size[1]-minSpace[1]}" style="fill:none;stroke-width:3;stroke:orange" /-->
                 
-                <rect y="${this.size[0]-minSpace[0]}" x="${minSpace[1]}" height="${minSpace[0]}" width="${this.size[1]-minSpace[1]}" style="fill:none;stroke-width:3;stroke:orange" />`
+                <!--rect y="${subSVGsize[0]}" x="${subSVGsize[1]}" height="${subSVGsize[2]}" width="${subSVGsize[3]}" style="fill:none;stroke-width:3;stroke:purple" /-->
+                ${labels}
+                <polyline points="${ejexP}" style="fill:none;stroke-width:1.5;stroke:black"/>
+                <polyline points="${ejeyP}" style="fill:none;stroke-width:1.5;stroke:black"/>
+                `
       //Fin temporal
-      console.log(this.xlabel)
       if(this.xlabel != null){
-        Safter += `<text x="${this.size[1]/2+minSpace[1]}" y="${this.size[0]}" text-anchor="middle" font-size="${minSpace[1]*.4}">${this.xlabel}</text>`
+        Safter += `<text x="${this.size[1]/2+minSpace[1]}" y="${this.size[0]-sizeFont[0]*.3}" text-anchor="middle" font-size="${sizeFont[0]}">${this.xlabel}</text>
+                  <svg y="${subSVGsize[0]}" x="${subSVGsize[1]}" height="${subSVGsize[2]}" width="${subSVGsize[3]}"></svg>`
       }
       if(this.ylabel != null){
-        Safter += `<g transform="matrix(0 -1 1 0 0 ${this.size[0]/2-minSpace[0]})"><text x="0" y="0" text-anchor="middle" alignment-baseline="hanging" font-size="${minSpace[1]*.4}">${this.ylabel}</text></g>`
+        Safter += `<g transform="matrix(0 -1 1 0 0 ${this.size[0]/2-minSpace[0]})"><text x="0" y="0" text-anchor="middle" alignment-baseline="hanging" font-size="${sizeFont[0]}">${this.ylabel}</text></g>`
       }
       
-      this.setAttribute('Lx','m,b')
-
-      this.innerHTML += `<svg width="${this.size[1]}" height="${this.size[0]}" style="border: solid 3px red">${Sbefore} ${Safter}</svg>`
+      this.innerHTML += `<svg width="${this.size[1]*1.02}" height="${this.size[0]}" style="background-color: ${this.bcolor}" xmlns="http://www.w3.org/2000/svg">${Sbefore} ${Safter}</svg>`
     }
   
     static get observedAttributes() {
-      return ['size','xlabel', 'ylabel','xmin', 'xmax','lineWidth','lineWidth2','color','Dx','xtick','Dy','ytick']
+      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','dx','xtick','dy','ytick','dpx','dpy']
     }
   
     attributeChangedCallback(name, oldValue, newValue) {
@@ -340,17 +444,265 @@ class tlacuache_ejes extends HTMLElement
         case 'ylabel':
             this.ylabel = newValue
             break
-        case 'xmin':
-            this.xmin = eval(`${newValue}`)
+        case 'xlim':
+            this.xlim = eval(`[${newValue}]`)
             break
-        case 'xmax':
-            this.xmax = eval(`${newValue}`)
+        case 'ylim':
+            this.ylim = eval(`[${newValue}]`)
             break
         case 'lineWidth':
-              this.xmin = eval(`${newValue}`)
+              this.xlineWidth = eval(`${newValue}`)
               break
         case 'lineWidth2':
-              this.xmax = eval(`${newValue}`)
+              this.lineWidth2 = eval(`${newValue}`)
+              break
+        case 'color':
+            this.color = newValue
+            break
+        case 'dx':
+            newValue = tlacu.tick(this.xlim[0],this.xlim[1],eval(newValue))
+        case 'xtick'://Falta probar
+            this.xtick = eval(`[${newValue}]`)
+            break
+        case 'dy':
+          newValue = tlacu.tick(this.ylim[0],this.ylim[1],eval(newValue))
+        case 'ytick'://Falta probar
+          this.ytick = newValue
+          break
+        case 'dpx':
+            this.dpx = newValue
+            break
+        case 'dpy':
+              this.dpy = newValue
+              break
+      }
+    }
+  }
+window.customElements.define('tlacuache-ejes',tlacuache_ejes)
+class tlacuache_histograma extends HTMLElement {
+  constructor() {
+    super();
+  }
+  connectedCallback(){
+    
+    
+  }
+  static get observedAttributes() {
+    return ['x'];
+  }
+}
+window.customElements.define('tlacuache-histograma', tlacuache_histograma);
+class tlacuache_plot extends HTMLElement {
+  constructor() {
+    super();
+    this.x=null
+    this.y=null
+    this.f=null
+    this.color='black'
+    this.mark='o'
+    this.n=100
+    this.size=1
+    this.lineWidth=1
+  }
+  connectedCallback(){
+    function coor2P(xs,ys,mark,size,color,lw){
+      const x = eval(`[${xs}]`)
+      const y = eval(`[${ys}]`)
+      let P=''
+      const Lx = eval(`[${padre.getAttribute('l_x')}]`)
+      const Ly = eval(`[${padre.getAttribute('l_y')}]`)
+      if(mark == 'o'){
+        for (let k=0;k<x.length;++k){
+          P += `<circle r="${size}" cx="${Lx[0]*x[k]+Lx[1]}" cy="${Ly[0]*y[k]+Ly[1]}" fill="none" stroke="${color}" stroke-width="${lw}"/>`
+        }
+      }else if(mark == '.'){
+        for (let k=0;k<x.length;++k){
+          P += `<circle r="${0.8*size}" cx="${Lx[0]*x[k]+Lx[1]}" cy="${Ly[0]*y[k]+Ly[1]}" fill="${color}"/>`
+        }
+      }
+      return P
+      
+    }
+    function coor2f(f,n,color,lw){
+      const xl = eval(`[${padre.getAttribute('xlim')}]`)
+      const x = tlacu.linspace(xl[0],xl[1],n)
+      const y = tlacu.evaluar(f,x)
+      const Lx = eval(`[${padre.getAttribute('l_x')}]`)
+      const Ly = eval(`[${padre.getAttribute('l_y')}]`)
+      let puntos=''
+      for(let k=0; k<x.length; ++k){
+        puntos += `${Lx[0]*x[k]+Lx[1]},${Ly[0]*y[k]+Ly[1]} `
+      }
+      return `<polyline points="${puntos}" style="fill:none;stroke:${color};stroke-width:${lw}"/>`
+      
+    }
+    //Esta pendiente este elemento
+    const padre = this.parentElement;
+    const svg = padre.getElementsByTagName('svg')[0].getElementsByTagName('svg')[0];
+    const escala=Math.min(svg.getAttribute('width')*0.1,svg.getAttribute('height')*0.012)
+    
+    let contenido = ''
+    if(this.x != null && this.y != null){
+      contenido += coor2P(this.x,this.y,this.mark,this.size*escala,this.color,this.lineWidth*escala*0.5)
+    }else if(this.f != null){
+      contenido += coor2f(this.f,this.n,this.color,this.lineWidth*escala*0.5)
+      //f,n,color,lw
+    }
+    svg.innerHTML +=contenido
+  }
+  static get observedAttributes() {
+    return ['x','y', 'f','color','n','mark','lineWidth','size']
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch(name){
+      case 'f':
+          this.f = newValue
+          break
+      case 'lineWidth':
+            this.lineWidth = eval(newValue)
+      case 'size':
+            this.size = eval(newValue)
+      case 'color':
+          this.color = newValue
+          break
+      case 'y'://Falta probar
+          this.y = eval(`[${newValue}]`)
+            break
+      case 'x'://Falta probar
+          this.x = eval(`[${newValue}]`)
+            break
+      case 'mark'://Falta probar
+            this.mark = newValue
+              break
+          
+    }
+  }
+}
+window.customElements.define('tlacuache-plot', tlacuache_plot);
+
+
+
+
+//----------Estos elementos son de prueba
+class tlacuache_padre extends HTMLElement
+  {
+    constructor() {
+      super();
+      // element created
+      this.size = null
+      this.xlabel = null
+      this.ylabel = null
+      this.xlim=[-1,1]
+      this.ylim=[-1,1]
+    }
+    connectedCallback() {
+      this.setAttribute('att1',0)
+      this.setAttribute('att2',1)
+      this.innerHTML += `
+      <svg width="300" height="300" style="border: solid 3px red" xmlns="http://www.w3.org/2000/svg">
+        <rect x="100" y="100" width="200" height="200"  fill="none" stroke="yellow" stroke-width="2"/>
+        
+        <svg x="10" y="100"  width="280" height="140" style="border: solid 3px red" xmlns="http://www.w3.org/2000/svg">
+        <g transform="scale(40,20) matrix(1 0 0 -1 5 5) ">
+        <rect x="-1" y="-1" width="2" height="2"  fill="none" stroke="orange" stroke-width="0.05"/>
+        </g>
+        </svg> 
+      </svg>`
+    }
+  
+    static get observedAttributes() {
+      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','Dx','xtick','Dy','ytick']
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch(name){
+        case 'size':
+            this.size = eval(`[${newValue}]`)
+            break
+        case 'xlabel':
+            this.xlabel = newValue
+            break
+        case 'ylabel':
+            this.ylabel = newValue
+            break
+        case 'xlim':
+            this.xlim = eval(`[${newValue}]`)
+            break
+        case 'ylim':
+            this.ylim = eval(`[${newValue}]`)
+            break
+        case 'lineWidth':
+              this.xlineWidth = eval(`${newValue}`)
+              break
+        case 'lineWidth2':
+              this.lineWidth2 = eval(`${newValue}`)
+              break
+        case 'color':
+            this.color = newValue
+            break
+        case 'Dx':
+            newValue = tlacu.tick(this.xmin,this.xmax,newValue)
+        case 'xtick'://Falta probar
+            this.xtick = newValue
+            break
+        case 'Dy':
+              newValue = tlacu.tick(this.xmin,this.xmax,newValue)
+          case 'ytick'://Falta probar
+              this.xtick = newValue
+              break
+            
+      }
+    }
+  } 
+window.customElements.define('tlacuache-padre',tlacuache_padre)
+
+class tlacuache_hijo extends HTMLElement
+  {
+    constructor() {
+      super();
+      // element created
+      this.size = null
+      this.xlabel = null
+      this.ylabel = null
+      this.x=[]
+      this.y=[]
+    }
+    connectedCallback() {
+      const padre = this.parentElement;
+      let svg = padre.getElementsByTagName("svg")[0].getElementsByTagName("svg")[0]
+      const lw = svg.getAttribute('width')
+      console.log(`lw: ${lw}`)
+      svg.getElementsByTagName("g")[0].innerHTML+=`<polyline points="${this.xlabel}" style="fill:none;stroke:green;stroke-width:.05"/>`
+      console.log(`Attributo 0: ${padre.getAttribute('att1')} Attributo 1: ${padre.getAttribute('att2')} ; size:${this.size}`)
+      this.innerHTML += `Hijo`
+    }
+  
+    static get observedAttributes() {
+      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','Dx','xtick','Dy','ytick']
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      switch(name){
+        case 'size':
+            this.size = eval(`[${newValue}]`)
+            break
+        case 'xlabel':
+            this.xlabel = newValue
+            break
+        case 'ylabel':
+            this.ylabel = newValue
+            break
+        case 'x':
+            this.x = eval(`[${newValue}]`)
+            break
+        case 'y':
+            this.y = eval(`[${newValue}]`)
+            break
+        case 'lineWidth':
+              this.xlineWidth = eval(`${newValue}`)
+              break
+        case 'lineWidth2':
+              this.lineWidth2 = eval(`${newValue}`)
               break
         case 'color':
             this.color = newValue
@@ -369,29 +721,4 @@ class tlacuache_ejes extends HTMLElement
       }
     }
   }
-window.customElements.define('tlacuache-ejes',tlacuache_ejes)
-class tlacuache_histograma extends HTMLElement {
-  constructor() {
-    super();
-  }
-  connectedCallback(){
-    //Esta pendiente este elemento
-    const padre = this.parentElement;
-    const svg = padre.getElementsByTagName('svg')[0];
-    svg.innerHTML +=`<line x1="0" y1="80" x2="100" y2="20" stroke="black" />`
-    console.log(`Lx = ${padre.getAttribute('Lx')}`)
-  }
-  static get observedAttributes() {
-    return ['x'];
-  }
-}
-window.customElements.define('tlacuache-histograma', tlacuache_histograma);
-class tlacuache_plot extends HTMLElement {
-  constructor() {
-    super();
-  }
-  static get observedAttributes() {
-    return ['x'];
-  }
-}
-window.customElements.define('tlacuache-plot', tlacuache_plot);
+window.customElements.define('tlacuache-hijo',tlacuache_hijo);

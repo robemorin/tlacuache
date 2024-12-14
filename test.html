@@ -28,12 +28,16 @@ MathJax.Hub.Config({
 <div>
   <div id="hijo"></div>
 </div>
-  Hola
-
-  <tlacuache-ejes size="320,400" xlabel="Eje x" ylabel="Eje y">
-    <tlacuache-histograma x="1,2,4,5,6" ></tlacuache-histograma>
-    <tlacuache-grafica x="x**2+1"></tlacuache-grafica>
-  </tlacuache-ejes>
+  Hola<br>
+<center>
+  <tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y" xlim="-4,4" ylim="-1,10" dx="1" dy="2">
+    <!--tlacuache-histograma x="1,2,4,5,6" ></tlacuache-histograma>
+    <tlacuache-grafica f="x**2+1"></tlacuache-grafica-->
+    <tlacuache-plot x="-3,-2,-1,0" y="0,7,3,2" mark="." color="blue"></tlacuache-plot>
+    <tlacuache-plot x="-2,-1,-0,1" y="0,7,3,2" mark="o" color="red"></tlacuache-plot>
+    <tlacuache-plot f='x**2*(x-1)' color="green"/></tlacuache-plot>
+</tlacuache-ejes>
+</center>
 
 </body>
 </html>

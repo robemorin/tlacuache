@@ -55,6 +55,7 @@ MathJax.Hub.Config({
   </code>
 </pre>
 <div class="contenido">Cada uno de los elemento cuenta con ayuda con solo invocarlo sin parámetros</div>
+
 <pre>
   <code class="language-html">
     &lt;tlacuache-milimetrado/&gt;
@@ -78,6 +79,39 @@ Código:
   </code></pre>
  Resultado:
  <center><tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/></center>
+ <h3>Ejes</h3>
+ Código:
+ <pre><code class="language-html">
+ &lt;tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2"&gt;
+ &lt;/tlacuache-ejes&gt;</code></pre>
+ Resultado:
+ <center>
+<tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2">
+</tlacuache-ejes>
+</center>
+ <h3>Plot</h3>
+Código:
+<pre>
+  <code class="language-html">
+  &lt;tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2" &gt;
+
+    &lt;tlacuache-plot x="-.9,-.5,0,.5,.9" y="-.9,-.5,0,.5,.9" mark="o" color="red"&gt;&lt;/tlacuache-plot &gt;
+    &lt;tlacuache-plot x="-.9,-.5,0,.5,.9" y=".9,.5,0,-.5,-.9" mark="." color="blue"&gt;&lt;/tlacuache-plot &gt;
+    &lt;tlacuache-plot f='2*x**2-1' color="green"/&gt;&lt;/tlacuache-plot&gt;
+  
+  &lt; /tlacuache-ejes &gt;<br>
+
+  </code>
+</pre><br>
+Resultado:
+<center>
+  <tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2">
+    <tlacuache-plot x="-.9,-.5,0,.5,.9" y="-.9,-.5,0,.5,.9" mark="o" color="red"></tlacuache-plot>
+    <tlacuache-plot x="-.9,-.5,0,.5,.9" y=".9,.5,0,-.5,-.9" mark="." color="blue"></tlacuache-plot>
+    <tlacuache-plot f='2*x**2-1' color="green"/></tlacuache-plot>
+</tlacuache-ejes>
+</center>
+
  <h3>Cuartiles</h3>
 Código:
 <pre><code class="language-html">

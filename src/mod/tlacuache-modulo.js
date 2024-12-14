@@ -13,7 +13,7 @@ const tlacu = (function() {
             tlacu.tick(10,20,3)
             */
             let list=[vmin]
-            while(list[list.length-1]+step<vmax){
+            while(list[list.length-1]+step<=vmax){
                 list.push(list[list.length-1]+step)
             }
             return list
