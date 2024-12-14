@@ -398,7 +398,7 @@ class tlacuache_ejes extends HTMLElement
         }
         labels +=(Math.abs(this.xtick[k])<1e-15)?'': `<text x="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" y="${Origen[1]+0.15*minSpace[0]}" text-anchor="middle" alignment-baseline="hanging" font-size="${sizeFont[1]}">${(this.dpx==false)?this.xtick[k]:this.xtick[k].toPrecision(this.dpx)}</text>
         <line x1="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" x2="${Lx[0]*this.xtick[k]+Lx[1]+subSVGsize[1]}" y1="${Origen[1]+0.15*minSpace[0]}" y2="${Origen[1]-0.15*minSpace[0]}"   style="fill:none;stroke-width:1.5;stroke:black"/>`
-      }
+      } 
       //ytick
       for(let k=0;k<this.ytick.length;++k){
         if(this.grid){
