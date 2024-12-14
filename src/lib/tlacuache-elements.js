@@ -221,6 +221,7 @@ class tlacuache_Milimetrado extends HTMLElement
       this.color = 'RGB(64, 64, 64)'
       this.stroke = .7
       this.stroke2 = .2
+      this.bcolor= 'GhostWhite';
 
     }
     connectedCallback() {
@@ -262,7 +263,7 @@ class tlacuache_Milimetrado extends HTMLElement
       for (let k=0;k<=this.n*this.cuadricula[0];++k) c += `<line style="stroke-width:${this.stroke2};stroke:${this.color}" x1="0" x2="${this.n*step*this.cuadricula[1]}" y1="${step*k}" y2="${step*k}"/>`
       for (let k=0;k<=this.n*this.cuadricula[1];++k) c += `<line style="stroke-width:${this.stroke2};stroke:${this.color}" y1="0" y2="${this.n*step*this.cuadricula[0]}" x1="${step*k}" x2="${step*k}"/>`
       
-      this.innerHTML=`<svg height="${this.size[0]+2*this.stroke}" width="${this.size[1]+2*this.stroke}">
+      this.innerHTML=`<svg height="${this.size[0]+2*this.stroke}" width="${this.size[1]+2*this.stroke}" style="background-color:${this.bcolor}">
       <g transform="scale(1, 1) translate(${this.stroke},${this.stroke})">${c}</g>
       </svg>`
     }
