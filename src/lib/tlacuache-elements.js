@@ -521,7 +521,14 @@ class tlacuache_plot extends HTMLElement {
         for (let k=0;k<x.length;++k){
           P += `<circle r="${0.8*size}" cx="${Lx[0]*x[k]+Lx[1]}" cy="${Ly[0]*y[k]+Ly[1]}" fill="${color}"/>`
         }
+      }else if(mark == '-'){
+        for (let k=0;k<x.length;++k){
+          P += `${Lx[0]*x[k]+Lx[1]},${Ly[0]*y[k]+Ly[1]} `
+          
+        }
+        return `<polyline points="${P}" style="fill:none;stroke:${color};stroke-width:${0.8*size}"/>`
       }
+
       return P
       
     }
@@ -581,6 +588,178 @@ class tlacuache_plot extends HTMLElement {
   }
 }
 window.customElements.define('tlacuache-plot', tlacuache_plot);
+class tlacuache_venn extends HTMLElement {
+  constructor() {
+    super();
+    // element created
+    this.S1 = null
+    this.S2 = null
+    this.S3 = null
+    this.S4 = null
+    this.S5 = null
+    this.S6 = null
+    this.S7 = null
+    this.S8 = null
+    this.width = null
+    this.n=2
+    this.sets=["A","B","C"]
+  }
+  connectedCallback() {
+    if(this.width==null){
+      this.innerHTML=`<div><fieldset>
+<legend>tlacuache-venn:</legend>
+
+Sintaxis:<br><br>
+<table>
+          <tr><td>ancho:</td></tr>
+          <tr><td></td><td>ancho de pixeles, altura se toma automáticamente</td></tr>
+          <tr><td>n: </td></tr>
+          <tr><td></td><td>número de conjuntos a dibujar ( 2 o 3, por default 2)</td></tr>
+          <tr><td>Conjuntos:<br>
+          <tr><td></td><td>Nombre de los conjuntos</td></tr>
+          <tr><td>s[1-8]:<br>
+          <tr><td></td><td>Nombre de la región $i$-ésima</td></tr>
+          </table>
+          <p><i>Usar expresiones pequeñas en las áreas cuando se use expresiones matemáticas</i></p>
+
+Ejemplo:<br><br>
+  &lt;tlacuache-venn ancho="400" &gt;&lt;/tlacuache-venn&gt;<br>
+  &lt;tlacuache-venn ancho="400" s1="\\$\\$\\ omega\\$\\$" s2="0.3" s3="\\$\\$\\frac{1}{3}\\$\\$" s4="w"&gt;&lt;/tlacuache-venn&gt;
+
+</fieldset></div>`
+return
+    }
+    
+    const ancho = this.width
+    let S = ``
+    if(this.n==2){
+      const alto = ancho/1.618
+      S+=`<svg "http://www.w3.org/2000/svg" height="${alto}" width="${ancho}">
+      <text font-size="${ancho*0.09}" text-anchor="end" x="${0.35*ancho-0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${this.sets[0]}</text>
+        <text font-size="${ancho*0.09}" text-anchor="start" x="${0.65*ancho+0.5*alto/(1.2*1.41)}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${this.sets[1]}</text>
+      <rect  width="${ancho-2}" height="${alto-2}" x="1" y="1" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="${0.35*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="${0.65*ancho}" cy="${alto/2}" r="${0.5*alto/1.2}" fill="none" stroke="black" stroke-width="2" />
+        <text font-size="${ancho*0.09}" x="3" y="3" alignment-baseline="hanging">U</text>`
+        
+        if(typeof this.S1 === 'string'){
+            if(!this.S1.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${ancho-4}" y="${alto-4}">${this.S1}</text>`
+            else if(this.S1.includes("$$")) S +=`<foreignObject x="${ancho*.85}" y="${alto-ancho*.2-4}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S1.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S1}</div></foreignObject>`
+        }
+        if(typeof this.S2 === 'string'){
+          if(!this.S2.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${0.35*ancho}" y="${alto/2}">${this.S2}</text>`
+          else if(this.S2.includes("$$")) S +=`<foreignObject x="${ancho*.2}" y="${alto/2-ancho*.1}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S2.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S2}</div></foreignObject>`
+        }
+        if(typeof this.S3 === 'string'){
+          if(!this.S3.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="middle" x="${ancho/2}" y="${alto/2}">${this.S3}</text>`
+          else if(this.S3.includes("$$")) S +=`<foreignObject x="${ancho*(0.5-.15/2)}" y="${alto/2-ancho*.1}" width="${ancho*.15}" height="${alto/2-ancho*.1}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S3.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S3}</div></foreignObject>`
+        }
+        if(typeof this.S4 === 'string'){
+          if(!this.S4.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="start" x="${ancho*.65}" y="${alto/2}">${this.S4}</text>`
+          else if(this.S4.includes("$$")) S +=`<foreignObject x="${ancho*.61}" y="${alto/2-ancho*.1}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S4.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S4}</div></foreignObject>`
+        }
+    }else if(this.n==3){
+      const alto = this.width
+      const alfa=0.19, radio = 0.28*alto
+      S+=`<svg "http://www.w3.org/2000/svg" height="${alto}" width="${ancho}">
+      <text font-size="${ancho*0.09}" text-anchor="end" x="${0.5*alfa*ancho}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${this.sets[0]}</text>
+        <text font-size="${ancho*0.09}" text-anchor="start" x="${this.width-0.5*alfa*ancho}" y="${alto/2-0.5*alto/(1.2*1.41)}" >${this.sets[1]}</text>
+        <text font-size="${ancho*0.09}" text-anchor="start" x="${this.width-1.5*alfa*ancho}" y="${alto*.98}" >${this.sets[2]}</text>
+      <rect  width="${ancho-2}" height="${alto-2}" x="1" y="1" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="${ancho/2+alfa*ancho*Math.sin(0*2*Math.PI)}" cy="${ancho/2+alfa*ancho*Math.cos(0*2*Math.PI)}" r="${radio}" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="${ancho/2+alfa*ancho*Math.sin(1*2*Math.PI/3)}" cy="${ancho/2+alfa*ancho*Math.cos(1*2*Math.PI/3)}" r="${radio}" fill="none" stroke="black" stroke-width="2" />
+        <circle cx="${ancho/2+alfa*ancho*Math.sin(2*2*Math.PI/3)}" cy="${ancho/2+alfa*ancho*Math.cos(2*2*Math.PI/3)}" r="${radio}" fill="none" stroke="black" stroke-width="2" />
+        <!--circle cx="${0.65*ancho}" cy="${alto/2}" r="${0.5*alto/1.968}" fill="none" stroke="black" stroke-width="2" /-->
+        <text font-size="${ancho*0.09}" x="3" y="3" alignment-baseline="hanging">U</text>`
+        
+        if(typeof this.S1 === 'string'){
+            if(!this.S1.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${ancho-4}" y="${alto-4}">${this.S1}</text>`
+            else if(this.S1.includes("$$")) S +=`<foreignObject x="${ancho*.85}" y="${alto-ancho*.2-4}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S1.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S1}</div></foreignObject>`
+        }
+        if(typeof this.S2 === 'string'){
+          if(!this.S2.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${0.35*ancho}" y="${alto*.4}">${this.S2}</text>`
+          else if(this.S2.includes("$$")) S +=`<foreignObject x="${ancho*.2}" y="${alto*.22}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S2.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S2}</div></foreignObject>`
+        }
+        if(typeof this.S3 === 'string'){
+          if(!this.S3.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="middle" x="${ancho/2}" y="${alto*.4}">${this.S3}</text>`
+          else if(this.S3.includes("$$")) S +=`<foreignObject x="${ancho*(0.5-.15/2)}" y="${alto*.22}" width="${ancho*.15}" height="${ancho*.2}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S3.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S3}</div></foreignObject>`
+        }
+        if(typeof this.S4 === 'string'){
+          if(!this.S4.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="start" x="${ancho*.65}" y="${alto*.4}">${this.S4}</text>`
+          else if(this.S4.includes("$$")) S +=`<foreignObject x="${ancho*.61}" y="${alto*.22}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S4.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S4}</div></foreignObject>`
+        }
+        if(typeof this.S5 === 'string'){
+          if(!this.S5.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="end" x="${ancho*.42}" y="${alto*.6}">${this.S5}</text>`
+          else if(this.S5.includes("$$")) S +=`<foreignObject x="${ancho*.27}" y="${ancho*.48}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S5.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S5}</div></foreignObject>`
+      }
+      if(typeof this.S6 === 'string'){
+        if(!this.S6.includes("$$")) S += `<text font-size="${ancho*0.09}" alignment-baseline="middle" text-anchor="middle" x="${ancho*.5}" y="${alto*.5}">${this.S6}</text>`
+        else if(this.S6.includes("$$")) S +=`<foreignObject x="${ancho*(.5-.15/2)}" y="${alto*.42}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S6.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S6}</div></foreignObject>`
+      }
+      if(typeof this.S7 === 'string'){
+        if(!this.S7.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="start" x="${ancho*.58}" y="${alto*.6}">${this.S7}</text>`
+        else if(this.S7.includes("$$")) S +=`<foreignObject x="${ancho*(0.575)}" y="${alto*.48}" width="${ancho*.15}" height="${ancho*.2}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S7.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S7}</div></foreignObject>`
+      }
+      if(typeof this.S8 === 'string'){
+        if(!this.S8.includes("$$")) S += `<text font-size="${ancho*0.09}" text-anchor="middle" x="${ancho*.5}" y="${alto*.8}">${this.S8}</text>`
+        else if(this.S8.includes("$$")) S +=`<foreignObject x="${ancho*(0.5-.15/2)}" y="${alto*.7}" width="${ancho*.15}" height="${ancho*.20}" >    <div xmlns="http://www.w3.org/1999/xhtml" style="font-family:Times; font-size:${this.S8.includes('\\frac')?ancho*0.045:ancho*0.09};text-align: rigth;width: fit-content;">${this.S8}</div></foreignObject>`
+      }
+    }
+    this.innerHTML = S + `</svg>`
+
+  
+  }
+
+  disconnectedCallback() {
+    // browser calls this method when the element is removed from the document
+    // (can be called many times if an element is repeatedly added/removed)
+  }
+
+  static get observedAttributes() {
+    return ['s1','s2','s3','s4','s5','s6','s7','s8','ancho','n','conjuntos'];
+  }
+
+  attributeChangedCallback(name, oldValue, newValue) {
+    // called when one of attributes listed above is modified
+    switch(name){
+      case 's1':
+          this.S1 = newValue
+          break
+      case 's2':
+          this.S2 = newValue
+          break
+      case 's3':
+          this.S3 = newValue
+          break
+      case 's4':
+          this.S4 = newValue
+          break
+      case 's5':
+          this.S5 = newValue
+          break
+      case 's6':
+          this.S6 = newValue
+          break
+      case 's7':
+          this.S7 = newValue
+          break
+      case 's8':
+          this.S8 = newValue
+          break
+      case 'ancho':
+          this.width = eval(newValue)
+          break
+      case 'n':
+        this.n = eval(newValue)
+        break
+      case 'conjuntos':
+        //Hay que hacerlo bien ... luego hay que volver aquí
+          this.sets = eval(`[${newValue}]`)
+          break
+    }
+  }
+}
+window.customElements.define('tlacuache-venn',tlacuache_venn)
 
 
 

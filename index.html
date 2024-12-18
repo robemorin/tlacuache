@@ -99,7 +99,7 @@ Código:
     &lt;tlacuache-plot x="-.9,-.5,0,.5,.9" y=".9,.5,0,-.5,-.9" mark="." color="blue"&gt;&lt;/tlacuache-plot &gt;
     &lt;tlacuache-plot f='2*x**2-1' color="green"/&gt;&lt;/tlacuache-plot&gt;
   
-  &lt; /tlacuache-ejes &gt;<br>
+  &lt;/tlacuache-ejes &gt;<br>
 
   </code>
 </pre><br>
@@ -122,6 +122,20 @@ Código:
  <center>
   <table><tr> <td><tlacuache-cuartil q="[-4,-0,1,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td>
               <td><tlacuache-cuartil q="[-4,-0,1,6,8],[-5,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td><tr></tr></tr></table>
+  </center>
+  <h3>Diagrama de Venn</h3>
+  Código:
+  <pre><code class="language-html">
+      &lt;tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"/&gt;&lt;/tlacuache-venn/&gt;
+      &lt;tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega}{2}$$"  s4="0.1" /&gt;&lt;/tlacuache-venn/&gt;
+    </code></pre>
+   Resultado:
+  <center>
+    <table>
+      
+      <tr><td><tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"></tlacuache-venn></td>
+        <td><tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega-3}{2}$$"  s4="0.1" ></tlacuache-venn></td></tr>
+    </table>
   </center>
 </body>
 </html>
