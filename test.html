@@ -31,10 +31,12 @@ MathJax.Hub.Config({
   <div id="hijo"></div>
 </div>
   Hola<br>
-  <tlacuache-venn ></tlacuache-venn>
+  <tlacuache-ejes></tlacuache-ejes>
 <center>
-  <tlacuache-venn ancho="400" s1="$$\omega$$" s2="0.3" s3="$$\kappa$$" s4="w"></tlacuache-venn>
-  <tlacuache-venn ancho="400" n="3" s1="10" s2="20"  s4="0.65" s5="0.85" s6="$$x$$"  s7="3" s8="1.11"></tlacuache-venn>
+  <tlacuache-ejes size="320,480" xlabel="horas al mes (h)" ylabel="Frecuencia acumulada" xlim="0,55" ylim="0,50"  dx="10" dy="10" ddx="2" ddy="2" >
+    <tlacuache-plot x="0,10,20,30,40,50" y="0,3,10,20,34,44" mark="o" color="red"></tlacuache-plot >
+    <tlacuache-poligono-frecuencias-acumuladas x="0,10,20,30,40,50" y="0,3,10,20,34,44" ></tlacuache-poligono-frecuencias-acumuladas>
+  </tlacuache-ejes >
 </center>
 
 </body>

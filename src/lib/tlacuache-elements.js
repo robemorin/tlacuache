@@ -307,6 +307,8 @@ class tlacuache_ejes extends HTMLElement
       this.ylim=[-1,1]
       this.xtick=[]
       this.ytick=[]
+      this.ddx=null
+      this.ddy=null
       this.grid=true
       this.bcolor= 'GhostWhite';
       this.dpx=false
@@ -322,7 +324,6 @@ class tlacuache_ejes extends HTMLElement
 
       this.setAttribute('xlim',this.xlim)
       this.setAttribute('ylim',this.ylim)
-
       let Safter=``, Sbefore=``
       let minSpace=[0.1*this.size[0],0.1*this.size[1]]
       const sizeFont=[Math.min(...minSpace)*.5,Math.min(...minSpace)*.5/1.6]
@@ -409,7 +410,18 @@ class tlacuache_ejes extends HTMLElement
         labels +=(Math.abs(this.ytick[k])<1e-15)?'': `<text x="${Origen[0]-0.15*minSpace[1]}" y="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}" text-anchor="end" alignment-baseline="middle" font-size="${sizeFont[1]}">${(this.dpy==false)?this.ytick[k]:this.ytick[k].toPrecision(this.dpy)}</text>
         <line x1="${Origen[0]-0.15*minSpace[0]}" x2="${Origen[0]+0.15*minSpace[0]}" y1="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}" y2="${Ly[0]*this.ytick[k]+Ly[1]+subSVGsize[0]}"   style="fill:none;stroke-width:1.5;stroke:black"/>`
       }
-        
+      //---Inicio Malla secundaria
+      if(this.ddx!=null){
+        for(let k=0;k<this.ddx.length;++k){
+            labels += `<line x1="${Lx[0]*this.ddx[k]+Lx[1]+subSVGsize[1]}" x2="${Lx[0]*this.ddx[k]+Lx[1]+subSVGsize[1]}" y1="0" y2="${this.size[0]-minSpace[0]}" style="fill:none;stroke-width:.2;stroke:dimgray"/>`
+        } 
+      }
+      if(this.ddy!=null){
+        for(let k=0;k<this.ddy.length;++k){
+            labels += `<line x1="${minSpace[1]}" x2="${this.size[1]}" y1="${Ly[0]*this.ddy[k]+Ly[1]+subSVGsize[0]}" y2="${Ly[0]*this.ddy[k]+Ly[1]+subSVGsize[0]}"   style="fill:none;stroke-width:.2;stroke:dimgray"/>`
+        } 
+      }
+      //---fin Malla secundaria
       //Inicio Temporal
       Safter +=`<!--rect x="0" y="0" height="${this.size[0]-minSpace[0]}" width="${minSpace[1]}" style="fill:none;stroke-width:3;stroke:yellow" /-->
                 <!--rect y="${this.size[0]-minSpace[0]}" x="${minSpace[1]}" height="${minSpace[0]}" width="${this.size[1]-minSpace[1]}" style="fill:none;stroke-width:3;stroke:orange" /-->
@@ -432,7 +444,7 @@ class tlacuache_ejes extends HTMLElement
     }
   
     static get observedAttributes() {
-      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','dx','xtick','dy','ytick','dpx','dpy']
+      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','dx','xtick','dy','ytick','dpx','dpy','ddx','ddy']
     }
   
     attributeChangedCallback(name, oldValue, newValue) {
@@ -461,6 +473,12 @@ class tlacuache_ejes extends HTMLElement
         case 'color':
             this.color = newValue
             break
+        case 'ddx':
+          this.ddx = tlacu.tick(this.xlim[0],this.xlim[1],eval(newValue))
+          break
+        case 'ddy':
+          this.ddy = tlacu.tick(this.ylim[0],this.ylim[1],eval(newValue))
+          break
         case 'dx':
             newValue = tlacu.tick(this.xlim[0],this.xlim[1],eval(newValue))
         case 'xtick'://Falta probar
@@ -761,7 +779,75 @@ return
 }
 window.customElements.define('tlacuache-venn',tlacuache_venn)
 
+class tlacuache_poligonoFA extends HTMLElement {
+  constructor() {
+    super();
+    this.x=null
+    this.y=null
+    this.f=null
+    this.color='black'
+    this.mark='o'
+    this.n=100
+    this.lineWidth=1
+  }
+  connectedCallback(){
+    function coor2P(xs,ys,size,color,lw,n=100){
+      let x = eval(`[${xs}]`)
+      let y = eval(`[${ys}]`)
+      let P=''
+      const Lx = eval(`[${padre.getAttribute('l_x')}]`)
+      const Ly = eval(`[${padre.getAttribute('l_y')}]`)
+      //
+      for (let k=0;k<x.length;++k){
+        x[k]=(Lx[0]*x[k]+Lx[1])
+        y[k]=(Ly[0]*y[k]+Ly[1])
+      }
+      //
+      let f = tlacu.interpolate_mono(x,y)
+      
+      const D=(x[x.length-1]-x[0])/n
+      
+      for (let k=0; k <= n; ++k) {
+        P += `${x[0]+k*D},${f(x[0]+k*D)} `
+        
+      }
+      P = `<polyline points="${P}" fill="none" stroke="${color}" stroke-width="${lw}" />`
+      return P
+      
+    }
 
+    //Esta pendiente este elemento
+    const padre = this.parentElement;
+    const svg = padre.getElementsByTagName('svg')[0].getElementsByTagName('svg')[0];
+    const escala=Math.min(svg.getAttribute('width')*0.1,svg.getAttribute('height')*0.012)
+    
+    let contenido = coor2P(this.x,this.y,escala,this.color,this.lineWidth*escala*0.5)
+    
+    svg.innerHTML +=contenido
+  }
+  static get observedAttributes() {
+    return ['x','y','color','n','lineWidth']
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch(name){
+      case 'lineWidth':
+            this.lineWidth = eval(newValue)
+      case 'size':
+            this.size = eval(newValue)
+      case 'color':
+          this.color = newValue
+          break
+      case 'y'://Falta probar
+          this.y = eval(`[${newValue}]`)
+            break
+      case 'x'://Falta probar
+          this.x = eval(`[${newValue}]`)
+            break
+          
+    }
+  }
+}
+window.customElements.define('tlacuache-poligono-frecuencias-acumuladas', tlacuache_poligonoFA);
 
 
 //----------Estos elementos son de prueba

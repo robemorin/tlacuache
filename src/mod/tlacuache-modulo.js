@@ -119,6 +119,58 @@ const tlacu = (function() {
             }
             
         },
+        interpolate_mono: function(xs, ys) {
+            let i, length = xs.length;
+            if (length != ys.length) { throw 'Need an equal count of xs and ys.'; }
+            if (length === 0) { return function(x) { return 0; }; }
+            if (length === 1) {
+                let result = +ys[0];
+                return function(x) { return result; };
+            }
+            let indexes = [];
+            for (i = 0; i < length; i++) { indexes.push(i); }
+            indexes.sort(function(a, b) { return xs[a] < xs[b] ? -1 : 1; });
+            let oldXs = xs, oldYs = ys;
+            xs = []; ys = [];
+            for (i = 0; i < length; i++) { xs.push(+oldXs[indexes[i]]); ys.push(+oldYs[indexes[i]]); }
+            let dys = [], dxs = [], ms = [];
+            for (i = 0; i < length - 1; i++) {
+                let dx = xs[i + 1] - xs[i], dy = ys[i + 1] - ys[i];
+                dxs.push(dx); dys.push(dy); ms.push(dy/dx);
+            }
+            let c1s = [ms[0]];
+            for (i = 0; i < dxs.length - 1; i++) {
+                let m = ms[i], mNext = ms[i + 1];
+                if (m*mNext <= 0) {
+                    c1s.push(0);
+                } else {
+                    let dx = dxs[i], dxNext = dxs[i + 1], common = dx + dxNext;
+                    c1s.push(3*common/((common + dxNext)/m + (common + dx)/mNext));
+                }
+            }
+            c1s.push(ms[ms.length - 1]);
+            let c2s = [], c3s = [];
+            for (i = 0; i < c1s.length - 1; i++) {
+                let c1 = c1s[i], m = ms[i], invDx = 1/dxs[i], common = c1 + c1s[i + 1] - m - m;
+                c2s.push((m - c1 - common)*invDx); c3s.push(common*invDx*invDx);
+            }
+        
+            return function(x) {
+                let i = xs.length - 1;
+                if (x == xs[i]) { return ys[i]; }
+                let low = 0, mid, high = c3s.length - 1;
+                while (low <= high) {
+                    mid = Math.floor(0.5*(low + high));
+                    let xHere = xs[mid];
+                    if (xHere < x) { low = mid + 1; }
+                    else if (xHere > x) { high = mid - 1; }
+                    else { return ys[mid]; }
+                }
+                i = Math.max(0, high);
+                const diff = x - xs[i], diffSq = diff*diff;
+                return ys[i] + c1s[i]*diff + c2s[i]*diffSq + c3s[i]*diff*diffSq;
+            };
+        },
           /*
 
 function Max(x){
