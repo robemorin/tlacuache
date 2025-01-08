@@ -316,6 +316,10 @@ class tlacuache_ejes extends HTMLElement
       
     }
     connectedCallback() {
+      if(this.size==null){
+        console.log("Falta documentación")
+        return
+      }
       function coor2px(coor,px){
         const L=[(px[1]-px[0])/(coor[1]-coor[0])]
         L.push(px[0]-L[0]*coor[0])
@@ -324,8 +328,15 @@ class tlacuache_ejes extends HTMLElement
 
       this.setAttribute('xlim',this.xlim)
       this.setAttribute('ylim',this.ylim)
+
+
       let Safter=``, Sbefore=``
-      let minSpace=[0.1*this.size[0],0.1*this.size[1]]
+      console.log(`medida: ${this.size[0]} x ${this.size[1]}`)
+      let dummy1=this.size[0]
+      let dummy2=this.size[1]
+
+      
+      let minSpace=[0.1*dummy1,0.1*dummy2]
       const sizeFont=[Math.min(...minSpace)*.5,Math.min(...minSpace)*.5/1.6]
       let subSVGsize=[sizeFont[1],minSpace[1],(this.size[0]-2)-minSpace[0]-sizeFont[1],.9*this.size[1]-2]      
       let Origen=[0,0], labels=``
@@ -451,6 +462,7 @@ class tlacuache_ejes extends HTMLElement
       switch(name){
         case 'size':
             this.size = eval(`[${newValue}]`)
+            console.log(`size:${this.size[0]}`)
             break
         case 'xlabel':
             this.xlabel = newValue
