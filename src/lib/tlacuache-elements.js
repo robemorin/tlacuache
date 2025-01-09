@@ -4,9 +4,12 @@ class tlacuache_cuartil extends HTMLElement {
       super();
       // element created
       this.Q 
-      this.lim 
+      this.lim
+      this.d=5
+      this.dd=1
       this.dim 
-      this.xlabel
+      this.xlabel=""
+      this.color="black"
     }
     connectedCallback() {
       if(this.Q==null){
@@ -22,10 +25,11 @@ class tlacuache_cuartil extends HTMLElement {
 </fieldset></div>`
 return
       }
-   const xmin=this.lim[0], xmax=this.lim[1], Dx=this.lim[2], minSpace=this.dim[1]*.05, Q=this.Q
-   const ancho=this.dim[1]-2*minSpace, alto = 0.8*this.dim[0]-minSpace, xtick=[Math.ceil(xmin/Dx)*Dx]
+   const xmin=this.lim[0], xmax=this.lim[1], Dx=this.d, DDx=this.dd, minSpace=this.dim[1]*.05, Q=this.Q
+   const ancho=this.dim[1]-2*minSpace, alto = 0.8*this.dim[0]-minSpace, xtick=[Math.ceil(xmin/Dx)*Dx],xxtick=[Math.ceil(xmin/DDx)*DDx]
    const L=[ancho/(xmax-xmin)]
    L.push( minSpace-L[0]*xmin )
+   
    const Dpx = L[0]*Dx
    while(xtick[xtick.length-1]<=xmax){
         xtick.push(xtick[xtick.length-1]+Dx)    
@@ -40,6 +44,22 @@ return
                 <line x1="${L[0]*xtick[k]+L[1]}" y1="${alto+0.5*minSpace}" x2="${L[0]*xtick[k]+L[1]}" y2="${alto+1.5*minSpace}" stroke="black" stroke-width="3" />
                 <text font-size="${0.075*alto}" text-anchor="middle" alignment-baseline="hanging"  x="${L[0]*xtick[k]+L[1]}" y="${alto+1.5*minSpace+3}" >${xtick[k]}</text>`
    }
+   //
+   const DDpx = L[0]*DDx
+   while(xxtick[xxtick.length-1]<=xmax){
+        xxtick.push(xxtick[xxtick.length-1]+DDx)    
+   }
+   let Slabelxd = ""
+   for(let k=1;(alto+minSpace-DDpx*k)>=minSpace;++k){
+    if(alto+minSpace-DDpx*k>temporalx){
+      Slabelxd += `<line x1="${minSpace}" y1="${alto+minSpace-DDpx*k}" x2="${ancho+minSpace}" y2="${alto+minSpace-DDpx*k}" stroke="gray" stroke-width=".5" />`
+    }
+    
+   }
+   for(let k=0;k<xxtick.length-1;++k){
+    Slabelxd += `<line x1="${L[0]*xxtick[k]+L[1]}" y1="${alto+minSpace}" x2="${L[0]*xxtick[k]+L[1]}" y2="${temporalx}" stroke="gray" stroke-width=".5" />`
+   }
+   //
    let whiskers=``
    if(Q.length!=0){
     let Sw = (alto+minSpace-temporalx)*2/(1+Math.sqrt(5))
@@ -52,17 +72,17 @@ return
 
     for(let k=0;k<n;++k){
       let q= Q[k]
-      whiskers += `<line x1="${L[0]*q[0]+L[1]}" x2="${L[0]*q[0]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)}" stroke="black" stroke-width="3" />
-                   <rect x="${L[0]*q[1]+L[1]}" height="${Sw}" y="${alto+minSpace-(k+1)*(Se+Sw)}"  width="${L[0]*(q[3]-q[1])}" fill="none" stroke="black" stroke-width="3" />
-                   <line x1="${L[0]*q[0]+L[1]}" x2="${L[0]*q[1]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}" stroke="black" stroke-width="3" />
-                   <line x1="${L[0]*q[2]+L[1]}" x2="${L[0]*q[2]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)}" stroke="black" stroke-width="5" />
-                   <line x1="${L[0]*q[3]+L[1]}" x2="${L[0]*q[4]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}" stroke="black" stroke-width="3" />
-                   <line x1="${L[0]*q[4]+L[1]}" x2="${L[0]*q[4]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)}" stroke="black" stroke-width="3" /> `
+      whiskers += `<line x1="${L[0]*q[0]+L[1]}" x2="${L[0]*q[0]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)}" stroke="${this.color}" stroke-width="2" />
+                   <rect x="${L[0]*q[1]+L[1]}" height="${Sw}" y="${alto+minSpace-(k+1)*(Se+Sw)}"  width="${L[0]*(q[3]-q[1])}" fill="none" stroke="${this.color}" stroke-width="2" />
+                   <line x1="${L[0]*q[0]+L[1]}" x2="${L[0]*q[1]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}" stroke="${this.color}" stroke-width="2" />
+                   <line x1="${L[0]*q[2]+L[1]}" x2="${L[0]*q[2]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)}" stroke="${this.color}" stroke-width="3" />
+                   <line x1="${L[0]*q[3]+L[1]}" x2="${L[0]*q[4]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)+0.5*Sw}" stroke="${this.color}" stroke-width="2" />
+                   <line x1="${L[0]*q[4]+L[1]}" x2="${L[0]*q[4]+L[1]}" y1="${alto+minSpace-(k+1)*(Se+Sw)+Sw}"  y2="${alto+minSpace-(k+1)*(Se+Sw)}" stroke="${this.color}" stroke-width="2" /> `
     }
     
    }
 
-   this.innerHTML = `<svg width="${this.dim[1]}" height="${this.dim[0]}" >${Slabelx}
+   this.innerHTML = `<svg width="${this.dim[1]}" height="${this.dim[0]}" >${Slabelxd} ${Slabelx}
               <line x1="${minSpace}" y1="${alto+minSpace}" x2="${ancho+minSpace}" y2="${alto+minSpace}" stroke="black" stroke-width="3" />
               ${whiskers}
               <text font-size="${0.09*alto}" text-anchor="middle" alignment-baseline="text-top"  x="${0.5*this.dim[1]}" y="${this.dim[0]-0.2*minSpace}" >${this.xlabel}</text>
@@ -75,7 +95,7 @@ return
     }
   
     static get observedAttributes() {
-      return ['q','lim','dim','xlabel'];
+      return ['q','lim','dim','xlabel','d','dd','color'];
     }
   
     attributeChangedCallback(name, oldValue, newValue) {
@@ -90,9 +110,15 @@ return
         case 'dim':
             this.dim = eval(`[${newValue}]`)
             break
-        case 'xlabel':
-            this.xlabel = newValue
+        case 'd':
+            this.d = eval(newValue)
             break
+        case 'dd':
+          this.dd = eval(newValue)
+          break
+        case 'color':
+          this.color = newValue
+          break
       }
     }
   }
@@ -514,13 +540,75 @@ window.customElements.define('tlacuache-ejes',tlacuache_ejes)
 class tlacuache_histograma extends HTMLElement {
   constructor() {
     super();
+    this.mc=null
+    this.paso=null
+    this.f=null
+    this.color='LightCyan'
+    this.linecolor='DimGray'
+    this.lineWidth=1
   }
   connectedCallback(){
+    function barra(mc,step,h,lcolor,color,lw){
+      const x = [mc-0.5*step,mc+0.5*step,mc+0.5*step,mc-0.5*step,mc-0.5*step]
+      const y = [0,0,h,h,0]
+      let P=''
+      const Lx = eval(`[${padre.getAttribute('l_x')}]`)
+      const Ly = eval(`[${padre.getAttribute('l_y')}]`)
+      
+        for (let k=0;k<x.length;++k){
+          P += `${Lx[0]*x[k]+Lx[1]},${Ly[0]*y[k]+Ly[1]} `
+          
+        }
+        return `<polyline points="${P}" style="fill:${color};stroke:${lcolor};stroke-width:${lw}"/>`
+      
+    }
+    if(this.mc==null || this.paso==null || this.f==null){
+      console.log("Falta documentación tlacuache-histograma")
+      return
+    }
+    console.log('inicio histograma')
+    const padre = this.parentElement;
+    const svg = padre.getElementsByTagName('svg')[0].getElementsByTagName('svg')[0];
+    const escala=Math.min(svg.getAttribute('width')*0.1,svg.getAttribute('height')*0.012)
+    let contenido = ''
+    console.log(this.mc)
+    console.log(this.paso)
+    console.log(this.f)
+    for(let k=0; k<this.f.length;++k){
+      contenido += barra(this.mc+k*this.paso,this.paso,this.f[k],this.linecolor,this.color,this.lineWidth)
+    }
+    
+    
+    svg.innerHTML +=contenido
+
+    console.log('fin histograma')
     
     
   }
   static get observedAttributes() {
-    return ['x'];
+    return ['inicio','paso','frecuencias','fill','stroke','lineWidth'];
+  }
+  attributeChangedCallback(name, oldValue, newValue) {
+    switch(name){
+      case 'inicio':
+        this.mc = eval(newValue)
+        break
+      case 'paso':
+        this.paso = eval(newValue)
+        break;
+      case 'frecuencias'://Falta probar
+        this.f = eval(`[${newValue}]`)
+        break
+      case 'fill':
+        this.color = newValue
+        break
+      case 'stroke'://Falta probar
+        this.linecolor = newValue
+        break
+      case 'lineWidth':
+        this.lineWidth = eval(newValue)
+        break          
+    }
   }
 }
 window.customElements.define('tlacuache-histograma', tlacuache_histograma);
