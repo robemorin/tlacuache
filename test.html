@@ -52,15 +52,20 @@ MathJax.Hub.Config({
 						}
 
 //const datos = aleatorio_local(Math.round(20*Math.random()+5),10,Math.round(10+Math.random()*5))
-const datos = [1,2,3,4,5]
+let datos=[1,2,3,4,5]
 while(datos.length<20){
   datos.push(datos.length+1)
-  
 let Q = tlacu.stat.cuartil(datos)
-console.log(` 
-Q:${[Q[1],Q[2],Q[3]]}; `)
+console.log(` n: ${datos.length};`)
+console.log(` D: ${datos};
+Q:${Q}; `)
 }
-						
+
+datos=[15,28,22,28,19,-4,7,29,13,26,34,33,27,16]
+let Q = tlacu.stat.cuartil(datos)
+console.log(` n: ${datos.length};`)
+console.log(` D: ${datos};
+Q:${Q}; `)
 </script>
  
 </body>

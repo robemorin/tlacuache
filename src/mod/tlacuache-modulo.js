@@ -234,6 +234,7 @@ function evaluar(expresion,X){
                             return arr[Math.round(index - 1)];
                         }
                       };
+                      console.log('Revisado ')
                       return [getQuartile(1),getQuartile(q1), getQuartile(q2), getQuartile(q3),getQuartile(n)]
                     
                     
