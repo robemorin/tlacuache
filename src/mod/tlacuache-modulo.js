@@ -223,8 +223,8 @@ function evaluar(expresion,X){
                     arr.sort((a, b) => a - b)
                       const n = arr.length
                       const q2 = (n + 1) / 2
-                      const q1 = (n + 1) / 4
-                      const q3 = 3 * (n + 1) / 4
+                      const q1 = Math.ceil(q2) / 2
+                      const q3 = 2*q2-q1
                       const getQuartile = (index) => {
                         const pos = Math.floor(index);
                         if (index - pos == 0.5) {
