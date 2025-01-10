@@ -231,7 +231,7 @@ function evaluar(expresion,X){
                             return (arr[pos - 1] + arr[pos]) / 2;
                           
                         } else {
-                            return arr[pos - 1];
+                            return arr[Math.round(index - 1)];
                         }
                       };
                       return [getQuartile(1),getQuartile(q1), getQuartile(q2), getQuartile(q3),getQuartile(n)]
