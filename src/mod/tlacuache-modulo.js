@@ -216,6 +216,30 @@ function evaluar(expresion,X){
 	  return y
 }
           */
+        stat:{
+            cuartil: function(datos){
+
+                    let arr = [...datos]
+                    arr.sort((a, b) => a - b)
+                      const n = arr.length
+                      const q2 = (n + 1) / 2
+                      const q1 = (n + 1) / 4
+                      const q3 = 3 * (n + 1) / 4
+                      const getQuartile = (index) => {
+                        const pos = Math.floor(index);
+                        if (index - pos == 0.5) {
+                            return (arr[pos - 1] + arr[pos]) / 2;
+                          
+                        } else {
+                            return arr[pos - 1];
+                        }
+                      };
+                      return [getQuartile(1),getQuartile(q1), getQuartile(q2), getQuartile(q3),getQuartile(n)]
+                    
+                    
+            }
+
+        },
         graph:{
             lienzo: function(size,xlim,ylim,tick, label=["",""]){
                 
@@ -223,6 +247,11 @@ function evaluar(expresion,X){
                 </svg>`
                 let L=[]
                 return[L,S]
+            }
+        },
+        custom:{
+            string2array: function(raw){
+                return raw.split(',');
             }
         },
         pruebas:{

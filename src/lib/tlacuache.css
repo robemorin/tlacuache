@@ -1,0 +1,14 @@
+.tlacuache_tabla_ieee {
+    border-collapse: collapse;
+    border-spacing: 0;
+    width: 100%;
+    text-align: center;
+    tr:first-child {
+        border-top: solid 1px #000;
+        border-bottom: double 2px #000;
+    
+    }
+    tr:last-child {
+        border-bottom: solid 1px #000;
+    }
+}   

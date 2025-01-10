@@ -948,7 +948,69 @@ class tlacuache_poligonoFA extends HTMLElement {
   }
 }
 window.customElements.define('tlacuache-poligono-frecuencias-acumuladas', tlacuache_poligonoFA);
+class tlacuache_tabla extends HTMLElement
+  {
+    constructor() {
+      super();
+      // element created
+      this.alig=''
+      this.nombre=''
+      this.col1=[]
+      this.col2=[]
+      this.col3=[]
+      this.col4=[]
+      this.estilo='ieee'
 
+    }
+    connectedCallback() {
+      const n = this.nombre.length
+      let output = `<table class="tlacuache_tabla_${this.estilo}" style="width:100%"><tr>`
+      for(let col=0;col<n;++col){
+        output += `<th>${this.nombre[col]}</th>`
+      }
+      output += '</tr>'
+      const maxrow = Math.max(this.col1.length,this.col2.length,this.col3.length,this.col4.length)
+      for(let row=0;row<maxrow;++row){
+        output += '<tr>'
+        for(let col=0;col<n;++col) output += `<td>${this[`col${col+1}`][row]!=undefined?this[`col${col+1}`][row]:''}</td>`
+        output += '</tr>'
+      }
+
+      this.innerHTML = output
+    }
+  
+    static get observedAttributes() {
+      return ['align','nombre','col1','col2','col3','col4','estilo'];
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      // called when one of attributes listed above is modified
+      switch(name){
+        case 'align':
+            this.align = newValue
+            break
+        case 'nombre':
+            this.nombre = tlacu.custom.string2array(newValue)
+            break
+        case 'col1':
+            this.col1 = tlacu.custom.string2array(newValue)
+            break
+        case 'col2':
+          this.col2 = tlacu.custom.string2array(newValue)
+          break
+        case 'col3':
+          this.col3 = tlacu.custom.string2array(newValue)
+          break
+        case 'col4':
+          this.col4 = tlacu.custom.string2array(newValue)
+          break
+        case 'estilo':
+          this.estilo = newValue
+          break
+      }
+    }
+  }
+window.customElements.define('tlacuache-tabla',tlacuache_tabla)
 
 //----------Estos elementos son de prueba
 class tlacuache_padre extends HTMLElement
