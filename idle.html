@@ -36,8 +36,8 @@
 			object-fit: cover;
 		}
     </style>
-	<script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/lib/tlacuache-elements.js"></script>
-    <script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/mod/tlacuache-modulo.js"></script>
+	<script type="text/javascript"  src="./src/lib/tlacuache-elements.js"></script>
+    <script type="text/javascript"  src="./src/mod/tlacuache-modulo.js"></script>
 	<script type="text/javascript"
   src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
 </script>
@@ -69,9 +69,11 @@ function addCommand(op){
     <tlacuache-plot x="-4,4,3,-3" y="1,-1,2,-2" mark="o" color="red"></tlacuache-plot >
   </tlacuache-ejes >`
         break
-        
+        case 'cuartiles':
+        document.getElementById("ta").value += `<tlacuache-cuartil q="[-4,-0,0,6,8]" lim="-6,10" d="1"  dim="280,400" xlabel='eje x' />`
+        break
 		case 'dato':
-		document.getElementById("ta").value+=`<tlacuache-tabla estilo="dato" nombre="$x$,$y$", row1="a,b,c" row2="10-19,20-29,30-39" ></tlacuache-tabla>`
+		document.getElementById("ta").value+=`<tlacuache-tabla estilo="dato" nombre="$x$,$y$", row1="" row2="" ></tlacuache-tabla>`
         break
 	}
 }
