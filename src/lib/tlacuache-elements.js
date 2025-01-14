@@ -959,20 +959,39 @@ class tlacuache_tabla extends HTMLElement
       this.col2=[]
       this.col3=[]
       this.col4=[]
+      this.row1=[]
+      this.row2=[]
+      this.row3=[]
+      this.row4=[]
       this.estilo='ieee'
 
     }
     connectedCallback() {
       const n = this.nombre.length
-      let output = `<table class="tlacuache_tabla_${this.estilo}" style="width:100%"><tr>`
-      for(let col=0;col<n;++col){
-        output += `<th>${this.nombre[col]}</th>`
-      }
-      output += '</tr>'
-      const maxrow = Math.max(this.col1.length,this.col2.length,this.col3.length,this.col4.length)
-      for(let row=0;row<maxrow;++row){
+      let output = `<table class="tlacuache_tabla_${this.estilo}" >`
+
+      if(this.estilo=='ieee'){
         output += '<tr>'
-        for(let col=0;col<n;++col) output += `<td>${this[`col${col+1}`][row]!=undefined?this[`col${col+1}`][row]:''}</td>`
+        
+        for(let col=0;col<n;++col){
+          output += `<th>${this.nombre[col]}</th>`
+        }
+        output += '</tr>'
+        const maxrow = Math.max(this.col1.length,this.col2.length,this.col3.length,this.col4.length)
+        for(let row=0;row<maxrow;++row){
+          output += '<tr>'
+          for(let col=0;col<n;++col) output += `<td>${this[`col${col+1}`][row]!=undefined?this[`col${col+1}`][row]:''}</td>`
+          output += '</tr>'
+        }
+      }else if(this.estilo=='dato'){
+        console.log(`row1: ${this.row1}`)
+        for(let row=0;row<n;++row){
+          output += `<tr><th>${this.nombre[row]}</th>`
+          let ncolumnas = eval(`this.row${row+1}.length`)
+          for(let col=0;col<ncolumnas;++col){
+            output += `<td>${this[`row${row+1}`][col]}</td>`
+          }
+        }
         output += '</tr>'
       }
 
@@ -980,7 +999,7 @@ class tlacuache_tabla extends HTMLElement
     }
   
     static get observedAttributes() {
-      return ['align','nombre','col1','col2','col3','col4','estilo'];
+      return ['align','nombre','col1','col2','col3','col4','row1','row2','row3','row4','estilo'];
     }
   
     attributeChangedCallback(name, oldValue, newValue) {
@@ -1003,6 +1022,18 @@ class tlacuache_tabla extends HTMLElement
           break
         case 'col4':
           this.col4 = tlacu.custom.string2array(newValue)
+          break
+        case 'row1':
+            this.row1 = tlacu.custom.string2array(newValue)
+            break
+        case 'row2':
+          this.row2 = tlacu.custom.string2array(newValue)
+          break
+        case 'row3':
+          this.row3 = tlacu.custom.string2array(newValue)
+          break
+        case 'row4':
+          this.row4 = tlacu.custom.string2array(newValue)
           break
         case 'estilo':
           this.estilo = newValue

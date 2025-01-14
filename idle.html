@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+  <link rel="stylesheet" type="text/css" href="./src/lib/tlacuache.css">
+    <style>
+	
+
+        /* Método 3: Como elemento de fondo posicionado */
+        .container {
+            position: relative;
+            width: 90%;
+            border: 1px solid #ccc;
+			margin-left:10%;
+            margin-top: 20px;
+        }
+
+        .container #svgq {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 1;
+            padding: 20px;
+            color: blue;
+        }
+		textarea{
+			overflow: hidden;
+			min-width: 90%;
+			object-fit: cover;
+		}
+    </style>
+	<script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/lib/tlacuache-elements.js"></script>
+    <script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/mod/tlacuache-modulo.js"></script>
+	<script type="text/javascript"
+  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
+</script>
+
+<script type="text/x-mathjax-config">
+MathJax.Hub.Config({
+    extensions: ["tex2jax.js"],
+    jax: ["input/TeX", "output/HTML-CSS"],
+    tex2jax: {
+      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
+      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
+      processEscapes: true
+    },
+    "HTML-CSS": { availableFonts: ["TeX"] }
+  });
+  
+</script>
+<script>
+function addCommand(op){
+	switch(op){
+		case 'plotf':
+		document.getElementById("ta").value+=`
+<tlacuache-ejes size="320,480" xlabel="" ylabel=""  xlim="-5,5" ylim="-5,5" dx="1" dy="1">
+	<tlacuache-plot f='2*x' color="green"/></tlacuache-plot>
+</tlacuache-ejes >`
+		break
+		case 'plotxy':
+		document.getElementById("ta").value+=`<tlacuache-ejes size="320,480" xlabel="" ylabel="" xlim="-5,5" ylim="-5,5"  dx="1" dy="1"  >
+    <tlacuache-plot x="-4,4,3,-3" y="1,-1,2,-2" mark="o" color="red"></tlacuache-plot >
+  </tlacuache-ejes >`
+        break
+        
+		case 'dato':
+		document.getElementById("ta").value+=`<tlacuache-tabla estilo="dato" nombre="$x$,$y$", row1="a,b,c" row2="10-19,20-29,30-39" ></tlacuache-tabla>`
+        break
+	}
+}
+</script>
+
+</head>
+<body>
+    <!-- SVG Definitions que pueden ser reutilizados -->
+    <svg width="0" height="0">
+        <defs>
+            <!-- Patrón para usar como máscara -->
+            <mask id="svgMask">
+                <rect width="100%" height="100%" fill="white"/>
+                <circle cx="150" cy="100" r="50" fill="black"/>
+            </mask>
+            
+            <!-- Patrón que puede ser reutilizado -->
+            <pattern id="patternGrid" width="20" height="20" patternUnits="userSpaceOnUse">
+                <!--path d="M 20 0 L 0 0 0 20" fill="none" stroke="#FFCA84" stroke-width="1"/-->
+				<rect x="0" y="0" width="20" height="20" fill="none" stroke="#FFCA84" stroke-width="1"/>
+				<line x1="4" y1="0" x2="4" y2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				<line x1="8" y1="0" x2="8" y2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				<line x1="12" y1="0" x2="12" y2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				<line x1="16" y1="0" x2="16" y2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				
+				<line y1="4" x1="0" y2="4" x2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				<line y1="8" x1="0" y2="8" x2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				<line y1="12" x1="0" y2="12" x2="20" stroke="#FFCA84" stroke-width="0.5"/>
+				<line y1="16" x1="0" y2="16" x2="20" stroke="#FFCA84" stroke-width="0.5"/>
+            </pattern>
+        </defs>
+    </svg>
+    <div class="container">
+        <svg xmlns="http://www.w3.org/2000/svg" id="svgq"><!--- viewBox="0 0 100% 200"-->
+            <rect width="100%" height="100%" fill="url(#patternGrid)"/>
+        </svg>
+        <div class="content" id="ans">
+            <p></p>
+        </div>
+    </div>
+	<textarea id="ta" width="100%" >[1]</textarea><br>
+	<button onclick="addCommand('plotf')"> plot $f$</button>
+	<button onclick="addCommand('plotxy')"> plot $(x,y)$</button>
+	<button onclick="addCommand('cuartiles')">Cuartiles</button>
+	<button onclick="addCommand('ieee')"> tabla ieee</button>
+	<button onclick="addCommand('dato')"> tabla dato</button>
+	
+		<script>
+const textarea1 = document.getElementById('ta');
+        
+        textarea1.addEventListener('input', function() {
+
+            let newString = document.getElementById("ta").value
+            let Respuestas = document.getElementById("ans")
+
+            if(newString.includes("?")){
+                document.getElementById("ta").value=''
+                Respuestas.innerHTML +=`<p></p>`
+                
+            }else if(newString.includes("*")){
+                let ps = Respuestas.getElementsByTagName('p')
+                ps[ps.length-1].remove(); 
+                document.getElementById("ta").value=''
+            }else{
+                
+                let ps = Respuestas.getElementsByTagName('p')
+                ps[ps.length-1].innerHTML = newString
+            }
+
+			
+			MathJax.Hub.Queue(["Typeset",MathJax.Hub]);
+            
+        });
+</script>
+</body>
+</html>

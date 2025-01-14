@@ -1,7 +1,9 @@
 .tlacuache_tabla_ieee {
+    th, td {
+        padding: 3px 10px;
+    }
     border-collapse: collapse;
     border-spacing: 0;
-    width: 100%;
     text-align: center;
     tr:first-child {
         border-top: solid 1px #000;
@@ -10,5 +12,22 @@
     }
     tr:last-child {
         border-bottom: solid 1px #000;
+    }
+} 
+.tlacuache_tabla_dato {
+    th, td {
+        padding: 3px 10px;
+    }
+    border-collapse: collapse;
+    border-spacing: 0;
+    text-align: center;
+    th:first-child {
+        border-right: solid 2px #000;
+        border-left: solid 2px #000;
+    }
+    tr {
+        border-bottom: solid 1px #000;
+        border-top: solid 1px #000;
+        border-right: solid 1px #000;
     }
 }   

@@ -36,37 +36,11 @@ MathJax.Hub.Config({
 
   
 <center>
-  <tlacuache-tabla nombre="uno,dos, tres", col1="a,b,c" col2="10-19,20-29,30-39" col3="1,4,"></tlacuache-tabla>
+  <tlacuache-tabla estilo="ieee" nombre="uno,dos, tres", col1="a,b,c" col2="10-19,20-29,30-39" col3="1,4,"></tlacuache-tabla>
+  <br>asdfgfdsa<br>
+  <tlacuache-tabla estilo="dato" nombre="$x$,$y$", row1="a,b,c" row2="10-19,20-29,30-39" ></tlacuache-tabla>
 </center>
-<script>
-  function aleatorio_local(seed, s, n,it=3){
-							const datos=[]
-							const p = 0.8*Math.random()+.1
-							for(let k=0; k<n; ++k){
-								datos.push(seed)
-								for(let k_it=0;k_it<it;++k_it){
-									datos[k] += Math.round(	Math.random()*s*(Math.random()<0.5?1:-1)	)
-								}
-							}
-							return datos
-						}
 
-//const datos = aleatorio_local(Math.round(20*Math.random()+5),10,Math.round(10+Math.random()*5))
-let datos=[1,2,3,4,5]
-while(datos.length<20){
-  datos.push(datos.length+1)
-let Q = tlacu.stat.cuartil(datos)
-console.log(` n: ${datos.length};`)
-console.log(` D: ${datos};
-Q:${Q}; `)
-}
-
-datos=[15,28,22,28,19,-4,7,29,13,26,34,33,27,16]
-let Q = tlacu.stat.cuartil(datos)
-console.log(` n: ${datos.length};`)
-console.log(` D: ${datos};
-Q:${Q}; `)
-</script>
  
 </body>
 </html>
