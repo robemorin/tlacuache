@@ -357,7 +357,7 @@ class tlacuache_ejes extends HTMLElement
 
 
       let Safter=``, Sbefore=``
-      console.log(`medida: ${this.size[0]} x ${this.size[1]}`)
+      //console.log(`medida: ${this.size[0]} x ${this.size[1]}`)
       let dummy1=this.size[0]
       let dummy2=this.size[1]
 
@@ -488,7 +488,7 @@ class tlacuache_ejes extends HTMLElement
       switch(name){
         case 'size':
             this.size = eval(`[${newValue}]`)
-            console.log(`size:${this.size[0]}`)
+            //console.log(`size:${this.size[0]}`)
             break
         case 'xlabel':
             this.xlabel = newValue
@@ -650,7 +650,7 @@ class tlacuache_plot extends HTMLElement {
       return P
       
     }
-    function coor2f(f,n,color,lw){
+    function coor2f(f,n,color,lw,mark=''){
       const xl = eval(`[${padre.getAttribute('xlim')}]`)
       const x = tlacu.linspace(xl[0],xl[1],n)
       const y = tlacu.evaluar(f,x)
@@ -660,7 +660,7 @@ class tlacuache_plot extends HTMLElement {
       for(let k=0; k<x.length; ++k){
         puntos += `${Lx[0]*x[k]+Lx[1]},${Ly[0]*y[k]+Ly[1]} `
       }
-      return `<polyline points="${puntos}" style="fill:none;stroke:${color};stroke-width:${lw}"/>`
+      return `<polyline points="${puntos}" style="fill:none;stroke:${color};stroke-width:${lw}" ${mark=='--'?'stroke-dasharray="5, 5"':''} test/>`
       
     }
     //Esta pendiente este elemento
@@ -670,9 +670,11 @@ class tlacuache_plot extends HTMLElement {
     
     let contenido = ''
     if(this.x != null && this.y != null){
+      console.log(`color:${this.color}: uno`)
       contenido += coor2P(this.x,this.y,this.mark,this.size*escala,this.color,this.lineWidth*escala*0.5)
     }else if(this.f != null){
-      contenido += coor2f(this.f,this.n,this.color,this.lineWidth*escala*0.5)
+      console.log(`color:${this.color}: dos`)
+      contenido += coor2f(this.f,this.n,this.color,this.lineWidth*escala*0.5,this.mark)
       //f,n,color,lw
     }
     svg.innerHTML +=contenido

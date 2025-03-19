@@ -54,6 +54,8 @@ const tlacu = (function() {
             }
             return S
         },
+        
+
         multiply: function (a1, a2) {
             //para polinomios
             var result = [];
@@ -171,51 +173,23 @@ const tlacu = (function() {
                 return ys[i] + c1s[i]*diff + c2s[i]*diffSq + c3s[i]*diff*diffSq;
             };
         },
-          /*
-
-function Max(x){
-	var m=Math.min.apply(Math, x);
-	var M=Math.max.apply(Math, x)
-	
-	if(M>(-m)){
-		return M
-	}else{
-		return -m
-	}
-}
-
-function simplify_frac(a){
-
-	let mcd = mcd_new(a[0],a[1])
-	mcd *= mcd*a[1]<0?-1:1
-	return [a[0]/mcd,a[1]/mcd]
-}
-
-function texto(S,C){//*
-	let Ct = document.createElement('span');
-	Ct.textContent=S
-	C.appendChild(Ct)
-}
-function divContenido(S,C){//*
-	let Ct = document.createElement('div');
-	Ct.innerHTML=S
-	C.appendChild(Ct)
-}
-function spanContenido(S,C){//*
-	let Ct = document.createElement('span');
-	Ct.innerHTML=S
-	C.appendChild(Ct)
-}
-
-
-function evaluar(expresion,X){
-	const y = []
-	X.forEach((x) => {
-		y.push(eval(expresion));
-	  });
-	  return y
-}
-          */
+        poli:{
+            derivate: function (v){
+                const n=v.length-1
+                const d=[]
+                for(var k=0;k<n;++k){
+                    d.push(v[k]*(n-k))
+                }
+                return d
+            },
+            eval: function (v,x){//Solo un valor
+                let y=0
+                for(var k=0;k<v.length;++k){
+                    y += v[k]*x**(v.length-k-1)
+                }
+                return y
+            }
+        },
         stat:{
             cuartil: function(datos){
 
@@ -273,6 +247,82 @@ function evaluar(expresion,X){
                 this.test()
             },
         },
+        metNum:{
+            newton: function(f,df,x0,maxIter=5,op=true){
+                let x = x0
+                let iter = 0
+                let cadena = "<table class='tlacuache_tabla_dato'><tr style='border_bottom:solid 2px black'><td>It</td><td>$a$</td><td>$f(a)$</td><td>$m_l$ </td><td>$b_l$ </td><td>$x_n$ </td></tr>"
+                while(iter<maxIter){
+                    cadena += `<tr><td>${iter+1}</td><td>${x.toPrecision(3)}</td><td>${f(x).toPrecision(3)}</td><td>${df(x).toPrecision(3)}</td><td>${(-x*df(x)+f(x)).toPrecision(3)}</td><td>${(x - f(x)/df(x)).toPrecision(3)}</td></tr>`
+                    x = x - f(x)/df(x)
+                    iter++
+                }
+                cadena += '</table>'
+                return op==true?cadena:x
+            },
+            secante: function(f,x0,x1,maxIter=5,op=true){
+                let iter = 0
+                let cadena = "<table class='tlacuache_tabla_dato'><tr style='border_bottom:solid 2px black'><td>It</td><td>$a$</td><td>$b$</td><td>$c$ </td></tr>"
+                while(iter<maxIter){
+                    cadena += `<tr><td>${iter+1}</td><td>${x0.toPrecision(3)}</td><td>${x1.toPrecision(3)}</td><td>${(x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))).toPrecision(3)}</td></tr>`
+                    let x2 = x1 - f(x1)*(x1-x0)/(f(x1)-f(x0))
+                    x0 = x1
+                    x1 = x2
+                    iter++
+                }
+                cadena += '</table>'
+                return op?cadena:x1
+            },
+            biseccion: function(f,a,b,maxIter=5,op=true){
+                let iter = 0
+                let cadena = "<table class='tlacuache_tabla_dato'><tr style='border_bottom:solid 2px black'><td>It</td><td>$a$</td><td>$b$</td><td>$c$ </td></tr>"
+                let fa = f(a), fb=f(b), fc
+                while(iter<maxIter){
+                    let c = (a+b)/2
+                    fc = f(c)
+                    cadena += `<tr><td>${iter+1}</td><td>${a.toPrecision(3)}(${fa<0?'-':'+'})</td><td>${b.toPrecision(3)}(${fb<0?'-':'+'})</td><td>${c.toPrecision(3)}(${fc<0?'-':'+'})</td></tr>`
+                    if(f(c) == 0){
+                        cadena += '</table>'
+                        return op?cadena:c
+                    }else if(f(a)*f(c)<0){
+                        b = c
+                    }else{
+                        a = c
+                    }
+                    iter++
+                }
+                cadena += '</table>'
+                return op?cadena:(a+b)/2
+            },
+            regulaFalsi: function(f,a,b,tol=1e-8,maxIter=100){
+                let error = tol+1
+                let iter = 0
+                while(error>tol && iter<maxIter){
+                    let c = b - f(b)*(b-a)/(f(b)-f(a))
+                    if(f(c) == 0){
+                        return c
+                    }else if(f(a)*f(c)<0){
+                        b = c
+                    }else{
+                        a = c
+                    }
+                    error = Math.abs(b-a)
+                    iter++
+                }
+                return (a+b)/2
+            },
+            puntoFijo: function(g,x0,tol=1e-8,maxIter=100){
+                let x = x0
+                let error = tol+1
+                let iter = 0
+                while(error>tol && iter<maxIter){
+                    let x1 = g(x)
+                    error = Math.abs(x1-x)
+                    x = x1
+                    iter++
+                }
+        }
+    }
     };
 })();
 
