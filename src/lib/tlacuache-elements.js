@@ -325,7 +325,7 @@ class tlacuache_renglon extends HTMLElement
     constructor() {
       super();
       // element created
-      this.alto = 5
+      this.alto = 20
       this.n = null
       this.color = 'RGB(64, 64, 64)'
       this.stroke = .7
@@ -362,7 +362,9 @@ class tlacuache_renglon extends HTMLElement
         </fieldset></div>`
         return
       }
-      let tabla = `<table class="tlacuache-renglon" style="border-collapse:collapse; border-spacing:0px; width:100%; height:${this.alto*this.n}%; border:1px solid ${this.color};">`
+      let tabla = `<svg width="100%" style="border:solid 2px ${this.color}" heigth=""></svg>
+      
+      <table class="tlacuache-renglon" style="border-collapse:collapse; border-spacing:0px; width:100%; height:${this.alto*this.n}px; border:1px solid ${this.color};">`
       for (let k=0;k<this.n;++k){
         tabla += `<tr><td width="10%"></td><td style="border-bottom:1px solid ${this.color};"></td><td width="10%"></td></tr>`
       }
