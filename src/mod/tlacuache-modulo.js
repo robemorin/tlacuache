@@ -229,24 +229,6 @@ const tlacu = (function() {
                 return raw.split(',');
             }
         },
-        pruebas:{
-            test: function() {
-                console.log("works!")
-            },
-            test2: function() {
-                console.log("works!2")
-                tlacu.prueb2.test()
-            },
-        },
-        prueb2:{
-            test: function() {
-                console.log("works pru!")
-            },
-            test2: function() {
-                console.log("works pru!2")
-                this.test()
-            },
-        },
         metNum:{
             newton: function(f,df,x0,maxIter=5,op=true){
                 let x = x0

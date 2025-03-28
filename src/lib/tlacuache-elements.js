@@ -320,6 +320,79 @@ class tlacuache_Milimetrado extends HTMLElement
     }
   }
 window.customElements.define('tlacuache-milimetrado',tlacuache_Milimetrado)
+class tlacuache_renglon extends HTMLElement
+  {
+    constructor() {
+      super();
+      // element created
+      this.alto = 5
+      this.n = null
+      this.color = 'RGB(64, 64, 64)'
+      this.stroke = .7
+
+    }
+    connectedCallback() {
+      if(this.n==null){
+        this.innerHTML=`<div><fieldset>
+        
+          <legend>tlacuache-renglon:</legend>
+          <b>Sintaxis:</b><br><br>
+          <table>
+          <tr><td>size:</td></tr>
+          <tr><td></td><td>pixeles en y, pixeles en x</td></tr>
+          <tr><td>cuadricula:<br>
+          <tr><td></td><td>cuadros primarios en <i>x</i> y <i>y</i></td></tr>
+          <tr><td>n:<br>
+          <tr><td></td><td>número de subdivisiones secundarias</td></tr>
+          <tr><td>stroke:<br>
+          <tr><td></td><td>grosor línea principal</td></tr>
+          <tr><td>stroke2:<br>
+          <tr><td></td><td>grosor línea secundaria</td></tr>
+          <tr><td>color:<br>
+          <tr><td></td><td>color mallado</td></tr>
+          </table>
+          <br>
+          
+
+          <b>Ejemplos:</b><br/><br/>
+          &lt;tlacuache-milimetrado size="400,800" /&gt;<br/> Modificar
+          &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="2" color = 'RGB(200, 64, 64)'
+  stroke = ".7" stroke2 = ".2"/&gt;
+          
+        </fieldset></div>`
+        return
+      }
+      let tabla = `<table class="tlacuache-renglon" style="border-collapse:collapse; border-spacing:0px; width:100%; height:${this.alto*this.n}%; border:1px solid ${this.color};">`
+      for (let k=0;k<this.n;++k){
+        tabla += `<tr><td width="10%"></td><td style="border-bottom:1px solid ${this.color};"></td><td width="10%"></td></tr>`
+      }
+      tabla += `</table>`
+      this.innerHTML=tabla
+    }
+  
+    static get observedAttributes() {
+      return ['alto','stroke','n','color'];
+    }
+  
+    attributeChangedCallback(name, oldValue, newValue) {
+      // called when one of attributes listed above is modified
+      switch(name){
+        case 'alto':
+            this.alto = eval(`${newValue}`)
+            break
+        case 'n':
+            this.n = eval(`${newValue}`)
+            break
+        case 'stroke':
+            this.stroke = eval(`${newValue}`)
+            break
+        case 'color':
+            this.color = newValue
+            break
+      }
+    }
+  }
+window.customElements.define('tlacuache-renglones',tlacuache_renglon)
 //
 class tlacuache_ejes extends HTMLElement
   {
