@@ -12,7 +12,9 @@ const tlacu = (function() {
             Ejemplo
             tlacu.tick(10,20,3)
             */
-            let list=[vmin]
+           console.log(vmin,vmax,step)
+            let list=[Math.floor(vmin/step)*step]
+            console.log(list)
             while(list[list.length-1]+step<=vmax){
                 list.push(list[list.length-1]+step)
             }
@@ -188,6 +190,23 @@ const tlacu = (function() {
                     y += v[k]*x**(v.length-k-1)
                 }
                 return y
+            },
+            raiz: function (a,b,discriminante,p,q){//a/b*discriminante^(p/q)
+                    
+                    if(p>0){
+                        if(b==1)  return `$ ${(a<0?'-':'')} ${(Math.abs(a)==1?'':Math.abs(a))} \\sqrt[${(q==2?'':q)}]{${discriminante}^{${p}}} $`
+                        else return `$${(a<0?'-':'')} \\frac{ ${(Math.abs(a)==1?'':Math.abs(a))} \\sqrt[${(q==2?'':q)}]{${discriminante}^{${p}}}}{${b}}$`
+                    }else{
+                        return `$${(a<0?'-':'')} \\frac{${Math.abs(a)}} { ${b==1?"":b}\\sqrt[${(q==2?'':q)}]{${discriminante}^{${-p}}}}$`
+                    }/*else if(p>0){
+                        return `$\\frac{${a}\\sqrt[${q}]{${discriminante}^{${p}}}}{${b}} $`
+                    }if( a==1 && b==1){
+                        return `$\\frac{1}{\\sqrt[${(q==2?'':q)}]{${discriminante}^{${p}}}}$`
+                    }else if(b==1){
+                        return `$${a} \\sqrt[${q}]{${discriminante}^{${p}}}$`
+                    }else{//${tlacu.poli.raiz(2, 3, 'x', -6, 7)}
+                        return `$\\frac{${a}}{${b}\\sqrt[${q}]{${discriminante}^{${-p}}}} $`
+                    }*/
             }
         },
         stat:{

@@ -412,6 +412,7 @@ class tlacuache_ejes extends HTMLElement
       this.bcolor= 'GhostWhite';
       this.dpx=false
       this.dpy=false
+      this.fontsize=10
       
     }
     connectedCallback() {
@@ -436,7 +437,7 @@ class tlacuache_ejes extends HTMLElement
 
       
       let minSpace=[0.1*dummy1,0.1*dummy2]
-      const sizeFont=[Math.min(...minSpace)*.5,Math.min(...minSpace)*.5/1.6]
+      const sizeFont=[Math.min(...minSpace)/20*this.fontsize,Math.min(...minSpace)*.5/16*this.fontsize]
       let subSVGsize=[sizeFont[1],minSpace[1],(this.size[0]-2)-minSpace[0]-sizeFont[1],.9*this.size[1]-2]      
       let Origen=[0,0], labels=``
 
@@ -554,11 +555,14 @@ class tlacuache_ejes extends HTMLElement
     }
   
     static get observedAttributes() {
-      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','dx','xtick','dy','ytick','dpx','dpy','ddx','ddy']
+      return ['size','xlabel', 'ylabel','xlim', 'ylim','lineWidth','lineWidth2','color','dx','xtick','dy','ytick','dpx','dpy','ddx','ddy','fontsize'];
     }
   
     attributeChangedCallback(name, oldValue, newValue) {
       switch(name){
+        case'fontsize':
+          this.fontsize = eval(`${newValue}`)
+          break
         case 'size':
             this.size = eval(`[${newValue}]`)
             //console.log(`size:${this.size[0]}`)
