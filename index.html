@@ -1,5 +1,27 @@
 <html>
 <head>
+  <style>
+
+        /* Estilo adicional si quieres un marco circular perfecto para una imagen cuadrada */
+        .marco-circular {
+            border: 1% solid #ccc;
+            border-radius: 50%; /* Esto crea un círculo perfecto */
+            overflow: hidden;
+            display: inline-block;
+            padding: 5%;
+            background-color: #fafaf0;
+            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+            display: flex; /* Para centrar la imagen dentro del círculo */
+            justify-content: center; /* Centrado horizontal */
+            align-items: center; /* Centrado vertical */
+        }
+
+        .marco-circular img {
+            display: block;
+            object-fit: cover; /* Recorta la imagen para que llene el contenedor sin distorsionarse */
+            border-radius: 50%; /* Redondea la imagen misma para que se adapte al círculo */
+        }
+  </style>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
  
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/railscasts.min.css">       
@@ -36,8 +58,11 @@ MathJax.Hub.Config({
 
 </head>
 <body onload="">
-
-<center><h1>Tlacuache</h1></center>
+<table width="100%">
+  <tr>
+    <td width="10%"> <img class="marco-circular" src="logo.png" width="100%"></td><td><center><h1>Tlacuache</h1></center></td>
+  </tr>
+</table>
 <div class="contenido">Esta librería permite crear gráficos de manera rápida y con pocos conocimientos de programación. El mínimo código necesario es:</div>
 <pre>
   <code class="language-html">
