@@ -56,9 +56,7 @@ const tlacu = (function() {
             }
             return S
         },
-        
-
-        multiply: function (a1, a2) {
+        multiply: function (a1, a2) {//Descartado
             //para polinomios
             var result = [];
             a1.forEach(function (a, i) {
@@ -67,6 +65,24 @@ const tlacu = (function() {
                 });
             });
             return result;
+        },
+        mcd: function(numeros) {
+            // Filtrar ceros y tomar valor absoluto
+            let nums = numeros.filter(num => num !== 0).map(num => Math.abs(num));
+            if (nums.length === 0) {
+                throw new Error("La lista no contiene números distintos de cero");
+            }
+            // Función auxiliar para MCD de dos números
+            function mcdDos(a, b) {
+                while (b !== 0) {
+                    let temp = b;
+                    b = a % b;
+                    a = temp;
+                }
+                return a;
+            }
+            // Reducir la lista usando mcdDos
+            return nums.reduce((acc, val) => mcdDos(acc, val));
         },
         mcm:function(numeros) {
             function calcularMCD(a, b) {
@@ -175,7 +191,69 @@ const tlacu = (function() {
                 return ys[i] + c1s[i]*diff + c2s[i]*diffSq + c3s[i]*diff*diffSq;
             };
         },
+        mediatriz: function (p1,p2) {
+            //p1 y p2 son arreglos de dos elementos [x,y]
+            const mx = (p1[0] + p2[0]) / 2;
+            const my = (p1[1] + p2[1]) / 2;
+            let dx = p2[0] - p1[0];
+            let dy = p2[1] - p1[1];
+            if (dx === 0 && dy === 0) {
+                throw new Error("Los puntos no pueden ser iguales");
+            }
+            if (dx === 0) {
+                // Recta vertical, bisectriz es horizontal
+                // y = my
+                return { general: `y = ${my}`, PO: `y = ${my}`};// Forma general y pendiente ordenada al origen
+            }
+            if (dy === 0) {
+                // Recta horizontal, bisectriz es vertical
+                // x = mx
+                return { general: `x = ${mx}`, PO: `x = ${mx}`};// Forma general y pendiente ordenada al origen
+            }
+            let A = dx
+            let B = dy;
+            let C = -dx*mx - dy*my;
+            console.log("Original:", A,B,C)
+            
+            let d = tlacu.mcd([A,B,C])*(A<0?-1:1); // Aseguramos que A sea positivo
+            A /= d;
+            B /= d; 
+            C /= d;
+            console.log("Modificado:", A,B,C)
+            
+            return { general: `${A==1?'':A} x ${B<0?'-':'+'} ${Math.abs(B)==1?'':Math.abs(B)} y ${C<0?'-':'+'} ${Math.abs(C)} = 0`,
+                     PO: `y = ${tlacu.poli.print(tlacu.poli.simplificar([[-A,B],[-C,B]]))}` };
+        },
         poli:{
+            simplificar: function (v){
+                //Se debe modificar para que imprima con fracciones en caso de ser
+                while(v[0]==0){
+                    if(v.length==1) return [0]
+                    v.shift();
+                }
+                const V=[]
+                const n=v.length;
+                if(n==0) return [0]
+                for(let k=0;k<n;++k){
+                    if(!Array.isArray(v[k])){
+                        if(v[k]!=0) V.push(v[k])
+                    }else{
+                        let d = tlacu.mcd(v[k])
+                        let num = v[k][0]/d
+                        let den = v[k][1]/d
+                        if(den<0){
+                            num = -num
+                            den = -den
+                        }
+                        if(num == 0) V.push(0)
+                        else if (den == 1) V.push(num)
+                        else V.push([num,den])
+                    }
+                   
+                }
+                return V
+                
+            },
             derivate: function (v){
                 const n=v.length-1
                 const d=[]
@@ -207,6 +285,56 @@ const tlacu = (function() {
                     }else{//${tlacu.poli.raiz(2, 3, 'x', -6, 7)}
                         return `$\\frac{${a}}{${b}\\sqrt[${q}]{${discriminante}^{${-p}}}} $`
                     }*/
+            },
+            print(v){
+                //Se debe modificar para que imprima con fracciones en caso de ser
+                while(v[0]==0){
+                    if(v.length==1) return '0'
+                    v.shift();
+                }
+
+                const n=v.length;
+                if(n==0) return '0'
+                let S
+                
+                if(n==1){ //Solo un número
+                    if(Array.isArray(v[0])){//Fracción
+                        S=`${v[0][0]*v[0][1]<0?"-":""} \\frac{${Math.abs(v[0][0])}}{${Math.abs(v[0][1])}}`
+                    }else{
+                        S=`${v[0]<0?"-":""} ${Math.abs(v[0])}`
+                    }
+                    
+                    
+                }else if(n==2){ 
+                    if(Array.isArray(v[0])){//Fracción
+                        S=`${v[0][0]*v[0][1]<0?"-":""} \\frac{${Math.abs(v[0][0])}}{${Math.abs(v[0][1])}} x`
+                    }else{
+                        S=`${v[0]<0?"-":""} ${Math.abs(v[0])==1?'':Math.abs(v[0])} x`
+                    }
+                }else{
+                    if(Array.isArray(v[0])){//Fracción
+                        S=`${v[0][0]*v[0][1]<0?"-":""} \\frac{${Math.abs(v[0][0])}}{${Math.abs(v[0][1])}} x^{${n-1}}`
+                    }else{
+                        S=`${v[0]<0?"-":""} ${Math.abs(v[0])==1?'':Math.abs(v[0])} x^{${n-1}}`
+                    }
+                }
+                
+                for(let k=1;k<n;++k){
+                    if(!Array.isArray(v[k])){
+                        if(v[k]!=0){
+                            if(k==n-1){ S+=(v[k]<0?"-":"+")+Math.abs(v[k])
+                            }else if(k==n-2){ S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+"x"
+                            }else S+=(v[k]<0?"-":"+")+(Math.abs(v[k])==1?'':Math.abs(v[k]))+"x^"+(n-k-1)
+                        }
+                    }else{
+                        if(v[k][0]!=0){
+                            if(k==n-1){ S+=` ${(v[k][0]*v[k][1]<0?"-":"+")} \\frac{${Math.abs(v[k][0])}}{${Math.abs(v[k][1])}}`
+                            }else if(k==n-2){ S+=`${(v[k][0]*v[k][1]<0?"-":"+")} \\frac{${Math.abs(v[k][0])}}{${Math.abs(v[k][1])}} x`
+                            }else S+= `${(v[k][0]*v[k][1]<0?"-":"+")} \\frac{${Math.abs(v[k][0])}}{${Math.abs(v[k][1])}} x^{${n-k-1}}`
+                        }
+                    }
+                }
+                return S
             }
         },
         stat:{
