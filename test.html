@@ -24,13 +24,24 @@ MathJax.Hub.Config({
   <div id="test">
   </div>
   <script type="text/javascript">
-  const test = document.getElementById("test");
-  let p1=[Math.round(Math.random()*10),Math.round(Math.random()*10)];
-  let p2=[Math.round(Math.random()*10),Math.round(Math.random()*10)];
-  let L = tlacu.bisectriz(p1,p2);
-  let texto = `$(${p1}), (${p2}) ${L.general}$<br> $${L.PO}$
-                                `;
-  test.innerHTML = texto;
+  
+  const PMT = 0
+  const PY = 12 // Pagos por año
+  const CY = PY // Capitalización anual
+  const N = Math.round(Math.random()*10+5)//tlacu.financiera(null,I, PV,PMT,FV,PY,CY)
+  const I = Math.round(Math.random()*10+5)//tlacu.financiera(N,null, PV,PMT,FV,PY,CY)
+  const PV = Math.round(Math.random() * 10000 + 1000);//tlacu.financiera(N,I,null,PMT,FV,PY,CY) // Math.round(PV*(1+(0.1+Math.random()*6))) // Primero Valor
+  const FV =  tlacu.financiera(N,I,PV,PMT,null,PY,CY)//Math.round(Math.random() * 10000 + 1000); // Valor del préstamo
+
+  const P = `N: ${N}<br>
+    I: ${I}%<br>
+  PV: ${PV}<br>
+    PMT: ${PMT}<br>
+    FV: ${FV}<br>
+    PY: ${PY}<br>
+    CY: ${CY}<br>`;
+  document.getElementById("test").innerHTML = P
   </script>
+
   </body>
 </html>

@@ -224,6 +224,39 @@ const tlacu = (function() {
             return { general: `${A==1?'':A} x ${B<0?'-':'+'} ${Math.abs(B)==1?'':Math.abs(B)} y ${C<0?'-':'+'} ${Math.abs(C)} = 0`,
                      PO: `y = ${tlacu.poli.print(tlacu.poli.simplificar([[-A,B],[-C,B]]))}` };
         },
+        financiera:function(N,I, PV,PMT,FV,PY,CY){//Versión 1
+            /*
+            Inspirada en la función financiera de TI-84 CE
+            N: Número de periodos
+            I: Tasa de interés
+            PV: Valor presente
+            FV: Valor futuro
+            PY: Pago anual
+            CY: Pago por periodo
+
+            Para calcular una variable se debe poner como null
+            e.g. tlacu.MatFinanciera.NM(12,10,-1000,null,2,2) para calcular el FV
+            */
+            if(PMT==0 && PY==CY){
+                if (N==null){
+                    return Math.log(FV / PV) / Math.log(1 + I / (100*CY));
+                }else if (I == null){
+                    return ((FV / PV) ** (1 / N) - 1) * 100 * CY;
+                } else if (PV == null){
+                    PV = FV / ((1 + I / (100 * CY)) ** N);
+                    return PV;
+                }else if (FV == null){
+                    FV = PV * ((1 + I / (100 * CY)) ** N);
+                    return FV;
+                }else {
+                    return "No implementado 84258";
+                }
+            }else{
+                return "No implementado 869"
+            }
+
+            
+        },
         poli:{
             simplificar: function (v){
                 //Se debe modificar para que imprima con fracciones en caso de ser
@@ -376,6 +409,7 @@ const tlacu = (function() {
                 return raw.split(',');
             }
         },
+        
         metNum:{
             newton: function(f,df,x0,maxIter=5,op=true){
                 let x = x0
@@ -451,7 +485,7 @@ const tlacu = (function() {
                     iter++
                 }
         }
-    }
+        }
     };
 })();
 
