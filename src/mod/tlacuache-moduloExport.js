@@ -485,6 +485,28 @@ const tlacu = (function() {
                     iter++
                 }
         }
+        },
+        pregunta:{
+            hayRepetidos: function(arreglo){
+                /*
+                Esta función se usa para saber si en el arreglo (que son strings) hay algún elemento repetido
+                */
+            // Usar un Set para detectar duplicados de manera eficiente
+            const seen = new Set();
+            for (const item of arreglo) {
+                if (seen.has(item)) {
+                    return true;
+                }
+                seen.add(item);
+            }
+            return false;
+            
+            }
         }
+        
     };
 })();
+export default tlacu;
+
+
+  
