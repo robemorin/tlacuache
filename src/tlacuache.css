@@ -31,3 +31,21 @@
         border-right: solid 1px #000;
     }
 }   
+.marco-circular {
+    border: 1% solid #ccc;
+    border-radius: 50%; /* Esto crea un círculo perfecto */
+    overflow: hidden;
+    display: inline-block;
+    padding: 5%;
+    background-color: #fafaf0;
+    box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
+    display: flex; /* Para centrar la imagen dentro del círculo */
+    justify-content: center; /* Centrado horizontal */
+    align-items: center; /* Centrado vertical */
+}
+
+.marco-circular img {
+    display: block;
+    object-fit: cover; /* Recorta la imagen para que llene el contenedor sin distorsionarse */
+    border-radius: 50%; /* Redondea la imagen misma para que se adapte al círculo */
+}

@@ -1,75 +1,86 @@
-<html>
+<!DOCTYPE html>
+<html lang="en">
 <head>
-  <style>
-
-        /* Estilo adicional si quieres un marco circular perfecto para una imagen cuadrada */
-        .marco-circular {
-            border: 1% solid #ccc;
-            border-radius: 50%; /* Esto crea un círculo perfecto */
-            overflow: hidden;
-            display: inline-block;
-            padding: 5%;
-            background-color: #fafaf0;
-            box-shadow: 2px 2px 5px rgba(0, 0, 0, 0.2);
-            display: flex; /* Para centrar la imagen dentro del círculo */
-            justify-content: center; /* Centrado horizontal */
-            align-items: center; /* Centrado vertical */
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tlacuache</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/default.min.css">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/highlight.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/languages/go.min.js"></script>
+<script>hljs.highlightAll();</script>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="./src/tlacuache.css" rel="stylesheet">
+    <script type="module" src="./src/tlacuache.mjs">  </script>
+    <style>
+        body {
+            overflow-x: hidden;
         }
-
-        .marco-circular img {
-            display: block;
-            object-fit: cover; /* Recorta la imagen para que llene el contenedor sin distorsionarse */
-            border-radius: 50%; /* Redondea la imagen misma para que se adapte al círculo */
+        #wrapper {
+            display: flex;
         }
-  </style>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/highlight.min.js"></script>
- 
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/railscasts.min.css">       
- 
-<script>hljs.initHighlightingOnLoad();</script> 
-<script type="text/javascript"  src="./src/lib/tlacuache-elements.js"></script>
-<script type="text/javascript"  src="./src/mod/tlacuache-modulo.js"></script>
-<script type="text/javascript"
-  src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.7/MathJax.js?config=TeX-AMS-MML_CHTML">
-</script>
-
-<script type="text/x-mathjax-config">
-MathJax.Hub.Config({
-    extensions: ["tex2jax.js"],
-    jax: ["input/TeX", "output/HTML-CSS"],
-    tex2jax: {
-      inlineMath: [ ['$','$'], ["\\(","\\)"] ],
-      displayMath: [ ['$$','$$'], ["\\[","\\]"] ],
-      processEscapes: true
-    },
-    "HTML-CSS": { availableFonts: ["TeX"] }
-  });
-</script>
-<style>
-  code{
-    margin: 10px 50px 20px;
-    border:solid 2px black;
-  }
-</style>
-
-<meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
-
-
-
+        #sidebar-wrapper {
+            min-height: 100vh;
+            margin-left: -15rem;
+            transition: margin .25s ease-out;
+            background-color: #343a40; /* Dark background for sidebar */
+            color: white;
+            width: 15rem; /* Fixed width for sidebar */
+        }
+        #sidebar-wrapper .sidebar-heading {
+            padding: 0.875rem 1.25rem;
+            font-size: 1.2rem;
+        }
+        #sidebar-wrapper .list-group {
+            width: 15rem;
+        }
+        #page-content-wrapper {
+            min-width: 100vw;
+        }
+        #wrapper.toggled #sidebar-wrapper {
+            margin-left: 0;
+        }
+        /* Media query for larger screens - sidebar always visible */
+        @media (min-width: 768px) {
+            #sidebar-wrapper {
+                margin-left: 0;
+            }
+            #page-content-wrapper {
+                min-width: 0;
+                width: 100%;
+            }
+            #wrapper.toggled #sidebar-wrapper {
+                margin-left: -15rem;
+            }
+        }
+    </style>
 </head>
-<body onload="">
-<table width="100%">
-  <tr>
-    <td width="10%"> <img class="marco-circular" src="logo.png" width="100%"></td><td><center><h1>Tlacuache</h1></center></td>
-  </tr>
-</table>
-<div class="contenido">Esta librería permite crear gráficos de manera rápida y con pocos conocimientos de programación. El mínimo código necesario es:</div>
-<pre>
-  <code class="language-html">
+<body>
+    <div class="d-flex" id="wrapper">
+        <div class="bg-white" id="sidebar-wrapper">
+          <center><img class="marco-circular" src="logo.png" width="65%">
+            <div class="sidebar-heading text-black"><b>Tlacuache</b></div></center>
+            <div class="list-group list-group-flush">
+                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(0)">Inicio</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(1)">Comunes</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(2)">Estadística</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(3)">Gráficas</a>
+                <!--a href="#" class="list-group-item list-group-item-action bg-light link-primary">About</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light link-primary">Services</a>
+                <a href="#" class="list-group-item list-group-item-action bg-light link-primary">Contact</a-->
+            </div>
+        </div>
+        <div id="page-comunes"  >
+
+            <div class="container-fluid" name="contenido">
+                <h1 class="mt-4">Inicio</h1>
+                <div class="contenido">Esta librería permite crear gráficos de manera rápida y con pocos conocimientos de programación. El mínimo código necesario es:</div>
+                    <pre >
+                      <code class="language-html">
 &lt;html&gt;
   &lt;head&gt;
-    &lt;script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/lib/tlacuache-elements.js"&gt;&lt;/script&gt;
-    &lt;script type="text/javascript"  src="https://robemorin.github.io/tlacuache/src/mod/tlacuache-modulo.js"&gt;&lt;/script&gt;
+  
+    &lt;script type="module" src="https://robemorin.github.io/tlacuache/src/tlacuache.mjs"&gt;&lt;/script&gt;
   &lt;/head&gt;
   &lt;body&gt;
   .
@@ -77,34 +88,136 @@ MathJax.Hub.Config({
   .
   &lt;/body&gt;
 &lt;/html&gt;
-  </code>
-</pre>
+                      </code>
+                    </pre>
+
+
 <div class="contenido">Cada uno de los elemento cuenta con ayuda con solo invocarlo sin parámetros</div>
 
 <pre>
   <code class="language-html">
-    &lt;tlacuache-milimetrado/&gt;
+    &lt;tlacuache-milimetrado&gt;&lt;/tlacuache-milimetrado&gt;
   </code>
 </pre>
 Resultado<br><br>
-<tlacuache-milimetrado/>
-
-<h3>Papel milimetrado</h3>
-Código:
+<tlacuache-milimetrado></tlacuache-milimetrado>
+                </div>
+        
+            <div class="container-fluid" name="contenido" style="display:none">
+                <h1 class="mt-4">Comunes</h1>
+                <div>
+                <h3>Papel milimetrado</h3>
+                Código:
 <pre><code class="language-html">
     &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
    </code></pre>
  Resultado:
  <center><tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/></center>
+                </div>
+                <div>
+                <h3>Papel renglón</h3>
+                Código:
+<pre><code class="language-html">
+    &lt;tlacuache-renglon n="5" color="gray" alto="30"/&gt;
+   </code></pre>
+ Resultado:
+ <center><tlacuache-renglon n="5" color="gray" alto="30"/></center>
+                </div>
 
- <h3>Distribución normal</h3>
+            </div>
+            <div class="container-fluid" name="contenido" style="display:none">
+                <h1 class="mt-4">Estadística</h1>
+                <div >
+                  <h3>Distribución normal</h3>
+                  Código:
+                  <pre><code class="language-html">
+&lt;tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/&gt;
+                    </code></pre>
+                  Resultado:
+                  <center><tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/></center>
+                </div>
+                <div>
+                  <h3>Cuartiles</h3>
 Código:
 <pre><code class="language-html">
-    &lt;tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/&gt;
+    &lt;tlacuache-cuartil q="[-4,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' &gt; &lt;/tlacuache-cuartil&gt;
+    &lt;tlacuache-cuartil q="[-4,-0,0,6,8],[-3,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' &gt;&lt;/tlacuache-cuartil&gt;
   </code></pre>
- Resultado:
- <center><tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/></center>
- <h3>Ejes</h3>
+ Resultado: 
+ <center>
+  <table><tr> <td><tlacuache-cuartil q="[-4,-0,1,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td>
+              <td><tlacuache-cuartil q="[-4,-0,1,6,8],[-5,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td><tr></tr></tr></table>
+  </center>
+                </div>
+                <div>
+                    <h3>Diagrama de Venn</h3>
+                    Código:
+                    <pre><code class="language-html">
+                        &lt;tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"/&gt;&lt;/tlacuache-venn/&gt;
+                        &lt;tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega}{2}$$"  s4="0.1" /&gt;&lt;/tlacuache-venn/&gt;
+                      </code></pre>
+                    Resultado:
+                    <center>
+                      <table>
+                        
+                        <tr><td><tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"></tlacuache-venn></td>
+                          <td><tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega-3}{2}$$"  s4="0.1" ></tlacuache-venn></td></tr>
+                      </table>
+                    </center>
+                </div>
+                <div>
+                  <h3>Diagrama de Venn</h3>
+                    Código:
+                    <pre><code class="language-html">
+ &lt;tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"/&gt;&lt;/tlacuache-venn/&gt;
+ &lt;tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega}{2}$$"  s4="0.1" /&gt;&lt;/tlacuache-venn/&gt;
+                      </code></pre>
+                    Resultado:
+                    <center>
+                      <table>
+                        
+                        <tr><td><tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"></tlacuache-venn></td>
+                          <td><tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega-3}{2}$$"  s4="0.1" ></tlacuache-venn></td></tr>
+                      </table>
+                    </center>
+                </div>
+                <div>
+                  <h3>Polígono de frecuencias acumuladas</h3>
+                    Código:
+                    <pre><code class="language-html">
+&lt;tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,100" dx="10" ylim="0,160" dy="20" &gt;
+  &lt;tlacuache-poli_fa x="10,30,50,60,100" y="0,20,60,100,160"&gt;&lt;/tlacuache-poli_fa&gt;
+&lt;/tlacuache-ejes&gt;
+                      </code></pre>
+                    Resultado:
+                    <center>
+                      <tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,100" dx="10" ylim="0,160" dy="20" >
+                        <tlacuache-poli_fa x="10,30,50,60,100" y="0,20,60,100,160"></tlacuache-poli_fa>
+                      </tlacuache-ejes>
+                      
+                    </center>
+                </div>
+                <div>
+                  <h3>Histograma</h3>
+                    Código:
+                    <pre><code class="language-html">
+&lt;tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,55" dx="10" ylim="0,160" dy="20"  &gt;
+  &lt;tlacuache-histograma  inicio="15" paso="10" frecuencias="150,130,110,90" &gt;&lt;/tlacuache-histograma&gt;
+&lt;/tlacuache-ejes&gt;
+                      </code></pre>
+                    Resultado:
+                    <center>
+                      <tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,55" dx="10" ylim="0,160" dy="20" >
+                        <tlacuache-histograma  inicio="15" paso="10" frecuencias="150,130,110,90" ></tlacuache-histograma>
+                      </tlacuache-ejes>
+                      
+                    </center>
+                </div>
+            </div>
+            <div class="container-fluid" name="contenido" style="display:none">
+                <h1 class="mt-4">Gráficas</h1>
+                <div>
+                  <h3>Ejes</h3>
  Código:
  <pre><code class="language-html">
  &lt;tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2"&gt;
@@ -137,31 +250,22 @@ Resultado:
     <tlacuache-plot f='2*x**2-1' color="green"/></tlacuache-plot>
 </tlacuache-ejes>
 </center>
+                </div>
+                
+            </div>
+        </div>
+        </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        
 
- <h3>Cuartiles</h3>
-Código:
-<pre><code class="language-html">
-    &lt;tlacuache-cuartil q="[-4,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /&gt;
-    &lt;tlacuache-cuartil q="[-4,-0,0,6,8],[-3,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /&gt;
-  </code></pre>
- Resultado: 
- <center>
-  <table><tr> <td><tlacuache-cuartil q="[-4,-0,1,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td>
-              <td><tlacuache-cuartil q="[-4,-0,1,6,8],[-5,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td><tr></tr></tr></table>
-  </center>
-  <h3>Diagrama de Venn</h3>
-  Código:
-  <pre><code class="language-html">
-      &lt;tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"/&gt;&lt;/tlacuache-venn/&gt;
-      &lt;tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega}{2}$$"  s4="0.1" /&gt;&lt;/tlacuache-venn/&gt;
-    </code></pre>
-   Resultado:
-  <center>
-    <table>
-      
-      <tr><td><tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"></tlacuache-venn></td>
-        <td><tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega-3}{2}$$"  s4="0.1" ></tlacuache-venn></td></tr>
-    </table>
-  </center>
+        function showContent(k){
+          const content = document.getElementsByName('contenido')
+          for(let i=0;i<content.length;++i){
+            if( k!=i ) content[i].style.display = 'none'
+            else content[k].style.display = 'block'
+          }
+        }
+    </script>
 </body>
 </html>
