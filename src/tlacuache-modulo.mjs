@@ -190,9 +190,10 @@ export const graph = {
 
 }
 export function NotacionCientifica(num){
-    var numInSciNot = {};
+    let numInSciNot = {};
     [numInSciNot.coefficient, numInSciNot.exponent] =num.toExponential().split('e').map(item => Number(item));
-    return (numInSciNot.coefficient).toFixed(2)+"&times;10<sup>"+numInSciNot.exponent+'</sup>';
+    const q= numInSciNot.exponent.toString()
+    return `${(numInSciNot.coefficient).toFixed(2)}\\times10^${q.length>1?'{':''}${numInSciNot.exponent}${q.length>1?'}':''}`
 }
 export function interpolate_mono(xs, ys) {
             let i, length = xs.length;
