@@ -280,6 +280,15 @@ export function financiera(N,I, PV,PMT,FV,PY,CY){//Versión 1
 
             
 }
+export function cifrasSignificativas(num, precision) {
+    /*
+    sintaxis precision(numero, cifras significativas)
+    */
+  let preciseNumString = num.toPrecision(precision)
+  let numberValue = Number(preciseNumString)
+  if (Number.isInteger(numberValue)) return numberValue.toString()
+  else return numberValue.toFixed(20).replace(/\.?0+$/, '')
+}
 
 //Abajo no debe tomarse en cuenta
 const tlacu = (function() {
