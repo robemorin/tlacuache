@@ -12,6 +12,18 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="./src/tlacuache.css" rel="stylesheet">
     <script type="module" src="./src/tlacuache.mjs">  </script>
+    <script type="module" src="./src/tlacuache-modulo.mjs">  
+    import * as tlacu from './src/tlacuache-modulo.mjs'
+    const div=document.getElementById('contenedor')
+    let ve, sf, va
+
+    for(let k=0;k<20;++k){
+    ve = Number((Math.random() * 10 ** Math.round(Math.random() * 10 - 5)).toPrecision(6));
+    sf = Math.round(Math.random() * 4 + 1);
+    va = Number(ve*(0.8+0.4*Math.random())).toPrecision(sf);
+    div.innerHTML += `va:${tlacu.cifrasSignificativas(va,sf)}<br>`
+    }
+    </script>
     <style>
         body {
             overflow-x: hidden;
@@ -56,303 +68,18 @@
     </style>
 </head>
 <body>
-    <div class="d-flex" id="wrapper">
-        <div class="bg-white" id="sidebar-wrapper">
-          <center><img class="marco-circular" src="logo.png" width="65%">
-            <div class="sidebar-heading text-black"><b>Tlacuache</b></div></center>
-            <div class="list-group list-group-flush">
-                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(1)">Comunes</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(2)">Estadística</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light link-primary" onclick="showContent(3)">Gráficas</a>
-                <!--a href="#" class="list-group-item list-group-item-action bg-light link-primary">About</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light link-primary">Services</a>
-                <a href="#" class="list-group-item list-group-item-action bg-light link-primary">Contact</a-->
-            </div>
-        </div>
-        <div id="page-comunes"  >
+  <div id="contenedor"></div>
+   <script>
+    
+    const div=document.getElementById('contenedor')
+    let ve, sf, va
 
-            <div class="container-fluid" name="contenido">
-                <h1 class="mt-4">Inicio</h1>
-                <div class="contenido">Esta librería permite crear gráficos de manera rápida y con pocos conocimientos de programación. El mínimo código necesario es:</div>
-                    <pre >
-                      <code class="language-html">
-&lt;html&gt;
-  &lt;head&gt;
-  
-    &lt;script type="module" src="https://robemorin.github.io/tlacuache/src/tlacuache.mjs"&gt;&lt;/script&gt;
-  &lt;/head&gt;
-  &lt;body&gt;
-  .
-  .
-  .
-  &lt;/body&gt;
-&lt;/html&gt;
-                      </code>
-                    </pre>
-
-
-<div class="contenido">Cada uno de los elemento cuenta con ayuda con solo invocarlo sin parámetros</div>
-
-<pre>
-  <code class="language-html">
-    &lt;tlacuache-milimetrado&gt;&lt;/tlacuache-milimetrado&gt;
-  </code>
-</pre>
-Resultado<br><br>
-<tlacuache-milimetrado></tlacuache-milimetrado>
-                </div>
-        
-            <div class="container-fluid" name="contenido" style="display:none">
-                <h1 class="mt-4">Comunes</h1>
-                <div>
-                <h3>Papel milimetrado</h3>
-                Código:
-<pre><code class="language-html">
-    &lt;tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/&gt;
-   </code></pre>
- Resultado:
- <center><tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/></center>
-                </div>
-                <div>
-                <h3>Papel renglón</h3>
-                Código:
-<pre><code class="language-html">
-    &lt;tlacuache-renglon n="5" color="gray" alto="30"/&gt;
-   </code></pre>
- Resultado:
- <center><tlacuache-renglon n="5" color="gray" alto="30"/></center>
-                </div>
-
-            </div>
-            <div class="container-fluid" name="contenido" style="display:none">
-                <h1 class="mt-4">Estadística</h1>
-                <div >
-                  <h3>Distribución normal</h3>
-                  Código:
-                  <pre><code class="language-html">
-&lt;tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/&gt;
-                    </code></pre>
-                  Resultado:
-                  <center><tlacuache-dist-normal dim="300,480" s="2" mean="10" xtick="10,7,11"  xmin="6" xlabel="Peso (Kg)"/></center>
-                </div>
-                <div>
-                  <h3>Cuartiles</h3>
-Código:
-<pre><code class="language-html">
-    &lt;tlacuache-cuartil q="[-4,-0,0,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' &gt; &lt;/tlacuache-cuartil&gt;
-    &lt;tlacuache-cuartil q="[-4,-0,0,6,8],[-3,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' &gt;&lt;/tlacuache-cuartil&gt;
-  </code></pre>
- Resultado: 
- <center>
-  <table><tr> <td><tlacuache-cuartil q="[-4,-0,1,6,8]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td>
-              <td><tlacuache-cuartil q="[-4,-0,1,6,8],[-5,-2,0,1,3]" lim="-6,10,2" dim="280,400" xlabel='eje x' /></td><tr></tr></tr></table>
-  </center>
-                </div>
-                <div>
-                    <h3>Diagrama de Venn</h3>
-                    Código:
-                    <pre><code class="language-html">
-                        &lt;tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"/&gt;&lt;/tlacuache-venn/&gt;
-                        &lt;tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega}{2}$$"  s4="0.1" /&gt;&lt;/tlacuache-venn/&gt;
-                      </code></pre>
-                    Resultado:
-                    <center>
-                      <table>
-                        
-                        <tr><td><tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"></tlacuache-venn></td>
-                          <td><tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega-3}{2}$$"  s4="0.1" ></tlacuache-venn></td></tr>
-                      </table>
-                    </center>
-                </div>
-                <div>
-                  <h3>Diagrama de Venn</h3>
-                    Código:
-                    <pre><code class="language-html">
- &lt;tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"/&gt;&lt;/tlacuache-venn/&gt;
- &lt;tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega}{2}$$"  s4="0.1" /&gt;&lt;/tlacuache-venn/&gt;
-                      </code></pre>
-                    Resultado:
-                    <center>
-                      <table>
-                        
-                        <tr><td><tlacuache-venn ancho="400" s1="0" s2="0.3" s3="$$\frac{1}{4}$$"></tlacuache-venn></td>
-                          <td><tlacuache-venn ancho="400" n="3" s1="$$\frac{3}{2}$$" s2="$$\frac{\omega-3}{2}$$"  s4="0.1" ></tlacuache-venn></td></tr>
-                      </table>
-                    </center>
-                </div>
-                <div>
-                  <h3>Polígono de frecuencias acumuladas</h3>
-                    Código:
-                    <pre><code class="language-html">
-&lt;tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,100" dx="10" ylim="0,160" dy="20" &gt;
-  &lt;tlacuache-poli_fa x="10,30,50,60,100" y="0,20,60,100,160"&gt;&lt;/tlacuache-poli_fa&gt;
-&lt;/tlacuache-ejes&gt;
-                      </code></pre>
-                    Resultado:
-                    <center>
-                      <tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,100" dx="10" ylim="0,160" dy="20" >
-                        <tlacuache-poli_fa x="10,30,50,60,100" y="0,20,60,100,160"></tlacuache-poli_fa>
-                      </tlacuache-ejes>
-                      
-                    </center>
-                </div>
-                <div>
-                  <h3>Histograma</h3>
-                    Código:
-                    <pre><code class="language-html">
-&lt;tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,55" dx="10" ylim="0,160" dy="20"  &gt;
-  &lt;tlacuache-histograma  inicio="15" paso="10" frecuencias="150,130,110,90" &gt;&lt;/tlacuache-histograma&gt;
-&lt;/tlacuache-ejes&gt;
-                      </code></pre>
-                    Resultado:
-                    <center>
-                      <tlacuache-ejes size="320,480" xlabel="" ylabel="Frecuencias Acumuladas"  xlim="0,55" dx="10" ylim="0,160" dy="20" >
-                        <tlacuache-histograma  inicio="15" paso="10" frecuencias="150,130,110,90" ></tlacuache-histograma>
-                      </tlacuache-ejes>
-                      
-                    </center>
-                </div>
-            </div>
-            <div class="container-fluid" name="contenido" style="display:none">
-                <h1 class="mt-4">Gráficas</h1>
-                <div>
-                  <h3>Ejes</h3>
- Código:
- <pre><code class="language-html">
- &lt;tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2"&gt;
- &lt;/tlacuache-ejes&gt;</code></pre>
- Resultado:
- <center>
-<tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2">
-</tlacuache-ejes>
-</center>
- <h3>Plot</h3>
-Código:
-<pre>
-  <code class="language-html">
-  &lt;tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2" &gt;
-
-    &lt;tlacuache-plot x="-.9,-.5,0,.5,.9" y="-.9,-.5,0,.5,.9" mark="o" color="red"&gt;&lt;/tlacuache-plot &gt;
-    &lt;tlacuache-plot x="-.9,-.5,0,.5,.9" y=".9,.5,0,-.5,-.9" mark="." color="blue"&gt;&lt;/tlacuache-plot &gt;
-    &lt;tlacuache-plot f='2*x**2-1' color="green"/&gt;&lt;/tlacuache-plot&gt;
-  
-  &lt;/tlacuache-ejes &gt;<br>
-
-  </code>
-</pre><br>
-Resultado:
-<center>
-  <tlacuache-ejes size="320,480" xlabel="Eje x" ylabel="Eje y"  dx=".2" dy=".2" dpx="1" dpy="2">
-    <tlacuache-plot x="-.9,-.5,0,.5,.9" y="-.9,-.5,0,.5,.9" mark="o" color="red"></tlacuache-plot>
-    <tlacuache-plot x="-.9,-.5,0,.5,.9" y=".9,.5,0,-.5,-.9" mark="." color="blue"></tlacuache-plot>
-    <tlacuache-plot x="-1,.8" y="1,0" mark="-" color="gray"></tlacuache-plot>
-    <tlacuache-plot f='2*x**2-1' color="green"/></tlacuache-plot>
-</tlacuache-ejes>
-</center>
-                </div>
-                
-            </div>
-        </div>
-        </div>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <script>
-        
-
-        function showContent(k){
-          const content = document.getElementsByName('contenido')
-          for(let i=0;i<content.length;++i){
-            if( k!=i ) content[i].style.display = 'none'
-            else content[k].style.display = 'block'
-          }
-        }
-
-        //Quitar este código
-        const content = document.getElementsByName('contenido')
-        for(let i=0;i<content.length;++i) content[i].style.display = 'block'
-        console.log('mostar todo')
-    </script>
+    for(let k=0;k<20;++k){
+    ve = Number((Math.random() * 10 ** Math.round(Math.random() * 10 - 5)).toPrecision(6));
+    sf = Math.round(Math.random() * 4 + 1);
+    va = Number(ve*(0.8+0.4*Math.random())).toPrecision(sf);
+    div.innerHTML += `va:${tlacu.cifrasSignificativas(va,sf)}<br>`
+    }
+   </script> 
 </body>
 </html>
-<!--html>
-  <head>
-    <script type="module" src="./src/tlacuache.mjs"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js" integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
-  
-  </head>
-  <body>
-    <div class="flex-shrink-0 p-3 bg-white" style="width: 280px;">
-    <a href="/" class="d-flex align-items-center pb-3 mb-3 link-dark text-decoration-none border-bottom">
-      <svg class="bi pe-none me-2" width="30" height="24"><use xlink:href="#bootstrap"></use></svg>
-      <span class="fs-5 fw-semibold">Collapsible</span>
-    </a>
-    <ul class="list-unstyled ps-0">
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#home-collapse" aria-expanded="true">
-          Home
-        </button>
-        <div class="collapse show" id="home-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Updates</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Reports</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#dashboard-collapse" aria-expanded="false">
-          Dashboard
-        </button>
-        <div class="collapse" id="dashboard-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Overview</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Weekly</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Monthly</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Annually</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#orders-collapse" aria-expanded="false">
-          Orders
-        </button>
-        <div class="collapse" id="orders-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Processed</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Shipped</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Returned</a></li>
-          </ul>
-        </div>
-      </li>
-      <li class="border-top my-3"></li>
-      <li class="mb-1">
-        <button class="btn btn-toggle d-inline-flex align-items-center rounded border-0 collapsed" data-bs-toggle="collapse" data-bs-target="#account-collapse" aria-expanded="false">
-          Account
-        </button>
-        <div class="collapse" id="account-collapse">
-          <ul class="btn-toggle-nav list-unstyled fw-normal pb-1 small">
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">New...</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Profile</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Settings</a></li>
-            <li><a href="#" class="link-dark d-inline-flex text-decoration-none rounded">Sign out</a></li>
-          </ul>
-        </div>
-      </li>
-    </ul>
-  </div>
-<div>
-  
-    <tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2">
-    </tlacuache-milimetrado>
-    <p>Espacio</p>
-  <div id="test">
-    
-  </div>
-  <script>
-    document.getElementById('test').innerHTML=`<tlacuache-milimetrado size="300,720" cuadricula="5,12"  n="5" color = 'RGB(200, 64, 64)'  stroke = ".7" stroke2 = ".2"/>`
-  </script>
-</div>
-
-  </body>
-</html-->

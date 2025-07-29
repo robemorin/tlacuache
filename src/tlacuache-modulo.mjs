@@ -280,14 +280,18 @@ export function financiera(N,I, PV,PMT,FV,PY,CY){//Versión 1
 
             
 }
-export function cifrasSignificativas(num, precision) {
+export function cs(num, precision=3) {
     /*
-    sintaxis precision(numero, cifras significativas)
+    sintaxis cs(numero, cifras significativas)
     */
-  let preciseNumString = num.toPrecision(precision)
-  let numberValue = Number(preciseNumString)
-  if (Number.isInteger(numberValue)) return numberValue.toString()
-  else return numberValue.toFixed(20).replace(/\.?0+$/, '')
+   let num2=Math.abs(num)
+   const maxP10=Math.ceil(Math.log10(num2))
+   const minP10=maxP10-precision
+   //if(precision==3) console.log(`min: ${minP10}`)
+  if (minP10>=0){
+    num2 = Number(num.toPrecision(precision))
+    return num2.toString()
+  }else return num.toFixed(-minP10)
 }
 
 //Abajo no debe tomarse en cuenta
