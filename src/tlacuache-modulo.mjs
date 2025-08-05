@@ -55,8 +55,18 @@ export const pregunta = {
             },
             eval (v,x){//Solo un valor
                 let y=0
-                for(var k=0;k<v.length;++k){
+                for(let k=0;k<v.length;++k){
                     y += v[k]*x**(v.length-k-1)
+                }
+                return y
+            },
+            evalM(v,x){
+                let y=[]
+                for(let i=0;i<x.length;++i){
+                    y[i] = 0
+                    for(let k=0;k<v.length;++k){
+                        y[i] += v[k]*x[i]**(v.length-k-1)
+                    }
                 }
                 return y
             },
@@ -120,6 +130,21 @@ export const pregunta = {
                 return S
             }
         }
+//Hacer el método del trapecio con estructura como ans={n: n, y:y, x:x ...}
+export function metTrapecio(a,b,n,fun){
+    const h=(b-a)/n
+    const x = linspace(a,b,n+1)
+    let y
+
+    if( Array.isArray(fun) )    y = poli.evalM(fun,x)
+    else    y = evaluar(fun,x)
+
+    let A = (y[0] + y[y.length - 1])/2
+    for (let i = 1; i < y.length - 1; i++) A += y[i];
+    A *= h
+
+    return {x:x , y:y, A:A, h:h}
+}
 export function conv(a1, a2) {
     //Funciona de la misma manera que conv de matlab/octave
     let result = [];
@@ -293,6 +318,328 @@ export function cs(num, precision=3) {
     return num2.toString()
   }else return num.toFixed(-minP10)
 }
+export function unsortArray(b) {
+        let a=b
+        a.sort(function(){return 0.5 - Math.random()});
+        return a
+    }
+export function TipoRelacionesDiagAsig(tipo,DI=[[1,2,3,4,5],[1,2,3,4,5]],size=[240,150]){
+    
+    const n=[DI[0].length,DI[1].length]
+    let Asignationx=[],Asignationy=[],Relation=[]
+
+    switch(tipo){
+        case 'RS':
+            let noRepeat
+            for(let k=0;k<n[0];++k){
+                do{
+                    Relation.push([k,Math.floor(Math.random()*n[1])])
+                }while(Math.random()<0.2)
+            }
+            do{
+                noRepeat=[Math.floor(Math.random()*n[0]),Math.floor(Math.random()*n[1])]
+            }while(noRepeat[1]==Relation[noRepeat[0]][1])
+            Relation.push(noRepeat)
+            break
+        case 'RNS':
+            const ElEmpty=Math.floor(Math.random()*n[0])
+            let ElRep, NoRepeat,dummy
+
+            do{
+                for(let k=0;k<n[0];++k){
+                    if(k!=ElEmpty){
+                        if( Math.random()<0.8 ){
+                            Relation.push([ Math.floor(Math.random()*n[0]),
+                                            Math.floor(Math.random()*n[1])])
+                        }
+                    }
+                }
+            }while(Relation.length==0)
+            ElRep=Math.floor(Math.random()*Relation.length)
+            do{
+                dummy=Math.floor(Math.random()*n[1])
+            }while(Relation[ElRep][1]==dummy)
+            Relation.push([Relation[ElRep][0],dummy])
+            break
+        case 'FB':
+            if(n[0]>n[1]){
+                alert('No es posible hacer una función biyectiva con x='+DI[0]+' y='+DI[1])
+            }
+            
+            for(let k=0;k<n[0];++k) Asignationy.push(k)
+            Asignationy=unsortArray(Asignationy)
+            for(let k=0;k<n[0];++k) Relation.push([k,Asignationy[k]])        
+            break
+        case 'FSNI':
+            if(n[0]>n[1]){
+                alert('Verifica las condiciones para hacer una FSNI con x='+DI[0]+' y='+DI[1])
+            }
+            for(let k=0;k<n[0];++k){
+                Asignationy.push(k)
+                Asignationx.push(k)
+            }
+            Asignationy=unsortArray(Asignationy)
+            Asignationx=unsortArray(Asignationx)
+            const dummyFSNI=Math.ceil(Math.random()*(n[0]-1))
+            for(let k=0;k<n[0];++k){
+                if(k<dummyFSNI) Relation.push([Asignationx[k],Asignationy[k]])
+                else        Relation.push([Asignationx[k],Asignationy[Math.floor(Math.random()*(n[0]-dummyFSNI))]])        
+            } 
+            break
+        case 'FNSNI':
+            if(n[0]>n[1]){
+                alert('Verifica las condiciones para FNSNI con x='+DI[0]+' y='+DI[1])
+            }
+            const dummyFNSNI=[Math.ceil(Math.random()*(n[0]-3))+2]
+            do{
+                dummyFNSNI[1]=Math.ceil(Math.random()*(dummyFNSNI[0]-1))
+            }while(dummyFNSNI[1]<1)
+            for(let k=0;k<n[0];++k){
+                Asignationy.push(k)
+                Asignationx.push(k)
+            }
+            
+            Asignationy=unsortArray(Asignationy)
+            Asignationx=unsortArray(Asignationx)
+            Asignationx=Asignationx.slice(0, dummyFNSNI[0])
+            Asignationy=Asignationy.slice(0, dummyFNSNI[0])
+            for(let k=0;k<dummyFNSNI[0];++k){
+                if(k<dummyFNSNI[1]) Relation.push([Asignationx[k],Asignationy[k]])
+                else        Relation.push([ Asignationx[k],
+                                            Asignationy[Math.floor(Math.random()*dummyFNSNI[1])]
+                                        ])
+            } 
+            break
+        case 'FNSI':
+            if(n[0]>n[1]){
+                alert('Verifica las condiciones para FNSI con x='+DI[0]+' y='+DI[1])
+            }
+            const dummyFNSI=Math.ceil(Math.random()*(n[0]-3))+2
+            
+            for(let k=0;k<n[0];++k){
+                Asignationy.push(k)
+                Asignationx.push(k)
+            }
+            
+            Asignationy=unsortArray(Asignationy)
+            Asignationx=unsortArray(Asignationx)
+            Asignationx=Asignationx.slice(0, dummyFNSI)
+            Asignationy=Asignationy.slice(0, dummyFNSI)
+            for(let k=0;k<dummyFNSI;++k){
+                Relation.push([Asignationx[k],Asignationy[k]])
+            } 
+            break
+    }
+    return diagramaAsignacion([DI[0],DI[1],Relation],size)
+}
+
+export function diagramaAsignacion(txtElem,size=[480,300]){
+	/*Ejemplo
+	diagramaAsignacion([	[9,5,8,7,4,6],
+							['a','e','w'],
+							[[0,0],[0,1],[2,2]] ],
+							[480,300])
+	*/
+	let svg=document.createElementNS("http://www.w3.org/2000/svg","svg")
+		svg.setAttribute('width',size[0])
+		svg.setAttribute('height',size[1])
+		//Vamos a definir las flechas
+		let def=document.createElementNS("http://www.w3.org/2000/svg","defs")
+			let marker=document.createElementNS("http://www.w3.org/2000/svg","marker")
+			marker.setAttribute('id','head')
+			marker.setAttribute('orient','auto')
+			marker.setAttribute('markerWidth',3)
+			marker.setAttribute('markerHeight',4)
+			marker.setAttribute('refX',0.1)
+			marker.setAttribute('refY',2)
+				let path=document.createElementNS("http://www.w3.org/2000/svg","path")
+				path.setAttribute('d','M0,0 V4 L2,2 Z')
+				path.setAttribute('fill','gray')
+				marker.appendChild(path)
+			def.appendChild(marker)
+		svg.appendChild(def)
+
+	
+	let ellipse=document.createElementNS("http://www.w3.org/2000/svg","ellipse")
+		ellipse.setAttribute('rx',(size[0]/4-5)*.8)
+		ellipse.setAttribute('ry',size[1]/2-10)
+		ellipse.setAttribute('cx',size[0]*0.20)
+		ellipse.setAttribute('cy',size[1]*0.5)
+		ellipse.setAttribute('fill','none')
+		ellipse.setAttribute('stroke','blue')
+		ellipse.setAttribute('stroke-width',3)
+	svg.appendChild(ellipse)
+	ellipse=document.createElementNS("http://www.w3.org/2000/svg","ellipse")
+		ellipse.setAttribute('rx',(size[0]/4-5)*.8)
+		ellipse.setAttribute('ry',size[1]/2-10)
+		ellipse.setAttribute('cx',size[0]*0.80)
+		ellipse.setAttribute('cy',size[1]*0.5)
+		ellipse.setAttribute('fill','none')
+		ellipse.setAttribute('stroke','blue')
+		ellipse.setAttribute('stroke-width',3)
+	svg.appendChild(ellipse)
+	
+	// Aqui van las flechas
+	let a=size[0]*0.1
+	let b=size[1]*0.9
+	let D=[(b-a)/(txtElem[0].length-1),(b-a)/(txtElem[1].length-1)]
+	for(let k=0;k<txtElem[2].length;++k){
+	
+		path=document.createElementNS("http://www.w3.org/2000/svg","path")
+		path.setAttribute('stroke','gray')
+		path.setAttribute('marker-end','url(#head)')
+		path.setAttribute('stroke-width','3')
+		path.setAttribute('fill','none')
+		path.setAttribute('d','M'+(size[0]*0.20+10)+','+(a+txtElem[2][k][0]*D[0])+', '+(size[0]*0.80-10)+','+(a+txtElem[2][k][1]*D[1]) )
+		svg.appendChild(path)
+	}
+
+	D=(b-a)/(txtElem[0].length-1)
+	let txt
+	for(let k=0;k<txtElem[0].length;++k){
+		txt=document.createElementNS("http://www.w3.org/2000/svg","text")
+		txt.setAttribute('stroke','black')
+		txt.setAttribute('x',size[0]*0.20)
+		txt.setAttribute('y',a+k*D)
+		txt.setAttribute("text-anchor","middle")
+		txt.setAttribute("alignment-baseline","middle")
+		txt.textContent=txtElem[0][k]
+		svg.appendChild(txt)		
+	}
+
+	D=(b-a)/(txtElem[1].length-1)
+	for(let k=0;k<txtElem[1].length;++k){
+		txt=document.createElementNS("http://www.w3.org/2000/svg","text")
+		txt.setAttribute('stroke','black')
+		txt.setAttribute('x',size[0]*0.80)
+		txt.setAttribute('y',a+k*D)
+		txt.setAttribute("text-anchor","middle")
+		txt.setAttribute("alignment-baseline","middle")
+		txt.textContent=txtElem[1][k]
+		svg.appendChild(txt)		
+	}
+    let center = document.createElement('div')
+    //center.style.textAlign = "center";
+    center.appendChild(svg)
+	return center.outerHTML
+}
+
+export function tipoRelacion(tipo,DI=[[-5,-4,-3,-2,-1,0,1,2,3,4,5],[-5,-4,-3,-2,-1,0,1,2,3,4,5]]){
+    
+    const n=[DI[0].length,DI[1].length]
+    let Asignationx=[],Asignationy=[],Relation=[]
+
+    switch(tipo){
+        case 'RS':
+            let noRepeat
+            for(let k=0;k<n[0];++k){
+                do{
+                    Relation.push([k,Math.floor(Math.random()*n[1])])
+                }while(Math.random()<0.2)
+            }
+            do{
+                noRepeat=[Math.floor(Math.random()*n[0]),Math.floor(Math.random()*n[1])]
+            }while(noRepeat[1]==Relation[noRepeat[0]][1])
+            Relation.push(noRepeat)
+            break
+        case 'RNS':
+            const ElEmpty=Math.floor(Math.random()*n[0])
+            let ElRep, NoRepeat,dummy
+
+            do{
+                for(let k=0;k<n[0];++k){
+                    if(k!=ElEmpty){
+                        if( Math.random()<0.8 ){
+                            Relation.push([ Math.floor(Math.random()*n[0]),
+                                            Math.floor(Math.random()*n[1])])
+                        }
+                    }
+                }
+            }while(Relation.length==0)
+            ElRep=Math.floor(Math.random()*Relation.length)
+            do{
+                dummy=Math.floor(Math.random()*n[1])
+            }while(Relation[ElRep][1]==dummy)
+            Relation.push([Relation[ElRep][0],dummy])
+            break
+        case 'FB':
+            if(n[0]>n[1]){
+                alert('No es posible hacer una función biyectiva con x='+DI[0]+' y='+DI[1])
+            }
+            
+            for(let k=0;k<n[0];++k) Asignationy.push(k)
+            Asignationy=unsortArray(Asignationy)
+            for(let k=0;k<n[0];++k) Relation.push([k,Asignationy[k]])        
+            break
+        case 'FSNI':
+            if(n[0]>n[1]){
+                alert('Verifica las condiciones para hacer una FSNI con x='+DI[0]+' y='+DI[1])
+            }
+            for(let k=0;k<n[0];++k){
+                Asignationy.push(k)
+                Asignationx.push(k)
+            }
+            Asignationy=unsortArray(Asignationy)
+            Asignationx=unsortArray(Asignationx)
+            const dummyFSNI=Math.ceil(Math.random()*(n[0]-1))
+            for(let k=0;k<n[0];++k){
+                if(k<dummyFSNI) Relation.push([Asignationx[k],Asignationy[k]])
+                else        Relation.push([Asignationx[k],Asignationy[Math.floor(Math.random()*(n[0]-dummyFSNI))]])        
+            } 
+            break
+        case 'FNSNI':
+            if(n[0]>n[1]){
+                alert('Verifica las condiciones para FNSNI con x='+DI[0]+' y='+DI[1])
+            }
+            const dummyFNSNI=[Math.ceil(Math.random()*(n[0]-3))+2]
+            do{
+                dummyFNSNI[1]=Math.ceil(Math.random()*(dummyFNSNI[0]-1))
+            }while(dummyFNSNI[1]<1)
+            for(let k=0;k<n[0];++k){
+                Asignationy.push(k)
+                Asignationx.push(k)
+            }
+            
+            Asignationy=unsortArray(Asignationy)
+            Asignationx=unsortArray(Asignationx)
+            Asignationx=Asignationx.slice(0, dummyFNSNI[0])
+            Asignationy=Asignationy.slice(0, dummyFNSNI[0])
+            for(let k=0;k<dummyFNSNI[0];++k){
+                if(k<dummyFNSNI[1]) Relation.push([Asignationx[k],Asignationy[k]])
+                else        Relation.push([ Asignationx[k],
+                                            Asignationy[Math.floor(Math.random()*dummyFNSNI[1])]
+                                        ])
+            } 
+            break
+        case 'FNSI':
+            if(n[0]>n[1]){
+                alert('Verifica las condiciones para FNSI con x='+DI[0]+' y='+DI[1])
+            }
+            const dummyFNSI=Math.ceil(Math.random()*(n[0]-3))+2
+            
+            for(let k=0;k<n[0];++k){
+                Asignationy.push(k)
+                Asignationx.push(k)
+            }
+            
+            Asignationy=unsortArray(Asignationy)
+            Asignationx=unsortArray(Asignationx)
+            Asignationx=Asignationx.slice(0, dummyFNSI)
+            Asignationy=Asignationy.slice(0, dummyFNSI)
+            for(let k=0;k<dummyFNSI;++k){
+                Relation.push([Asignationx[k],Asignationy[k]])
+            } 
+            break
+    }
+    const arreglo = []
+    for(let k=0;k<Relation.length;++k){
+        arreglo.push([DI[0][Relation[k][0]] , DI[1][Relation[k][1]]])
+    }
+    //console.log(arreglo)
+    return arreglo
+    //return diagramaAsignacion([DI[0],DI[1],Relation],[480,300])
+}
+
 
 //Abajo no debe tomarse en cuenta
 const tlacu = (function() {
