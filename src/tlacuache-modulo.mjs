@@ -155,7 +155,8 @@ export function conv(a1, a2) {
     });
     return result;
 }
-export function fraccion(a,b,op=false){
+
+export function fraccion(a,b,signoAbajo=false){
     if(b==0){
         return `${a<0?'-':''}\\infty`
     }else if(a == 0){
@@ -166,11 +167,21 @@ export function fraccion(a,b,op=false){
         return den[0]*den[1]
     }
     
-    if(!op){
+    if(!signoAbajo){
         const sig = den[1]<0?-1:1
+        const denominador = `${sig*den[0]}`
+        const numerador = `${sig*den[1]}`
+        if(denominador.length === 1 && numerador.length == 1){
+            return `\\frac${denominador}${numerador}`
+        }
         return `\\frac{${sig*den[0]}}{${sig*den[1]}}`
     }else{
         const sig = den[0]*den[1]<0?'-':''
+        const denominador = `${Math.abs(den[0])}`
+        const numerador = `${Math.abs(den[1])}`
+        if(denominador.length === 1 && numerador.length == 1){
+            return `${sig}\\frac${denominador}${numerador}`
+        }
         return `${sig}\\frac{${Math.abs(den[0])}}{${Math.abs(den[1])}}`
     }
     
