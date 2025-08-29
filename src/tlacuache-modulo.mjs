@@ -127,6 +127,9 @@ export const pregunta = {
                         }
                     }
                 }
+                
+                S = S.replaceAll(' ','')
+                S = S.replace(/\^\{([^}]+)\}/g, "^$1");
                 return S
             }
         }
