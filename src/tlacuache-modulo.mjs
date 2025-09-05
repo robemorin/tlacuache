@@ -653,7 +653,58 @@ export function tipoRelacion(tipo,DI=[[-5,-4,-3,-2,-1,0,1,2,3,4,5],[-5,-4,-3,-2,
     return arreglo
     //return diagramaAsignacion([DI[0],DI[1],Relation],[480,300])
 }
+export function mcm(numeros) {// Mínimo común múltiplo
+            function calcularMCD(a, b) {
+                a = Math.abs(a);
+                b = Math.abs(b);
+                while (b !== 0) {
+                    let temp = b;
+                    b = a % b;
+                    a = temp;
+                }  
+                return a;
+            }
+            function calcularMCMDosNumeros(a, b) {
+                return Math.abs(a * b) / calcularMCD(a, b);
+            }
+            if (!Array.isArray(numeros)) {
+                throw new Error("La entrada debe ser un arreglo");
+            }
 
+            if (numeros.length === 0) {
+                throw new Error("El arreglo no puede estar vacío");
+            }
+
+            if (numeros.some(num => !Number.isInteger(num))) {
+                throw new Error("Todos los elementos deben ser números enteros");
+            }
+            if (numeros.length === 1) {
+                return Math.abs(numeros[0]);
+            }
+            let mcm = calcularMCMDosNumeros(numeros[0], numeros[1]);
+            for (let i = 2; i < numeros.length; i++) {
+            mcm = calcularMCMDosNumeros(mcm, numeros[i]);
+            }
+            return mcm;
+        }
+export function mcd(numeros) {//maximo comun denominador
+            // Filtrar ceros y tomar valor absoluto
+            let nums = numeros.filter(num => num !== 0).map(num => Math.abs(num));
+            if (nums.length === 0) {
+                throw new Error("La lista no contiene números distintos de cero");
+            }
+            // Función auxiliar para MCD de dos números
+            function mcdDos(a, b) {
+                while (b !== 0) {
+                    let temp = b;
+                    b = a % b;
+                    a = temp;
+                }
+                return a;
+            }
+            // Reducir la lista usando mcdDos
+            return nums.reduce((acc, val) => mcdDos(acc, val));
+        }
 
 //Abajo no debe tomarse en cuenta
 const tlacu = (function() {
