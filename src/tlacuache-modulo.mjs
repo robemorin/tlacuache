@@ -106,6 +106,7 @@ export const pregunta = {
                     }
                 }else{
                     if(Array.isArray(v[0])){//Fracción
+                        
                         S=`${v[0][0]*v[0][1]<0?"-":""} \\frac{${Math.abs(v[0][0])}}{${Math.abs(v[0][1])}}x^{${n-1}}`
                     }else{
                         S=`${v[0]<0?"-":""} ${Math.abs(v[0])==1?'':Math.abs(v[0])}x^{${n-1}}`
