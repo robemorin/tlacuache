@@ -53,6 +53,26 @@ export const pregunta = {
                 }
                 return d
             },
+            sumar(v1,v2){
+                const n1=v1.length
+                const n2=v2.length
+                const n=Math.max(n1,n2)
+                const v1_clone=v1.slice()
+                const v2_clone=v2.slice()
+                const output=[]
+                for(let k=0;k<n-n1;++k) v1_clone.unshift(0)
+                for(let k=0;k<n-n2;++k) v2_clone.unshift(0)
+                for(let k=0;k<n;++k){
+                    output.push(v1_clone[k]+v2_clone[k])
+                }
+                while(output[0]==0){
+                    output.shift()
+                }
+                return output
+                
+                
+                
+            },
             eval (v,x){//Solo un valor
                 let y=0
                 for(let k=0;k<v.length;++k){

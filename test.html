@@ -64,14 +64,17 @@
     let ve, sf, va
 
     for(let k=0;k<20;++k){
-    const h= Math.ceil(Math.random()*8-4), k= Math.ceil(Math.random()*8-4)
-    let a=[Math.ceil(Math.random()*5)*(Math.random()<0.5?1:-1),(Math.ceil(Math.random()*5))**2]
-    let f= [tlacu.simplify_frac(a),
-            tlacu.simplify_frac([-a[0]*h,a[1]]),
-            tlacu.simplify_frac([a[0]*h**2+k*a[1],a[1]])]
+        let n1=Math.floor(Math.random()*4)+1
+        let n2=Math.floor(Math.random()*4)+1
+
+        const v1=[]
+        const v2=[]
+        for(let i=0;i<=n1;++i) v1.push(Math.ceil((Math.random()<0.5?1:-1)*Math.random()*5))
+        for(let i=0;i<=n2;++i) v2.push(Math.ceil((Math.random()<0.5?1:-1)*Math.random()*5))
+        const v = tlacu.poli.sumar(v1,v2)
 
     
-    div.innerHTML += `'${tlacu.poli.print(f)}' $${tlacu.poli.print(tlacu.poli.simplificar(f))}$ <br>`
+    div.innerHTML += `$(${tlacu.poli.print(v1)})(${tlacu.poli.print(v2)}) = (${tlacu.poli.print(v)}) $ <br>`
     }
 
    </script> 
