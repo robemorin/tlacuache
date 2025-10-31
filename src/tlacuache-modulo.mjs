@@ -187,6 +187,27 @@ export const stat={
                 S += x[k]
             }
             return S/n
+    },
+    pearson(x,y){
+        if(x=== undefined){
+                console.log('Sintaxis:tlacu.stat.pearson([x1,x2,...],[y1,y2,...])')
+                console.error("error pearson")
+                return null
+        }
+        const n=x.length
+        let Sumxy=0
+        let Sumx=0
+        let Sumx2=0
+        let Sumy=0
+        let Sumy2=0
+        for(let k=0;k<n;++k){
+            Sumx+=x[k]
+            Sumx2+=x[k]*x[k]
+            Sumy+=y[k]
+            Sumy2+=y[k]*y[k]
+            Sumxy+=x[k]*y[k]
+        }
+        return (n*Sumxy-Sumx*Sumy)/Math.sqrt((n*Sumx2-Sumx*Sumx)*(n*Sumy2-Sumy*Sumy))
     }
 }
 //Hacer el método del trapecio con estructura como ans={n: n, y:y, x:x ...}

@@ -71,8 +71,8 @@
             x.push(Math.ceil((Math.random()<0.5?1:-1)*Math.random()*5))
             y.push(Math.ceil((Math.random()<0.5?1:-1)*Math.random()*5))
         }
-        const L=tlacu.stat.linReg(x,y)
-    div.innerHTML += `x:${x}<br>y:${y} <br> $y=${L[0].toFixed(6)}x+${L[1].toFixed(6)} $ <br>`
+        const r = tlacu.stat.pearson(x,y)
+    div.innerHTML += `x:${x}<br>y:${y} <br> $r = ${r} $ <br>`
     }
 
    </script> 
