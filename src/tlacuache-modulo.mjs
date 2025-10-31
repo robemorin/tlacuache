@@ -154,6 +154,41 @@ export const pregunta = {
                 return S
             }
         }
+export const stat={
+    linReg(x,y){
+        if(x=== undefined){
+                console.log('Sintaxis:tlacu.stat.linReg([x1,x2,...],[y1,y2,...])')
+                console.error("error linReg")
+                return null
+            }
+        
+        const n=x.length
+        var xm=stat.mean(x)
+        var ym=stat.mean(y)
+        var Sumxy=0
+        var Sx=0
+        for(var k=0;k<n;++k){
+            Sumxy+=x[k]*y[k]
+            Sx+=Math.pow(x[k]-xm,2)
+        }
+        var m=(Sumxy-n*xm*ym)/(Sx)
+        var b=ym-m*xm
+        return [m,b]
+    },
+    mean(x){
+        if(x=== undefined){
+                console.log('Sintaxis:tlacu.stat.mean([x1,x2,...])')
+                console.error("error mean")
+                return null
+            }
+            let S = 0
+            const n = x.length
+            for(let k=0;k<n;++k){
+                S += x[k]
+            }
+            return S/n
+    }
+}
 //Hacer el método del trapecio con estructura como ans={n: n, y:y, x:x ...}
 export function metTrapecio(a,b,n,fun){
     const h=(b-a)/n
