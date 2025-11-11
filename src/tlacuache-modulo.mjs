@@ -208,7 +208,60 @@ export const stat={
             Sumxy+=x[k]*y[k]
         }
         return (n*Sumxy-Sumx*Sumy)/Math.sqrt((n*Sumx2-Sumx*Sumx)*(n*Sumy2-Sumy*Sumy))
+    },
+    //-------------------------
+    spearman(arr1, arr2) {
+        // Verificar si las longitudes de los arreglos son iguales
+        if (arr1.length !== arr2.length) {
+            throw new Error('Los arreglos tienen longitudes diferentes');
+        }
+
+        // Crear copias de los arreglos originales
+        const arr1Copy = arr1.slice();
+        const arr2Copy = arr2.slice();
+
+        // Función de clasificación para obtener los rangos
+        function compare(a, b) {
+            return a - b;
+        }
+
+        // Clasificar los arreglos y obtener los rangos
+        arr1Copy.sort(compare);
+        arr2Copy.sort(compare);
+
+        // Función para obtener los rangos de los elementos en el arreglo
+        function obtenerRangos(arr) {
+            const ranks = {};
+            for (let i = 0; i < arr.length; i++) {
+                const val = arr[i];
+                if (ranks[val] === undefined) {
+                    ranks[val] = [i + 1];
+                } else {
+                    ranks[val].push(i + 1);
+                }
+            }
+            return ranks;
+        }
+
+        // Obtener los rangos de los arreglos
+        const ranks1 = obtenerRangos(arr1Copy);
+        const ranks2 = obtenerRangos(arr2Copy);
+
+        // Calcular la diferencia de rangos al cuadrado
+        let dSquared = 0;
+        for (let i = 0; i < arr1Copy.length; i++) {
+            const diff = ranks1[arr1[i]].reduce((acc, val) => acc + val, 0) / ranks1[arr1[i]].length -
+                ranks2[arr2[i]].reduce((acc, val) => acc + val, 0) / ranks2[arr2[i]].length;
+            dSquared += diff * diff;
+        }
+
+        // Calcular la correlación de Spearman
+        const n = arr1Copy.length;
+        const spearmanCorrelation = 1 - (6 * dSquared) / (n * (n * n - 1));
+        return spearmanCorrelation;
     }
+
+    //-------------------------
 }
 //Hacer el método del trapecio con estructura como ans={n: n, y:y, x:x ...}
 export function metTrapecio(a,b,n,fun){
