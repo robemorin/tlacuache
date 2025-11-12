@@ -284,6 +284,7 @@ export const stat={
             Sx+=Math.pow(x[k]-xm,2)
             Sy+=Math.pow(y[k]-ym,2)
         }
+        /*
         var S="<center><table class='calculadora'><tr><td style='background-color:#333;color:white'> <b>2 Var Stats</b></td></tr>"
         S+="<tr><td align='left'>$\\overline x = "+Sumx/n+"$</td></tr>"
         S+="<tr><td align='left'>$\\sum x = "+Sumx+"$</td></tr>"
@@ -296,7 +297,34 @@ export const stat={
         S+="<tr><td align='left'>$\\sum y^2 = "+Sumy2+"$</td></tr>"
         S+="<tr><td align='left'>$S_y= "+Math.sqrt(Sy/(n-1))+"$</td></tr>"
         S+="<tr><td align='left'>$\\sigma_y="+Math.sqrt(Sy/n)+"$</td></tr>"
-        S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr><//table></center><div class='fin'></div>"
+        S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr></table></center><div class='fin'></div>"*/
+        // Asumiendo que Sumx, n, Sumx2, Sx, Sumy, etc., ya están definidas.
+
+const S = `<div class="calculadora-container">
+        <table class="calculadora">
+        <thead>
+            <tr>
+            <th class="calculadora-header"><strong>2 Var Stats</strong></th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr><td>$\\overline x = ${Sumx / n}$</td></tr>
+            <tr><td>$\\sum x = ${Sumx}$</td></tr>
+            <tr><td>$\\sum x^2 = ${Sumx2}$</td></tr>
+            <tr><td>$S_x = ${Math.sqrt(Sx / (n - 1))}$</td></tr>
+            <tr><td>$\\sigma_x = ${Math.sqrt(Sx / n)}$</td></tr>
+            <tr><td>$n = ${n}$</td></tr>
+            <tr><td>$\\overline y = ${Sumy / n}$</td></tr>
+            <tr><td>$\\sum y = ${Sumy}$</td></tr>
+            <tr><td>$\\sum y^2 = ${Sumy2}$</td></tr>
+            <tr><td>$S_y = ${Math.sqrt(Sy / (n - 1))}$</td></tr>
+            <tr><td>$\\sigma_y = ${Math.sqrt(Sy / n)}$</td></tr>
+            <tr><td>$\\sum xy = ${Sumxy}$</td></tr>
+        </tbody>
+        </table>
+    </div>
+    <div class="fin"></div>
+    `;
         return S
     }
 

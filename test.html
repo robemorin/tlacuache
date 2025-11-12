@@ -70,7 +70,10 @@
       
 
         const r = tlacu.stat.calc_2varStat(x,y)
-    div.innerHTML += `x:${x}<br>y:${y} <br> $r = ${r} $ <br>`
+        for(let k=0;k<x.length;++k){
+                div.innerHTML += `x:${x}<br>y:${y} <br> ${r} <br>`
+            }
+    
     //}
 
    </script> 
