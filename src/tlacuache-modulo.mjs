@@ -301,10 +301,11 @@ export const stat={
         // Asumiendo que Sumx, n, Sumx2, Sx, Sumy, etc., ya están definidas.
 
 const S = `<div class="calculadora-container">
+        <center>
         <table class="calculadora">
         <thead>
             <tr>
-            <th class="calculadora-header"><strong>2 Var Stats</strong></th>
+            <th class="calculadora-header" style='background-color:#333;color:white'><strong>2 Var Stats</strong></th>
             </tr>
         </thead>
         <tbody>
@@ -321,7 +322,7 @@ const S = `<div class="calculadora-container">
             <tr><td>$\\sigma_y = ${Math.sqrt(Sy / n)}$</td></tr>
             <tr><td>$\\sum xy = ${Sumxy}$</td></tr>
         </tbody>
-        </table>
+        </table></center>
     </div>
     <div class="fin"></div>
     `;
