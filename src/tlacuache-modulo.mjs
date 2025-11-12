@@ -296,7 +296,7 @@ export const stat={
         S+="<tr><td align='left'>$\\sum y^2 = "+Sumy2+"$</td></tr>"
         S+="<tr><td align='left'>$S_y= "+Math.sqrt(Sy/(n-1))+"$</td></tr>"
         S+="<tr><td align='left'>$\\sigma_y="+Math.sqrt(Sy/n)+"$</td></tr>"
-        S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr>"
+        S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr><//table></center>"
         return S
     }
 
