@@ -284,7 +284,7 @@ export const stat={
             Sx+=Math.pow(x[k]-xm,2)
             Sy+=Math.pow(y[k]-ym,2)
         }
-        var S="<center><table><tr><td style='background-color:#333;color:white'> <b>2 Var Stats</b></td></tr>"
+        var S="<center><table class='calculadora'><tr><td style='background-color:#333;color:white'> <b>2 Var Stats</b></td></tr>"
         S+="<tr><td align='left'>$\\overline x = "+Sumx/n+"$</td></tr>"
         S+="<tr><td align='left'>$\\sum x = "+Sumx+"$</td></tr>"
         S+="<tr><td align='left'>$\\sum x^2 = "+Sumx2+"$</td></tr>"
@@ -296,7 +296,7 @@ export const stat={
         S+="<tr><td align='left'>$\\sum y^2 = "+Sumy2+"$</td></tr>"
         S+="<tr><td align='left'>$S_y= "+Math.sqrt(Sy/(n-1))+"$</td></tr>"
         S+="<tr><td align='left'>$\\sigma_y="+Math.sqrt(Sy/n)+"$</td></tr>"
-        S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr><//table></center>"
+        S+="<tr><td align='left'>$\\sum xy="+Sumxy+"$</td></tr><//table></center><div class='fin'></div>"
         return S
     }
 
