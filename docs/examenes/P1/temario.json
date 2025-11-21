@@ -1,0 +1,288 @@
+[
+  {
+    "id": 1,
+    "nombre": "Álgebra",
+    "subtemas": [
+      {
+        "id": 1,
+        "nombre": "Fundamentos",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "Números Reales",
+            "ejercicios": [
+              {
+                "id": "1.1.1.1.js",
+                "titulo": "Suma simple",
+                "ruta": "./ejercicios/1.1.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "1.1.3. Redondeo y estimaciones",
+            "ejercicios": [
+              {
+                "id": "1.1.3.1.js",
+                "titulo": "Cálculo, redondeo y notación científica",
+                "ruta": "./ejercicios/1.1.3.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "1.2. Sucesiones y series",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.2.1. Sucesiones aritméticas y sumas parciales",
+            "ejercicios": [
+              {
+                "id": "1.2.1.1.js",
+                "titulo": "Ahorro progresivo (Cumpleaños)",
+                "ruta": "./ejercicios/1.2.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "nombre": "1.4. Aproximación y error",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.4.1. Error de estimación",
+            "ejercicios": [
+              {
+                "id": "1.4.1.1.js",
+                "titulo": "Límites de precisión y Área mínima",
+                "ruta": "./ejercicios/1.4.1.1.js",
+                "puntos": 4,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "nombre": "1.5. Sistemas de ecuaciones",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.5.1. Resolución de sistemas lineales",
+            "ejercicios": [
+              {
+                "id": "1.5.1.1.js",
+                "titulo": "Planteamiento de ecuaciones lineales",
+                "ruta": "./ejercicios/1.5.1.1.js",
+                "puntos": 4,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "2. Funciones",
+    "subtemas": [
+      {
+        "id": 1,
+        "nombre": "1. Modelos",
+        "secciones": [
+          {
+            "id": 4,
+            "nombre": "4. Funciones a trozos",
+            "ejercicios": [
+              {
+                "id": "2.1.4.1.js",
+                "titulo": "Función a Trozos - Costo de Agua",
+                "ruta": "./ejercicios/2.1.4.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "nombre": "2.1.5. Composición de funciones",
+            "ejercicios": [
+              {
+                "id": "2.1.5.1.js",
+                "titulo": "Resolución de una ecuación compuesta (Trigonométrica)",
+                "ruta": "./ejercicios/2.1.5.1.js",
+                "puntos": 5,
+                "orden": 1
+              },
+              {
+                "id": "2.1.5.2.js",
+                "titulo": "Funciones inversas y compuestas",
+                "ruta": "./ejercicios/2.1.5.2.js",
+                "puntos": 6,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "2.2. Modelos lineales",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "2.2.1. Ecuaciones de la recta",
+            "ejercicios": [
+              {
+                "id": "2.2.2.1.js",
+                "titulo": "Líneas paralelas y gradiente",
+                "ruta": "./ejercicios/2.2.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "nombre": "3. Modelos cuadráticos",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "2. Eje de simetría y vértice",
+            "ejercicios": [
+              {
+                "id": "2.3.2.1.js",
+                "titulo": "Análisis de una parábola dada su gráfica",
+                "ruta": "./ejercicios/2.3.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "2.3.2.2.js",
+                "titulo": "Altura Máxima (Proyectil)",
+                "ruta": "./ejercicios/2.3.2.2.js",
+                "puntos": 6,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "3. Geometría y Trigonometría",
+    "subtemas": [
+      {
+        "id": 2,
+        "nombre": "3.2. Trigonometría",
+        "secciones": [
+          {
+            "id": 5,
+            "nombre": "3.2.5. Ángulos de elevación y depresión",
+            "ejercicios": [
+              {
+                "id": "3.2.5.1.js",
+                "titulo": "Ángulo de elevación (Acantilado y Barco)",
+                "ruta": "./ejercicios/3.2.5.1.js",
+                "puntos": 4,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "nombre": "5. Geometría del círculo",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "2. Área de sectores circulares",
+            "ejercicios": [
+              {
+                "id": "3.5.2.1.js",
+                "titulo": "Área, ángulo y perímetro de un sector",
+                "ruta": "./ejercicios/3.5.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "4. Estadística y Probabilidad",
+    "subtemas": [
+      {
+        "id": 2,
+        "nombre": "4.2. Estadística descriptiva",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "4.2.1. Frecuencias simples y acumuladas",
+            "ejercicios": [
+              {
+                "id": "4.2.1.1.js",
+                "titulo": "Tabla de frecuencias relativas y probabilidad",
+                "ruta": "./ejercicios/4.2.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "nombre": "4. Probabilidad",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1. Espacio muestral y sucesos",
+            "ejercicios": [
+              {
+                "id": "4.4.1.1.js",
+                "titulo": "Probabilidad con dos dados (Rojo y Verde)",
+                "ruta": "./ejercicios/4.4.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "nombre": "4.4.4. Diagramas de Venn",
+            "ejercicios": [
+              {
+                "id": "4.4.4.1.js",
+                "titulo": "Interpretación de diagrama de Venn (3 conjuntos)",
+                "ruta": "./ejercicios/4.4.4.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

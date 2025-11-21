@@ -1,0 +1,113 @@
+1. Número y Álgebra
+1.1. Operaciones numéricas
+1.1.1. Notación científica
+1.1.2. Cifras significativas y lugares decimales
+1.1.3. Redondeo y estimaciones
+1.2. Sucesiones y series
+1.2.1. Sucesiones aritméticas y sumas parciales
+1.2.2. Sucesiones geométricas y sumas parciales
+1.2.3. Aplicaciones de crecimiento y decrecimiento
+1.3. Matemáticas financieras
+1.3.1. Interés compuesto
+1.3.2. Depreciación anual
+1.3.3. Anualidades y amortizaciones de préstamos
+1.4. Aproximación y error
+1.4.1. Error de estimación
+1.4.2. Porcentaje de error
+1.5. Sistemas de ecuaciones
+1.5.1. Resolución de sistemas lineales
+1.5.2. Resolución de sistemas polinómicos simples
+
+2. Funciones
+2.1. Conceptos básicos de funciones
+2.1.1. Notación de funciones
+2.1.2. Dominio y rango (recorrido)
+2.1.3. Interpretación de gráficas
+2.1.4. Funciones a trozos
+2.1.5. Composición de funciones 
+2.2. Modelos lineales
+2.2.1. Ecuaciones de la recta
+2.2.2. Pendiente (gradiente) e intersecciones con los ejes
+2.3. Modelos cuadráticos
+2.3.1. Ecuaciones cuadráticas
+2.3.2. Eje de simetría y vértice
+2.3.3. Intersecciones y raíces
+2.4. Modelos exponenciales
+2.4.1. Funciones de crecimiento y decaimiento exponencial
+2.4.2. Asíntotas horizontales
+2.5. Modelos sinusoidales
+2.5.1. Funciones seno y coseno
+2.5.2. Amplitud y periodo
+2.5.3. Desplazamientos geométricos
+2.6. Logaritmos
+2.6.1. Resolución de ecuaciones exponenciales simples
+
+3. Geometría y Trigonometría
+3.1. Geometría de sólidos (3D)
+3.1.1. Área superficial de cuerpos compuestos
+3.1.2. Volumen de cuerpos compuestos (prismas, pirámides, cilindros, conos, esferas)
+3.2. Trigonometría
+3.2.1. Razones trigonométricas en triángulos rectángulos
+3.2.2. Regla del seno
+3.2.3. Regla del coseno
+3.2.4. Área del triángulo
+3.2.5. Ángulos de elevación y depresión
+3.3. Geometría de coordenadas
+3.3.1. Punto medio y distancia entre dos puntos
+3.4. Diagramas de Voronoi
+3.4.1. Sitios, regiones, bordes y vértices
+3.4.2. Problema del vecino más cercano
+3.4.3. Interpolación del vecino más cercano
+3.5. Geometría del círculo
+3.5.1. Longitud de arco
+3.5.2. Área de sectores circulares
+3.5.3. Área de coronas circulares
+
+4. Estadística y Probabilidad
+4.1. Recolección de datos
+4.1.1. Conceptos de población y muestra
+4.1.2. Técnicas de muestreo (aleatorio, sistemático, estratificado, cuotas, conveniencia)
+4.2. Estadística descriptiva
+4.2.1. Frecuencias simples y acumuladas
+4.2.2. Histogramas y diagramas de caja y bigotes
+4.2.3. Medidas de tendencia central (media, mediana, moda)
+4.2.4. Medidas de dispersión (rango, rango intercuartil, desviación estándar)
+4.2.5. Valores atípicos
+4.3. Correlación y regresión
+4.3.1. Diagramas de dispersión
+4.3.2. Coeficiente de correlación de Pearson
+4.3.3. Coeficiente de correlación de rangos de Spearman
+4.3.4. Línea de regresión lineal
+4.4. Probabilidad
+4.4.1. Espacio muestral y sucesos
+4.4.2. Probabilidad de sucesos combinados y mutuamente excluyentes
+4.4.3. Probabilidad condicionada
+4.4.4. Diagramas de Venn y diagramas de árbol
+4.5. Distribuciones de probabilidad
+4.5.1. Variables aleatorias discretas y valor esperado
+4.5.2. Distribución Binomial
+4.5.3. Distribución Normal
+4.6. Pruebas de hipótesis
+4.6.1. Hipótesis nula y alternativa
+4.6.2. Niveles de significación y valor p
+4.6.3. Prueba Chi-cuadrado de bondad de ajuste
+4.6.4. Prueba Chi-cuadrado de independencia
+4.6.5. Prueba t de Student para medias
+
+5. Análisis (Cálculo)
+5.1. Introducción al cálculo
+5.1.1. Concepto intuitivo de límite
+5.1.2. Tasa de cambio promedio
+5.2. Cálculo diferencial
+5.2.1. Derivada de funciones de potencia
+5.2.2. La derivada como gradiente y tasa de cambio instantánea
+5.2.3. Rectas tangentes y normales
+5.3. Optimización
+5.3.1. Puntos máximos y mínimos locales
+5.3.2. Problemas de optimización en contexto
+5.4. Cálculo integral
+5.4.1. Antiderivadas de funciones de potencia
+5.4.2. Integral definida
+5.4.3. Área bajo la curva
+5.5. Métodos numéricos
+5.5.1. Regla del trapecio para aproximación de áreas

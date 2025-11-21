@@ -793,27 +793,77 @@ class tlacuache_venn extends HTMLElement {
   }
   connectedCallback() {
     if(this.width==null){
-      this.innerHTML=`<div><fieldset>
-<legend>tlacuache-venn:</legend>
+      this.innerHTML=`<div>
+  <fieldset style="font-family: sans-serif; border: 2px solid #444; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
+    <legend style="font-weight: bold; font-size: 1.2em; padding: 0 5px;">&lt;tlacuache-venn&gt;</legend>
 
-Sintaxis:<br><br>
-<table>
-          <tr><td>ancho:</td></tr>
-          <tr><td></td><td>ancho de pixeles, altura se toma automáticamente</td></tr>
-          <tr><td>n: </td></tr>
-          <tr><td></td><td>número de conjuntos a dibujar ( 2 o 3, por default 2)</td></tr>
-          <tr><td>Conjuntos:<br>
-          <tr><td></td><td>Nombre de los conjuntos</td></tr>
-          <tr><td>s[1-8]:<br>
-          <tr><td></td><td>Nombre de la región $i$-ésima</td></tr>
-          </table>
-          <p><i>Usar expresiones pequeñas en las áreas cuando se use expresiones matemáticas</i></p>
+    <p style="margin-top:0">Componente para diagramas de Venn (2 o 3 conjuntos) con soporte LaTeX.</p>
 
-Ejemplo:<br><br>
-  &lt;tlacuache-venn ancho="400" &gt;&lt;/tlacuache-venn&gt;<br>
-  &lt;tlacuache-venn ancho="400" s1="\\$\\$\\ omega\\$\\$" s2="0.3" s3="\\$\\$\\frac{1}{3}\\$\\$" s4="w"&gt;&lt;/tlacuache-venn&gt;
+    <strong>Atributos:</strong>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr style="background:#eee;">
+        <th style="text-align:left">Nombre</th>
+        <th style="text-align:left">Descripción</th>
+      </tr>
+      <tr>
+        <td><b>ancho</b></td>
+        <td>(Requerido) Ancho en píxeles. La altura es automática.</td>
+      </tr>
+      <tr>
+        <td><b>n</b></td>
+        <td>Número de conjuntos: <code>2</code> o <code>3</code> (Default: 2).</td>
+      </tr>
+      <tr>
+        <td><b>conjuntos</b></td>
+        <td>Lista de nombres. Ej: <code>"'A','B'"</code> o <code>"'Fís','Quim','Mat'"</code>.</td>
+      </tr>
+      <tr>
+        <td><b>s1...s8</b></td>
+        <td>
+            Contenido de cada región.<br>
+            Para matemáticas usar: <code>s3="$$ x^2 $$"</code> o <code>s6="$$ \\frac{1}{2} $$"</code>
+        </td>
+      </tr>
+    </table>
 
-</fieldset></div>`
+    <strong>Mapa de Regiones (¿Dónde va cada s?):</strong>
+    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 5px 0 15px 0;">
+        <div style="flex: 1; border: 1px solid #ccc; padding: 10px; background: white; min-width: 200px;">
+            <strong style="display:block; border-bottom:1px solid #eee; margin-bottom:5px;">Caso n="2"</strong>
+            <ul style="margin:0; padding-left: 20px; font-size: 0.9em;">
+                <li><b>s1:</b> Universo (exterior)</li>
+                <li><b>s2:</b> Solo A (Izquierda)</li>
+                <li><b>s3:</b> Intersección A ∩ B</li>
+                <li><b>s4:</b> Solo B (Derecha)</li>
+            </ul>
+        </div>
+        <div style="flex: 1; border: 1px solid #ccc; padding: 10px; background: white; min-width: 200px;">
+            <strong style="display:block; border-bottom:1px solid #eee; margin-bottom:5px;">Caso n="3"</strong>
+            <div style="font-size: 0.9em; display: grid; grid-template-columns: 1fr 1fr;">
+                <span><b>s1:</b> Universo</span>
+                <span><b>s5:</b> A ∩ C (Izq)</span>
+                <span><b>s2:</b> Solo A (Sup. Izq)</span>
+                <span><b>s6:</b> Centro A∩B∩C</span>
+                <span><b>s3:</b> A ∩ B (Sup)</span>
+                <span><b>s7:</b> B ∩ C (Der)</span>
+                <span><b>s4:</b> Solo B (Sup. Der)</span>
+                <span><b>s8:</b> Solo C (Inf)</span>
+            </div>
+        </div>
+    </div>
+
+    <strong>Ejemplos:</strong>
+    <pre style="background: #333; color: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.85em;">
+&lt;!-- Simple 2 conjuntos --&gt;
+&lt;tlacuache-venn ancho="300" s2="0.4" s3="0.1" s4="0.5"&gt;&lt;/tlacuache-venn&gt;
+
+&lt;!-- 3 Conjuntos con fracción LaTeX --&gt;
+&lt;tlacuache-venn ancho="400" n="3" conjuntos="'X','Y','Z'"
+    s6="$$\\frac{1}{3}$$" s8="x"&gt;
+&lt;/tlacuache-venn&gt;</pre>
+
+  </fieldset>
+</div>`
 
 return
     }
