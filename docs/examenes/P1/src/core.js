@@ -172,18 +172,32 @@ window.generarExamen = async function() {
     let contadorPregunta = 1;
 
     const fecha = new Date().toLocaleDateString('es-MX', { year: 'numeric', month: 'long' });
-    htmlPreguntas += `
+    htmlPreguntas += `<div class="no-screen">
         <header class="encabezado-examen">
             <div class="datos-escuela">
-                <h1>Universidad Autónoma de Coahuila</h1>
-                <h2>Facultad de Ingeniería Mecánica y Eléctrica</h2>
+                <h1>Colegio Maria Montessori de Monclova</h1>
+                <h2>Matemáticas NM: Aplicaciones e interpretaciones</h2>
             </div>
             <div class="datos-alumno">
+                <p><strong>Docente:</strong> M.C. Roberto A. Morin R.</p>
                 <p><strong>Nombre:</strong> ___________________________________________________</p>
                 <p><strong>Fecha:</strong> ${fecha} &nbsp;&nbsp; | &nbsp;&nbsp; <strong>Calificación:</strong> _______</p>
             </div>
         </header>
         <hr class="separador-header">
+        <h3><b>Instrucciones</b></h3> 
+    <hr style='border-top: 3px solid black;'>
+    <div style="font-size:0.8em;text-align: justify;">
+<ul><li>No abra esta prueba hasta que se le autorice</li>
+        <li>En esta prueba es necesario usar una calculadora gráfica</li>
+        <li>Conteste todas las preguntas en el cuadernillo</li>
+        <li>Salvo se indique lo contrario en la pregunta, todas las respuestas numéricas deberán ser exactas o aproximadas a tres cifras significativas</li><li>Use tinta negra o azul, excepto en diagramas que debe usarse lápiz </li><li>Se necesita una copia sin anotaciones del cuadernillo de fórmulas de Matemáticas Aplicaciones e Interpretaciones NM para la prueba</li>
+        </ul>
+    </div>
+    <div style="font-size:0.7em;text-align: justify;">
+    <i>Se otorgará la máxima puntuación a las respuestas correctas. Cuando la respuesta sea incorrecta se otorgarán algunos puntos siempre que aparezca el método empleado y éste sea correcto. Donde sea necesario, puede utilizar para sus cálculos el espacio que queda debajo del cuadro. Para los resultados obtenidos con calculadora de pantalla gráfica, deberá reflejarse por escrito el proceso seguido hasta su obtención. Por ejemplo, cuando deba utilizar gráficas de una calculadora de pantalla gráfica para hallar soluciones, deberá dibujar esas gráficas en su respuesta.</i>
+    </div>
+    </div>
     `;
 
     for (const input of seleccionados) {

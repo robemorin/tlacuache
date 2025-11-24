@@ -70,6 +70,8 @@ export async function generar(i) {
                     <span class="ib-mark">[1]</span>
                 </li>
             </ol>
+            
+        <tlacuache-renglon n="6" color="gray" alto="35"></tlacuache-renglon>
         </div>
     `;
 

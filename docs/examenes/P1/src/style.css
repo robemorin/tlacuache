@@ -366,9 +366,10 @@ button {
 
 /* --- REGLAS DE IMPRESIÓN (Ctrl + P) --- */
 @media screen{
-    tlacuache-renglon{
-        display: none;
+    tlacuache-renglon, .no-screen{
+        display: none !important;
     }
+    
 }
 @media print {
     /* Ocultar UI */

@@ -413,7 +413,72 @@ class tlacuache_ejes extends HTMLElement
     }
     connectedCallback() {
       if(this.size==null){
-        console.log("Falta documentación")
+        this.innerHTML=`<div>
+  <fieldset style="font-family: sans-serif; border: 2px solid #444; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
+    <legend style="font-weight: bold; font-size: 1.2em; padding: 0 5px;">&lt;tlacuache-ejes&gt;</legend>
+
+    <p style="margin-top:0">Dibuja un plano cartesiano configurable con ejes, marcas (ticks), etiquetas y rejilla.</p>
+
+    <strong>Atributos Principales:</strong>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr style="background:#eee;">
+        <th style="text-align:left">Atributo</th>
+        <th style="text-align:left">Descripción y Ejemplo</th>
+      </tr>
+      <tr>
+        <td><b>size</b></td>
+        <td>(Requerido) Dimensiones en pixeles <code>[alto, ancho]</code>.<br>Ej: <code>size="[300, 400]"</code></td>
+      </tr>
+      <tr>
+        <td><b>xlim / ylim</b></td>
+        <td>Límites de los ejes <code>[min, max]</code>.<br>Default: <code>[-1, 1]</code>. Ej: <code>xlim="[-5, 5]"</code></td>
+      </tr>
+      <tr>
+        <td><b>xlabel / ylabel</b></td>
+        <td>Etiquetas de texto para los ejes.<br>Ej: <code>xlabel="Tiempo (s)"</code></td>
+      </tr>
+    </table>
+
+    <strong>Configuración de Marcas y Rejilla:</strong>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr>
+        <td><b>xtick / ytick</b></td>
+        <td>Lista manual de marcas.<br>Ej: <code>xtick="[-3.14, 0, 3.14]"</code></td>
+      </tr>
+      <tr>
+        <td><b>dx / dy</b></td>
+        <td>Generación automática de marcas cada <i>n</i> unidades.<br>Ej: <code>dx="1"</code> (marcas en 1, 2, 3...)</td>
+      </tr>
+      <tr>
+        <td><b>ddx / ddy</b></td>
+        <td>Rejilla secundaria (líneas finas sin números).<br>Ej: <code>ddx="0.5"</code></td>
+      </tr>
+      <tr>
+        <td><b>dpx / dpy</b></td>
+        <td>Precisión decimal de las etiquetas numéricas.<br>Ej: <code>dpx="2"</code> (muestra 3.14)</td>
+      </tr>
+      <tr>
+        <td><b>fontsize</b></td>
+        <td>Tamaño de la fuente (Default: 10).</td>
+      </tr>
+    </table>
+
+    <strong>Ejemplos de Uso:</strong>
+    <pre style="background: #333; color: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.85em;">
+&lt;!-- Plano simple de -5 a 5 --&gt;
+&lt;tlacuache-ejes size="[300,300]" xlim="[-5,5]" ylim="[-5,5]" 
+    dx="1" dy="1" xlabel="x" ylabel="f(x)"&gt;
+&lt;/tlacuache-ejes&gt;
+
+&lt;!-- Plano con rejilla fina y etiquetas personalizadas --&gt;
+&lt;tlacuache-ejes size="[250,400]" xlim="[0,10]" ylim="[0,100]"
+    xtick="[0,2,4,6,8,10]" ddx="1" 
+    ytick="[0,50,100]" ddy="10"
+    xlabel="Distancia" ylabel="Costo"&gt;
+&lt;/tlacuache-ejes&gt;</pre>
+
+  </fieldset>
+</div>`
         return
       }
       function coor2px(coor,px){
@@ -793,77 +858,7 @@ class tlacuache_venn extends HTMLElement {
   }
   connectedCallback() {
     if(this.width==null){
-      this.innerHTML=`<div>
-  <fieldset style="font-family: sans-serif; border: 2px solid #444; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
-    <legend style="font-weight: bold; font-size: 1.2em; padding: 0 5px;">&lt;tlacuache-venn&gt;</legend>
-
-    <p style="margin-top:0">Componente para diagramas de Venn (2 o 3 conjuntos) con soporte LaTeX.</p>
-
-    <strong>Atributos:</strong>
-    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
-      <tr style="background:#eee;">
-        <th style="text-align:left">Nombre</th>
-        <th style="text-align:left">Descripción</th>
-      </tr>
-      <tr>
-        <td><b>ancho</b></td>
-        <td>(Requerido) Ancho en píxeles. La altura es automática.</td>
-      </tr>
-      <tr>
-        <td><b>n</b></td>
-        <td>Número de conjuntos: <code>2</code> o <code>3</code> (Default: 2).</td>
-      </tr>
-      <tr>
-        <td><b>conjuntos</b></td>
-        <td>Lista de nombres. Ej: <code>"'A','B'"</code> o <code>"'Fís','Quim','Mat'"</code>.</td>
-      </tr>
-      <tr>
-        <td><b>s1...s8</b></td>
-        <td>
-            Contenido de cada región.<br>
-            Para matemáticas usar: <code>s3="$$ x^2 $$"</code> o <code>s6="$$ \\frac{1}{2} $$"</code>
-        </td>
-      </tr>
-    </table>
-
-    <strong>Mapa de Regiones (¿Dónde va cada s?):</strong>
-    <div style="display: flex; flex-wrap: wrap; gap: 10px; margin: 5px 0 15px 0;">
-        <div style="flex: 1; border: 1px solid #ccc; padding: 10px; background: white; min-width: 200px;">
-            <strong style="display:block; border-bottom:1px solid #eee; margin-bottom:5px;">Caso n="2"</strong>
-            <ul style="margin:0; padding-left: 20px; font-size: 0.9em;">
-                <li><b>s1:</b> Universo (exterior)</li>
-                <li><b>s2:</b> Solo A (Izquierda)</li>
-                <li><b>s3:</b> Intersección A ∩ B</li>
-                <li><b>s4:</b> Solo B (Derecha)</li>
-            </ul>
-        </div>
-        <div style="flex: 1; border: 1px solid #ccc; padding: 10px; background: white; min-width: 200px;">
-            <strong style="display:block; border-bottom:1px solid #eee; margin-bottom:5px;">Caso n="3"</strong>
-            <div style="font-size: 0.9em; display: grid; grid-template-columns: 1fr 1fr;">
-                <span><b>s1:</b> Universo</span>
-                <span><b>s5:</b> A ∩ C (Izq)</span>
-                <span><b>s2:</b> Solo A (Sup. Izq)</span>
-                <span><b>s6:</b> Centro A∩B∩C</span>
-                <span><b>s3:</b> A ∩ B (Sup)</span>
-                <span><b>s7:</b> B ∩ C (Der)</span>
-                <span><b>s4:</b> Solo B (Sup. Der)</span>
-                <span><b>s8:</b> Solo C (Inf)</span>
-            </div>
-        </div>
-    </div>
-
-    <strong>Ejemplos:</strong>
-    <pre style="background: #333; color: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.85em;">
-&lt;!-- Simple 2 conjuntos --&gt;
-&lt;tlacuache-venn ancho="300" s2="0.4" s3="0.1" s4="0.5"&gt;&lt;/tlacuache-venn&gt;
-
-&lt;!-- 3 Conjuntos con fracción LaTeX --&gt;
-&lt;tlacuache-venn ancho="400" n="3" conjuntos="'X','Y','Z'"
-    s6="$$\\frac{1}{3}$$" s8="x"&gt;
-&lt;/tlacuache-venn&gt;</pre>
-
-  </fieldset>
-</div>`
+      this.innerHTML=`pendiente`
 
 return
     }

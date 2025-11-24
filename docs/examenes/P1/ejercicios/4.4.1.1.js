@@ -3,8 +3,8 @@ import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 
 export const metadata = {
     tema: "4. Estadística y Probabilidad",
-    subtema: "4. Probabilidad",
-    seccion: "1. Espacio muestral y sucesos",
+    subtema: "4.4. Probabilidad",
+    seccion: "4.4.1. Espacio muestral y sucesos",
     titulo: "Probabilidad con dos dados (Rojo y Verde)",
     tipo: 1, // 1 = Abierto
     puntos: 5 // Asignado: [2] para inciso a, [3] para inciso b
