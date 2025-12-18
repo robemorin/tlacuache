@@ -1,0 +1,92 @@
+[
+  {
+    "id": 1,
+    "nombre": "1. Álgebra",
+    "subtemas": [
+      {
+        "id": 2,
+        "nombre": "1.2. Sucesiones y series",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.2.1. Sucesiones aritméticas y sumas parciales",
+            "ejercicios": [
+              {
+                "id": "1.2.1.2.js",
+                "titulo": "Ficha: Series y Sucesiones aritméticas",
+                "ruta": "./ejercicios/1.2.1.2.js",
+                "puntos": 30,
+                "orden": 2
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "1.2.2. Sucesiones geométricas y series",
+            "ejercicios": [
+              {
+                "id": "1.2.2.1.js",
+                "titulo": "Ficha: Sucesiones Geométricas",
+                "ruta": "./ejercicios/1.2.2.1.js",
+                "puntos": 30,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "4. Estadística y Probabilidad",
+    "subtemas": [
+      {
+        "id": 3,
+        "nombre": "4.3. Correlación y regresión",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "4.3.2. Correlación de Pearson",
+            "ejercicios": [
+              {
+                "id": "4.3.2.1.js",
+                "titulo": "Estadísticas Sumarias (Bivariado)",
+                "ruta": "./ejercicios/4.3.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "4.3.2.2.js",
+                "titulo": "Pearson y Línea de Regresión",
+                "ruta": "./ejercicios/4.3.2.2.js",
+                "puntos": 7,
+                "orden": 2
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "4.3.3. Coeficiente de correlación de rangos de Spearman",
+            "ejercicios": [
+              {
+                "id": "4.3.3.1.js",
+                "titulo": "Elección de Correlación (Concepto)",
+                "ruta": "./ejercicios/4.3.3.1.js",
+                "puntos": 4,
+                "orden": 1
+              },
+              {
+                "id": "4.3.3.2.js",
+                "titulo": "Cálculo de Spearman",
+                "ruta": "./ejercicios/4.3.3.2.js",
+                "puntos": 8,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

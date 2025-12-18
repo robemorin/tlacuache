@@ -1,0 +1,636 @@
+[
+  {
+    "id": 1,
+    "nombre": "Álgebra",
+    "subtemas": [
+      {
+        "id": 1,
+        "nombre": "Fundamentos",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "Números Reales",
+            "ejercicios": [
+              {
+                "id": "1.1.1.1.js",
+                "titulo": "Suma simple",
+                "ruta": "./ejercicios/1.1.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "Exponentes y Logaritmos",
+            "ejercicios": [
+              {
+                "id": "1.1.2.1.js",
+                "titulo": "pH del Café (Logaritmos)",
+                "ruta": "./ejercicios/1.1.2.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "1.1.3. Redondeo y estimaciones",
+            "ejercicios": [
+              {
+                "id": "1.1.3.1.js",
+                "titulo": "Cálculo, redondeo y notación científica",
+                "ruta": "./ejercicios/1.1.3.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "1.1.3.2.js",
+                "titulo": "Moles y Moléculas (Notación Científica)",
+                "ruta": "./ejercicios/1.1.3.2.js",
+                "puntos": 6,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "1.2. Sucesiones y series",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.2.1. Sucesiones aritméticas y sumas parciales",
+            "ejercicios": [
+              {
+                "id": "1.2.1.1.js",
+                "titulo": "Ahorro progresivo (Cumpleaños)",
+                "ruta": "./ejercicios/1.2.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "nombre": "1.3. Modelos Financieros",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.3.1. Interés Compuesto",
+            "ejercicios": [
+              {
+                "id": "1.3.1.1.js",
+                "titulo": "Decisión de Inversión a Plazo Fijo",
+                "ruta": "./ejercicios/1.3.1.1.js",
+                "puntos": 7,
+                "orden": 1
+              },
+              {
+                "id": "1.3.1.2.js",
+                "titulo": "Depreciación de Equipo y Fondo de Inversión",
+                "ruta": "./ejercicios/1.3.1.2.js",
+                "puntos": 8,
+                "orden": 2
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "1.3.2. Depreciación Lineal",
+            "ejercicios": [
+              {
+                "id": "1.3.2.1.js",
+                "titulo": "Depreciación Lineal (Maquinaria Pesada)",
+                "ruta": "./ejercicios/1.3.2.1.js",
+                "puntos": 7,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "1.3.3. Anualidades y Amortizaciones",
+            "ejercicios": [
+              {
+                "id": "1.3.3.1.js",
+                "titulo": "Plan de Retiro (Anualidad)",
+                "ruta": "./ejercicios/1.3.3.1.js",
+                "puntos": 8,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "nombre": "1.4. Aproximación y error",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.4.1. Error de estimación",
+            "ejercicios": [
+              {
+                "id": "1.4.1.1.js",
+                "titulo": "Límites de precisión y Área mínima",
+                "ruta": "./ejercicios/1.4.1.1.js",
+                "puntos": 4,
+                "orden": 1
+              },
+              {
+                "id": "1.4.1.2.js",
+                "titulo": "Diagonales de una caja y porcentaje de error",
+                "ruta": "./ejercicios/1.4.1.2.js",
+                "puntos": 7,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "nombre": "1.5. Sistemas de ecuaciones",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "1.5.1. Resolución de sistemas lineales",
+            "ejercicios": [
+              {
+                "id": "1.5.1.1.js",
+                "titulo": "Venta de Boletos (Sistemas)",
+                "ruta": "./ejercicios/1.5.1.1.js",
+                "puntos": 4,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "nombre": "2. Funciones",
+    "subtemas": [
+      {
+        "id": 1,
+        "nombre": "1. Modelos",
+        "secciones": [
+          {
+            "id": 4,
+            "nombre": "4. Funciones a trozos",
+            "ejercicios": [
+              {
+                "id": "2.1.4.1.js",
+                "titulo": "Función a Trozos - Costo de Agua",
+                "ruta": "./ejercicios/2.1.4.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "2.1.4.2.js",
+                "titulo": "Función a trozos y traslación",
+                "ruta": "./ejercicios/2.1.4.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "2.1.4.3.js",
+                "titulo": "Función a trozos y escalamiento",
+                "ruta": "./ejercicios/2.1.4.3.js",
+                "puntos": 6,
+                "orden": 3
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "nombre": "2.1.5. Composición de funciones",
+            "ejercicios": [
+              {
+                "id": "2.1.5.1.js",
+                "titulo": "Resolución de una ecuación compuesta (Trigonométrica)",
+                "ruta": "./ejercicios/2.1.5.1.js",
+                "puntos": 5,
+                "orden": 1
+              },
+              {
+                "id": "2.1.5.2.js",
+                "titulo": "Funciones inversas y compuestas",
+                "ruta": "./ejercicios/2.1.5.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "2.1.5.3.js",
+                "titulo": "Rendimiento y Seguridad de un Motor Industrial",
+                "ruta": "./ejercicios/2.1.5.3.js",
+                "puntos": 9,
+                "orden": 3
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 2,
+        "nombre": "2.2. Modelos lineales",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "2.2.1. Ecuaciones de la recta",
+            "ejercicios": [
+              {
+                "id": "2.2.2.1.js",
+                "titulo": "Líneas paralelas y gradiente",
+                "ruta": "./ejercicios/2.2.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "2.2.2.2.js",
+                "titulo": "Modelo Lineal (Temperatura)",
+                "ruta": "./ejercicios/2.2.2.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "2.2.2.3.js",
+                "titulo": "Crecimiento de Otate (Bambú Mexicano)",
+                "ruta": "./ejercicios/2.2.2.3.js",
+                "puntos": 9,
+                "orden": 3
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "2.2.3. Desigualdades lineales",
+            "ejercicios": [
+              {
+                "id": "2.2.3.1.js",
+                "titulo": "Región definida por desigualdades",
+                "ruta": "./ejercicios/2.2.3.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "nombre": "3. Modelos cuadráticos",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "2. Eje de simetría y vértice",
+            "ejercicios": [
+              {
+                "id": "2.3.2.1.js",
+                "titulo": "Análisis de una parábola dada su gráfica",
+                "ruta": "./ejercicios/2.3.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "2.3.2.2.js",
+                "titulo": "Altura Máxima (Proyectil)",
+                "ruta": "./ejercicios/2.3.2.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "2.3.2.3.js",
+                "titulo": "Solución gráfica de ecuaciones cuadráticas",
+                "ruta": "./ejercicios/2.3.2.3.js",
+                "puntos": 6,
+                "orden": 3
+              },
+              {
+                "id": "2.3.2.4.js",
+                "titulo": "Análisis Gráfico de una Parábola",
+                "ruta": "./ejercicios/2.3.2.4.js",
+                "puntos": 9,
+                "orden": 4
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "nombre": "2.4. Modelos exponenciales",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "2.4.1. Funciones de crecimiento y decaimiento exponencial",
+            "ejercicios": [
+              {
+                "id": "2.4.1.1.js",
+                "titulo": "Crecimiento bacteriano",
+                "ruta": "./ejercicios/2.4.1.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "2.4.2. Funciones de surgimiento",
+            "ejercicios": [
+              {
+                "id": "2.4.2.1.js",
+                "titulo": "Concentración de Medicamento (Surgimiento)",
+                "ruta": "./ejercicios/2.4.2.1.js",
+                "puntos": 7,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "nombre": "2.5. Modelos sinusoidales",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "2.5.1. Aplicaciones de funciones seno y coseno",
+            "ejercicios": [
+              {
+                "id": "2.5.1.1.js",
+                "titulo": "La Rueda de la Fortuna",
+                "ruta": "./ejercicios/2.5.1.1.js",
+                "puntos": 8,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "nombre": "3. Geometría y Trigonometría",
+    "subtemas": [
+      {
+        "id": 2,
+        "nombre": "3.2. Trigonometría",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "3.2.2. Regla del seno",
+            "ejercicios": [
+              {
+                "id": "3.2.2.1.js",
+                "titulo": "Triángulo isósceles y resolución",
+                "ruta": "./ejercicios/3.2.2.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 5,
+            "nombre": "3.2.5. Ángulos de elevación y depresión",
+            "ejercicios": [
+              {
+                "id": "3.2.5.1.js",
+                "titulo": "Ángulo de elevación (Acantilado y Barco)",
+                "ruta": "./ejercicios/3.2.5.1.js",
+                "puntos": 4,
+                "orden": 1
+              },
+              {
+                "id": "3.2.5.2.js",
+                "titulo": "Cámaras de Seguridad (Depresión)",
+                "ruta": "./ejercicios/3.2.5.2.js",
+                "puntos": 8,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "nombre": "3.5. Geometría del círculo",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "3.5.1. Longitud de arco",
+            "ejercicios": [
+              {
+                "id": "3.5.1.1.js",
+                "titulo": "Distancia entre ciudades (Paralelo)",
+                "ruta": "./ejercicios/3.5.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "2. Área de sectores circulares",
+            "ejercicios": [
+              {
+                "id": "3.5.2.1.js",
+                "titulo": "Área, ángulo y perímetro de un sector",
+                "ruta": "./ejercicios/3.5.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "3.5.2.2.js",
+                "titulo": "Limpiaparabrisas (Área y Arco)",
+                "ruta": "./ejercicios/3.5.2.2.js",
+                "puntos": 5,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "nombre": "4. Estadística y Probabilidad",
+    "subtemas": [
+      {
+        "id": 2,
+        "nombre": "4.2. Estadística descriptiva",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "4.2.1. Frecuencias simples y acumuladas",
+            "ejercicios": [
+              {
+                "id": "4.2.1.1.js",
+                "titulo": "Tabla de frecuencias relativas y probabilidad",
+                "ruta": "./ejercicios/4.2.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 3,
+        "nombre": "4.3. Correlación y regresión",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "4.3.1. Diagramas de dispersión",
+            "ejercicios": [
+              {
+                "id": "4.3.1.1.js",
+                "titulo": "Relación entre largo y ancho de hojas",
+                "ruta": "./ejercicios/4.3.1.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "4.3.2. Regresión Lineal y Pearson",
+            "ejercicios": [
+              {
+                "id": "4.3.2.1.js",
+                "titulo": "Análisis Bivariado (Peso vs Pulso)",
+                "ruta": "./ejercicios/4.3.2.1.js",
+                "puntos": 12,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "4.3.3. Coeficiente de correlación de rangos de Spearman",
+            "ejercicios": [
+              {
+                "id": "4.3.3.1.js",
+                "titulo": "Comparación Pearson vs Spearman (No lineal)",
+                "ruta": "./ejercicios/4.3.3.1.js",
+                "puntos": 8,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 4,
+        "nombre": "4.4. Probabilidad",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "4.4.1. Espacio muestral y sucesos",
+            "ejercicios": [
+              {
+                "id": "4.4.1.1.js",
+                "titulo": "Probabilidad con dos dados (Rojo y Verde)",
+                "ruta": "./ejercicios/4.4.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "4.4.3. Probabilidad condicionada",
+            "ejercicios": [
+              {
+                "id": "4.4.3.1.js",
+                "titulo": "Probabilidad en tabla de contingencia (Tenis)",
+                "ruta": "./ejercicios/4.4.3.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "4.4.3.2.js",
+                "titulo": "Admisiones Universitarias (Tabla)",
+                "ruta": "./ejercicios/4.4.3.2.js",
+                "puntos": 6,
+                "orden": 2
+              }
+            ]
+          },
+          {
+            "id": 4,
+            "nombre": "4.4.4. Diagramas de Venn",
+            "ejercicios": [
+              {
+                "id": "4.4.4.1.js",
+                "titulo": "Interpretación de diagrama de Venn (3 conjuntos)",
+                "ruta": "./ejercicios/4.4.4.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "4.4.4.2.js",
+                "titulo": "Estudiantes y Ciencias (3 Conjuntos)",
+                "ruta": "./ejercicios/4.4.4.2.js",
+                "puntos": 10,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
+        "id": 5,
+        "nombre": "4.5. Distribuciones de probabilidad",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "4.5.1. Distribución Binomial",
+            "ejercicios": [
+              {
+                "id": "4.5.1.1.js",
+                "titulo": "Prueba de Polígrafo (Binomial)",
+                "ruta": "./ejercicios/4.5.1.1.js",
+                "puntos": 7,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "5. Cálculo",
+    "subtemas": [
+      {
+        "id": 5,
+        "nombre": "5.5. Integración",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "5.5.1. Áreas y Volúmenes",
+            "ejercicios": [
+              {
+                "id": "5.5.1.1.js",
+                "titulo": "Área entre curvas",
+                "ruta": "./ejercicios/5.5.1.1.js",
+                "puntos": 7,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]

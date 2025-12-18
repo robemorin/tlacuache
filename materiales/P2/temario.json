@@ -1,0 +1,52 @@
+[
+  {
+    "id": 3,
+    "nombre": "3. Geometría y Trigonometría",
+    "subtemas": [
+      {
+        "id": 2,
+        "nombre": "3.2. Trigonometría",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "3.2.1. Arcos y Sectores",
+            "ejercicios": [
+              {
+                "id": "3.2.1.1.js",
+                "titulo": "Pista de Correr",
+                "ruta": "./ejercicios/3.2.1.1.js",
+                "puntos": 15,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "5. Cálculo",
+    "subtemas": [
+      {
+        "id": 5,
+        "nombre": "5.5. Integración",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "5.5.2. Regla del Trapecio",
+            "ejercicios": [
+              {
+                "id": "5.5.2.1.js",
+                "titulo": "Ala de Avión",
+                "ruta": "./ejercicios/5.5.2.1.js",
+                "puntos": 12,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  }
+]
