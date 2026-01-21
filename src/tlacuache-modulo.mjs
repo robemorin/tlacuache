@@ -348,8 +348,25 @@ export const stat = {
             }
             return [mean,median,moda]
         }else {
-            console.log('Error: La longitud del arreglo de frecuencias no coincide con la del arreglo de datos.');
-            return 'pendiente';
+            // Calcular la media, mediana y moda sin frecuencias
+            let n = x.length;
+            let mean = this.mean(x);
+            let sorted = [...x].sort((a, b) => a - b);
+            let median;
+            if (n % 2 === 0) {
+                median = (sorted[n/2 - 1] + sorted[n/2]) / 2;
+            } else {
+                median = sorted[Math.floor(n/2)];
+            }
+            // Moda
+            let count = {};
+            for (let i = 0; i < x.length; i++) {
+                count[x[i]] = (count[x[i]] || 0) + 1;
+            }
+            let maxCount = Math.max(...Object.values(count));
+            let moda = Object.keys(count).filter(key => count[key] === maxCount).map(Number);
+            
+            return [mean, median, moda];
         }
     },
     factorial(n) {
