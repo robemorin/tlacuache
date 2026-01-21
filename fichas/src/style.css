@@ -485,6 +485,7 @@ button {
     tlacuache-renglon,
     .no-screen {
         display: none !important;
+        
     }
 
 }
@@ -541,5 +542,10 @@ button {
         display: flex;
         flex-direction: column;
         justify-content: center;
+    }
+    tlacuache-renglon {
+        break-inside: avoid;
+        page-break-inside: avoid !important;
+        display: block;
     }
 }

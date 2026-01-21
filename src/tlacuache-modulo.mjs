@@ -317,6 +317,41 @@ export const stat = {
     `;
         return S
     },
+    medTendenciaCentral(x,frecuencia=[]){
+        //Calcular la media, mediana y moda
+        if(frecuencia.length==x.length){
+            let n=0
+            for(let k=0;k<frecuencia.length;++k) n+=frecuencia[k]
+            //Media
+            let mean=0
+            for(let k=0;k<x.length;++k) mean+=x[k]*frecuencia[k]
+            mean/=n
+            //Mediana
+            let cumFreq=[]
+            for(let k=0;k<frecuencia.length;++k) cumFreq[k]=frecuencia[k]
+            for(let k=1;k<frecuencia.length;++k) cumFreq[k]+=cumFreq[k-1]
+            let median
+            if(n%2==0){
+                let pos1=n/2
+                let pos2=n/2+1
+                for(let k=0;k<cumFreq.length;++k) if(cumFreq[k]>=pos1 && cumFreq[k-1]<pos1) median=x[k]
+                for(let k=0;k<cumFreq.length;++k) if(cumFreq[k]>=pos2 && cumFreq[k-1]<pos2) median=(median+x[k])/2
+            }else{
+                let pos=(n+1)/2
+                for(let k=0;k<cumFreq.length;++k) if(cumFreq[k]>=pos && cumFreq[k-1]<pos) median=x[k]
+            }
+            //Moda
+            let maxFreq=Math.max(...frecuencia)
+            let moda=[]
+            for(let k=0;k<frecuencia.length;++k){
+                if(frecuencia[k]==maxFreq) moda.push(x[k])
+            }
+            return [mean,median,moda]
+        }else {
+            console.log('Error: La longitud del arreglo de frecuencias no coincide con la del arreglo de datos.');
+            return 'pendiente';
+        }
+    },
     factorial(n) {
         if (n < 0) return undefined;
         if (n === 0 || n === 1) return 1;
