@@ -96,7 +96,7 @@ export const poli = {
             if (b == 1) return `$ ${(a < 0 ? '-' : '')} ${(Math.abs(a) == 1 ? '' : Math.abs(a))} \\sqrt[${(q == 2 ? '' : q)}]{${discriminante}^{${p == 1 ? '' : p}}} $`
             else return `$${(a < 0 ? '-' : '')} \\frac{ ${(Math.abs(a) == 1 ? '' : Math.abs(a))} \\sqrt[${(q == 2 ? '' : q)}]{${discriminante}^{${p == 1 ? '' : p}}}}{${b}}$`
         } else {
-            return `$${(a < 0 ? '-' : '')} \\frac{${Math.abs(a)}} { ${b == 1 ? "" : b}\\sqrt[${(q == 2 ? '' : q)}]{${discriminante}^{${p == -1 ? '' : -p}}}}$`
+            return `$${(a < 0 ? '-' : '')} \\frac{${Math.abs(a)}}{${b == 1 ? "" : b}\\sqrt[${(q == 2 ? '' : q)}]{${discriminante}^{${p == -1 ? '' : -p}}}}$`
         }
     },
     print(v) {
