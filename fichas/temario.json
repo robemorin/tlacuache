@@ -81,6 +81,32 @@
     "nombre": "4. Estadística y Probabilidad",
     "subtemas": [
       {
+        "id": 1,
+        "nombre": "4.1. Estadística Descriptiva",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "4.1.1. Representación de datos",
+            "ejercicios": [
+              {
+                "id": "4.1.1.1.js",
+                "titulo": "Ficha: Diagramas de Caja y Bigotes",
+                "ruta": "./ejercicios/4.1.1.1.js",
+                "puntos": 25,
+                "orden": 1
+              },
+              {
+                "id": "4.1.1.2.js",
+                "titulo": "Ficha: Detección de Valores Atípicos (Outliers)",
+                "ruta": "./ejercicios/4.1.1.2.js",
+                "puntos": 25,
+                "orden": 2
+              }
+            ]
+          }
+        ]
+      },
+      {
         "id": 3,
         "nombre": "4.3. Correlación y regresión",
         "secciones": [
