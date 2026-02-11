@@ -100,7 +100,7 @@ export async function generar(i) {
     const limInf_new = q1_new - 1.5 * iqr_new;
 
     const html2 = `
-        < div class="problema-ib" >
+        <div class="problema-ib">
         <p><strong>${i + 1}.</strong> [Contexto: Rendimiento Académico] Las calificaciones (sobre 60 puntos) de un examen parcial se resumen así:</p>
         
         <ul style="display: flex; list-style: none; gap: 20px; padding: 0; justify-content: center; background: #fafafa; padding: 10px; border: 1px solid #ddd;">
@@ -113,12 +113,12 @@ export async function generar(i) {
 
         <ol class="ib-lista" style="margin-top: 20px;">
             <li>
-                <span class="ib-texto">Demuestre matemáticamente si la calificación mínima (${outlier2}) es un valor atípico.</span>
+                <span class="ib-texto">Justifique matemáticamente si la calificación mínima (${outlier2}) es un valor atípico.</span>
                 <tlacuache-renglon n="3" color="gray" alto="25" style="display:block; width:100%; margin-top:5px;"></tlacuache-renglon>
                 <span class="ib-mark">[3]</span>
             </li>
             <li style="margin-top: 15px;">
-                <span class="ib-texto">Sabiendo que la siguiente calificación más baja después de ${outlier2} es 12, dibuje un diagrama de caja y bigotes preciso en la cuadrícula. Indique claramente cualquier valor atípico.</span>
+                <span class="ib-texto">Sabiendo que la siguiente calificación más baja después de ${outlier2} es ${limInf_new}, dibuje un diagrama de caja y bigotes preciso en la cuadrícula. Indique claramente cualquier valor atípico.</span>
                 <div style="display: flex; justify-content: center;">
                <tlacuache-milimetrado size="200,720" cuadricula="5,20" n="5" color='RGB(200, 64, 64)' stroke=".7" stroke2=".2" rango="0,50"/>
             </div>
