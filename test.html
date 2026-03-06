@@ -100,7 +100,8 @@
             <div class="col-md-6">
                 <div class="mb-3">
                     <label for="dataArray" class="form-label">Arreglo de datos:</label>
-                    <input type="text" class="form-control" id="dataArray" placeholder="[1, 2, 3, 4, 5]" value="1.2,1.3,1.35,1.98,1.56,1.45">
+                    <input type="text" class="form-control" id="dataArray" placeholder="[1, 2, 3, 4, 5]"
+                        value="1.2,1.3,1.35,1.98,1.56,1.45">
                 </div>
                 <button class="btn btn-secondary" onclick="ejecutarTestConArreglo()">Calcular con Arreglo</button>
             </div>
@@ -110,58 +111,58 @@
     <script>
         //import * as tlacu from './src/tlacuache-modulo.mjs';
         const div = document.getElementById('contenedor')
-        function t_test(mu0,dataMean,datasd=0,datan,dataH1=0){
-            function gammafn(n){
+        function t_test(mu0, dataMean, datasd = 0, datan, dataH1 = 0) {
+            function gammafn(n) {
                 function gammaEntero(n) {
                     if (n === 1) return 1;
                     let result = 1;
                     for (let i = 1; i < n; i++) {
                         result *= i;
-                    }                
+                    }
                     return result;
                 }
                 function gammaFraccion(m) {//solo es para entero + 1/2
                     const n = Math.floor(m);
                     let result = 1
                     for (let i = 1; i <= n; i++) {
-                        result *= (n+i)/4;
+                        result *= (n + i) / 4;
                     }
-                    return result*Math.sqrt(Math.PI);
+                    return result * Math.sqrt(Math.PI);
                 }
                 if (Number.isInteger(n)) {
                     return gammaEntero(n);
                 } else {
                     return gammaFraccion(n);
-                }   
+                }
             }
 
-            function f(t){
-                return Math.pow( 1+t*t/v , -(v+1)/2);
+            function f(t) {
+                return Math.pow(1 + t * t / v, -(v + 1) / 2);
             }
-            
-            function simpsonComposite(f,t) {
-                const n = Math.round(t/0.01)*3
+
+            function simpsonComposite(f, t) {
+                const n = Math.round(Math.abs(t / 0.01)) * 3
                 const h = t / n;
                 let sum = f(0) + f(t);
-                
+
                 for (let i = 1; i < n; i++) {
                     const x = i * h;
                     sum += (i % 3 === 0) ? 2 * f(x) : 3 * f(x);
                 }
-                
-                return ((3 * h / 8) * sum)*gammafn((v+1)/2)/(Math.sqrt(v*Math.PI)*gammafn(v/2));
+
+                return ((3 * h / 8) * sum) * gammafn((v + 1) / 2) / (Math.sqrt(v * Math.PI) * gammafn(v / 2));
             }
 
             // empieza el test'
-            let mean,sd,n,H1;
-            if(Array.isArray(dataMean)){
+            let mean, sd, n, H1;
+            if (Array.isArray(dataMean)) {
                 const sum = dataMean.reduce((acc, val) => acc + val, 0);
                 mean = sum / dataMean.length;
                 const variance = dataMean.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (dataMean.length - 1);
                 sd = Math.sqrt(variance);
                 n = dataMean.length;
                 H1 = datasd;
-            }else{
+            } else {
                 mean = dataMean;
                 sd = datasd;
                 n = datan;
@@ -172,36 +173,36 @@
 
 
             const t = (mean - mu0) / (sd / Math.sqrt(n));
-            const v = n-1;
-            let area, pvalue 
+            const v = n - 1;
+            let area, pvalue
 
-            if(H1==0){// H1: mu > mu0
+            if (H1 == 0) {// H1: mu > mu0
                 area = simpsonComposite(f, t);
-                pvalue = 0.5-area;
-            }else if(H1==1){// H1: mu < mu0
+                pvalue = 0.5 - area;
+            } else if (H1 == 1) {// H1: mu < mu0
                 area = simpsonComposite(f, -t);
-                pvalue = 0.5-area;
-            }else if(H1==2){// H1: mu != mu0
+                pvalue = 0.5 - area;
+            } else if (H1 == 2) {// H1: mu != mu0
                 area = simpsonComposite(f, Math.abs(t));
-                pvalue = 2*(0.5-area);
+                pvalue = 2 * (0.5 - area);
             }
 
             console.log(`Integral de f(${t}) a \\infty = ${pvalue}`);
-            return [t,pvalue]
+            return [t, pvalue]
         }
-        function ejecutarTest(){
+        function ejecutarTest() {
             const mu0 = parseFloat(document.getElementById('mu0').value);
             const mean = parseFloat(document.getElementById('mean').value);
             const sd = parseFloat(document.getElementById('sd').value);
             const n = parseInt(document.getElementById('n').value);
             const op = parseInt(document.getElementById('op').value);
-            document.getElementById("contenedor").innerHTML = "p + "+t_test(mu0, mean, sd, n, op);
+            document.getElementById("contenedor").innerHTML = "p + " + t_test(mu0, mean, sd, n, op);
         }
-        function ejecutarTestConArreglo(){
+        function ejecutarTestConArreglo() {
             const mu0 = parseFloat(document.getElementById('mu0').value);
             const dataArray = document.getElementById('dataArray').value.split(',').map(Number);
             const op = parseInt(document.getElementById('op').value);
-            document.getElementById("contenedor").innerHTML = "p + "+t_test(mu0, dataArray,op);
+            document.getElementById("contenedor").innerHTML = "p + " + t_test(mu0, dataArray, op);
         }
 
     </script>

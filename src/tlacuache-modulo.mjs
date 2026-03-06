@@ -317,46 +317,46 @@ export const stat = {
     `;
         return S
     },
-    medTendenciaCentral(x,frecuencia=[]){
+    medTendenciaCentral(x, frecuencia = []) {
         //Calcular la media, mediana y moda
-        if(frecuencia.length==x.length){
-            let n=0
-            for(let k=0;k<frecuencia.length;++k) n+=frecuencia[k]
+        if (frecuencia.length == x.length) {
+            let n = 0
+            for (let k = 0; k < frecuencia.length; ++k) n += frecuencia[k]
             //Media
-            let mean=0
-            for(let k=0;k<x.length;++k) mean+=x[k]*frecuencia[k]
-            mean/=n
+            let mean = 0
+            for (let k = 0; k < x.length; ++k) mean += x[k] * frecuencia[k]
+            mean /= n
             //Mediana
-            let cumFreq=[]
-            for(let k=0;k<frecuencia.length;++k) cumFreq[k]=frecuencia[k]
-            for(let k=1;k<frecuencia.length;++k) cumFreq[k]+=cumFreq[k-1]
+            let cumFreq = []
+            for (let k = 0; k < frecuencia.length; ++k) cumFreq[k] = frecuencia[k]
+            for (let k = 1; k < frecuencia.length; ++k) cumFreq[k] += cumFreq[k - 1]
             let median
-            if(n%2==0){
-                let pos1=n/2
-                let pos2=n/2+1
-                for(let k=0;k<cumFreq.length;++k) if(cumFreq[k]>=pos1 && cumFreq[k-1]<pos1) median=x[k]
-                for(let k=0;k<cumFreq.length;++k) if(cumFreq[k]>=pos2 && cumFreq[k-1]<pos2) median=(median+x[k])/2
-            }else{
-                let pos=(n+1)/2
-                for(let k=0;k<cumFreq.length;++k) if(cumFreq[k]>=pos && cumFreq[k-1]<pos) median=x[k]
+            if (n % 2 == 0) {
+                let pos1 = n / 2
+                let pos2 = n / 2 + 1
+                for (let k = 0; k < cumFreq.length; ++k) if (cumFreq[k] >= pos1 && cumFreq[k - 1] < pos1) median = x[k]
+                for (let k = 0; k < cumFreq.length; ++k) if (cumFreq[k] >= pos2 && cumFreq[k - 1] < pos2) median = (median + x[k]) / 2
+            } else {
+                let pos = (n + 1) / 2
+                for (let k = 0; k < cumFreq.length; ++k) if (cumFreq[k] >= pos && cumFreq[k - 1] < pos) median = x[k]
             }
             //Moda
-            let maxFreq=Math.max(...frecuencia)
-            let moda=[]
-            for(let k=0;k<frecuencia.length;++k){
-                if(frecuencia[k]==maxFreq) moda.push(x[k])
+            let maxFreq = Math.max(...frecuencia)
+            let moda = []
+            for (let k = 0; k < frecuencia.length; ++k) {
+                if (frecuencia[k] == maxFreq) moda.push(x[k])
             }
-            return [mean,median,moda]
-        }else {
+            return [mean, median, moda]
+        } else {
             // Calcular la media, mediana y moda sin frecuencias
             let n = x.length;
             let mean = this.mean(x);
             let sorted = [...x].sort((a, b) => a - b);
             let median;
             if (n % 2 === 0) {
-                median = (sorted[n/2 - 1] + sorted[n/2]) / 2;
+                median = (sorted[n / 2 - 1] + sorted[n / 2]) / 2;
             } else {
-                median = sorted[Math.floor(n/2)];
+                median = sorted[Math.floor(n / 2)];
             }
             // Moda
             let count = {};
@@ -365,7 +365,7 @@ export const stat = {
             }
             let maxCount = Math.max(...Object.values(count));
             let moda = Object.keys(count).filter(key => count[key] === maxCount).map(Number);
-            
+
             return [mean, median, moda];
         }
     },
@@ -455,7 +455,7 @@ export const stat = {
         };
         return [sorted[0], getQuartile(q1_pos), getQuartile(q2_pos), getQuartile(q3_pos), sorted[n - 1]];
     },
-    t_test(mu0,dataMean,datasd=0,datan,dataH1=0){
+    t_test(mu0, dataMean, datasd = 0, datan, dataH1 = 0) {
         /*
         sintaxis
         t_test(mu0,muestra,H1)//muestra es un arreglo de datos
@@ -464,85 +464,85 @@ export const stat = {
         1: H1: mu < mu0
         2: H1: mu != mu0
         */
-        
-            function gammafn(n){
-                function gammaEntero(n) {
-                    if (n === 1) return 1;
-                    let result = 1;
-                    for (let i = 1; i < n; i++) {
-                        result *= i;
-                    }                
-                    return result;
-                }
-                function gammaFraccion(m) {//solo es para entero + 1/2
-                    const n = Math.floor(m);
-                    let result = 1
-                    for (let i = 1; i <= n; i++) {
-                        result *= (n+i)/4;
-                    }
-                    return result*Math.sqrt(Math.PI);
-                }
-                if (Number.isInteger(n)) {
-                    return gammaEntero(n);
-                } else {
-                    return gammaFraccion(n);
-                }   
-            }
 
-            function f(t){
-                return Math.pow( 1+t*t/v , -(v+1)/2);
-            }
-            
-            function simpsonComposite(f,t) {
-                const n = Math.round(t/0.01)*3
-                const h = t / n;
-                let sum = f(0) + f(t);
-                
+        function gammafn(n) {
+            function gammaEntero(n) {
+                if (n === 1) return 1;
+                let result = 1;
                 for (let i = 1; i < n; i++) {
-                    const x = i * h;
-                    sum += (i % 3 === 0) ? 2 * f(x) : 3 * f(x);
+                    result *= i;
                 }
-                
-                return ((3 * h / 8) * sum)*gammafn((v+1)/2)/(Math.sqrt(v*Math.PI)*gammafn(v/2));
+                return result;
             }
-
-            // empieza el test'
-            let mean,sd,n,H1;
-            if(Array.isArray(dataMean)){
-                const sum = dataMean.reduce((acc, val) => acc + val, 0);
-                mean = sum / dataMean.length;
-                const variance = dataMean.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (dataMean.length - 1);
-                sd = Math.sqrt(variance);
-                n = dataMean.length;
-                H1 = datasd;
-            }else{
-                mean = dataMean;
-                sd = datasd;
-                n = datan;
-                H1 = dataH1;
+            function gammaFraccion(m) {//solo es para entero + 1/2
+                const n = Math.floor(m);
+                let result = 1
+                for (let i = 1; i <= n; i++) {
+                    result *= (n + i) / 4;
+                }
+                return result * Math.sqrt(Math.PI);
             }
-
-
-
-
-            const t = (mean - mu0) / (sd / Math.sqrt(n));
-            const v = n-1;
-            let area, pvalue 
-
-            if(H1==0){// H1: mu > mu0
-                area = simpsonComposite(f, t);
-                pvalue = 0.5-area;
-            }else if(H1==1){// H1: mu < mu0
-                area = simpsonComposite(f, -t);
-                pvalue = 0.5-area;
-            }else if(H1==2){// H1: mu != mu0
-                area = simpsonComposite(f, Math.abs(t));
-                pvalue = 2*(0.5-area);
+            if (Number.isInteger(n)) {
+                return gammaEntero(n);
+            } else {
+                return gammaFraccion(n);
             }
-
-            //console.log(`Integral de f(${t}) a \\infty = ${pvalue}`);
-            return [t,pvalue]
         }
+
+        function f(t) {
+            return Math.pow(1 + t * t / v, -(v + 1) / 2);
+        }
+
+        function simpsonComposite(f, t) {
+            const n = Math.round(Math.abs(t / 0.01)) * 3
+            const h = t / n;
+            let sum = f(0) + f(t);
+
+            for (let i = 1; i < n; i++) {
+                const x = i * h;
+                sum += (i % 3 === 0) ? 2 * f(x) : 3 * f(x);
+            }
+
+            return ((3 * h / 8) * sum) * gammafn((v + 1) / 2) / (Math.sqrt(v * Math.PI) * gammafn(v / 2));
+        }
+
+        // empieza el test'
+        let mean, sd, n, H1;
+        if (Array.isArray(dataMean)) {
+            const sum = dataMean.reduce((acc, val) => acc + val, 0);
+            mean = sum / dataMean.length;
+            const variance = dataMean.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (dataMean.length - 1);
+            sd = Math.sqrt(variance);
+            n = dataMean.length;
+            H1 = datasd;
+        } else {
+            mean = dataMean;
+            sd = datasd;
+            n = datan;
+            H1 = dataH1;
+        }
+
+
+
+
+        const t = (mean - mu0) / (sd / Math.sqrt(n));
+        const v = n - 1;
+        let area, pvalue
+
+        if (H1 == 0) {// H1: mu > mu0
+            area = simpsonComposite(f, t);
+            pvalue = 0.5 - area;
+        } else if (H1 == 1) {// H1: mu < mu0
+            area = simpsonComposite(f, -t);
+            pvalue = 0.5 - area;
+        } else if (H1 == 2) {// H1: mu != mu0
+            area = simpsonComposite(f, Math.abs(t));
+            pvalue = 2 * (0.5 - area);
+        }
+
+        //console.log(`Integral de f(${t}) a \\infty = ${pvalue}`);
+        return [t, pvalue]
+    }
 }
 //Hacer el método del trapecio con estructura como ans={n: n, y:y, x:x ...}
 export function metTrapecio(a, b, n, fun) {
