@@ -276,6 +276,27 @@
                 "ruta": "./ejercicios/2.4.1.1.js",
                 "puntos": 6,
                 "orden": 1
+              },
+              {
+                "id": "2.4.1.2.js",
+                "titulo": "Depreciación de un vehículo",
+                "ruta": "./ejercicios/2.4.1.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "2.4.1.3.js",
+                "titulo": "Determinación de parámetros de una función exponencial",
+                "ruta": "./ejercicios/2.4.1.3.js",
+                "puntos": 8,
+                "orden": 3
+              },
+              {
+                "id": "2.4.1.4.js",
+                "titulo": "Desintegración radioactiva y vida media",
+                "ruta": "./ejercicios/2.4.1.4.js",
+                "puntos": 10,
+                "orden": 4
               }
             ]
           }
@@ -404,6 +425,40 @@
                 "ruta": "./ejercicios/4.2.1.1.js",
                 "puntos": 5,
                 "orden": 1
+              },
+              {
+                "id": "4.2.1.2.js",
+                "titulo": "Análisis de polígono de frecuencias acumuladas",
+                "ruta": "./ejercicios/4.2.1.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "4.2.1.3.js",
+                "titulo": "Construcción de frecuencia acumulada y percentiles",
+                "ruta": "./ejercicios/4.2.1.3.js",
+                "puntos": 7,
+                "orden": 3
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "Histogramas y diagramas de caja y bigotes",
+            "ejercicios": [
+              {
+                "id": "4.2.2.1.js",
+                "titulo": "Lectura de diagrama de caja y bigotes",
+                "ruta": "./ejercicios/4.2.2.1.js",
+                "puntos": 3,
+                "orden": 1
+              },
+              {
+                "id": "4.2.2.2.js",
+                "titulo": "Interpretación de histograma y cálculo de media",
+                "ruta": "./ejercicios/4.2.2.2.js",
+                "puntos": 6,
+                "orden": 2
               }
             ]
           }
@@ -488,6 +543,13 @@
                 "ruta": "./ejercicios/4.4.4.1.js",
                 "puntos": 6,
                 "orden": 1
+              },
+              {
+                "id": "4.4.4.2.js",
+                "titulo": "Deportes en la escuela (Venn y Probabilidad Condicionada)",
+                "ruta": "./ejercicios/4.4.4.2.js",
+                "puntos": 12,
+                "orden": 2
               }
             ]
           }
@@ -505,6 +567,58 @@
                 "id": "4.5.1.1.js",
                 "titulo": "Prueba de Polígrafo (Binomial)",
                 "ruta": "./ejercicios/4.5.1.1.js",
+                "puntos": 7,
+                "orden": 1
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "Distribución Normal",
+            "ejercicios": [
+              {
+                "id": "4.5.2.1.js",
+                "titulo": "Producción de Lámparas (Normal y Binomial)",
+                "ruta": "./ejercicios/4.5.2.1.js",
+                "puntos": 10,
+                "orden": 1
+              },
+              {
+                "id": "4.5.2.2.js",
+                "titulo": "Cálculo de Parámetros (Peso de Frutas)",
+                "ruta": "./ejercicios/4.5.2.2.js",
+                "puntos": 8,
+                "orden": 2
+              },
+              {
+                "id": "4.5.2.3.js",
+                "titulo": "Distribución Normal Inversa (Calificaciones)",
+                "ruta": "./ejercicios/4.5.2.3.js",
+                "puntos": 7,
+                "orden": 3
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "nombre": "5. Cálculo",
+    "subtemas": [
+      {
+        "id": 5,
+        "nombre": "5.5. Integración",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "5.5.1. Áreas y Volúmenes",
+            "ejercicios": [
+              {
+                "id": "5.5.1.1.js",
+                "titulo": "Área entre curvas",
+                "ruta": "./ejercicios/5.5.1.1.js",
                 "puntos": 7,
                 "orden": 1
               }

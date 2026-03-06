@@ -151,6 +151,25 @@
             ]
           }
         ]
+      },
+      {
+        "id": 5,
+        "nombre": "4.5. Distribuciones de probabilidad",
+        "secciones": [
+          {
+            "id": 2,
+            "nombre": "4.5.2. Distribución Normal Múltiples",
+            "ejercicios": [
+              {
+                "id": "4.5.2.1.js",
+                "titulo": "Ficha: Conceptos y Representación Gráfica de la Distribución Normal",
+                "ruta": "./ejercicios/4.5.2.1.js",
+                "puntos": 24,
+                "orden": 1
+              }
+            ]
+          }
+        ]
       }
     ]
   },
