@@ -456,6 +456,15 @@ export const stat = {
         return [sorted[0], getQuartile(q1_pos), getQuartile(q2_pos), getQuartile(q3_pos), sorted[n - 1]];
     },
     t_test(mu0,dataMean,datasd=0,datan,dataH1=0){
+        /*
+        sintaxis
+        t_test(mu0,muestra,H1)//muestra es un arreglo de datos
+        t_test(mu0,mean,sd,n,H1)
+        0: H1: mu > mu0
+        1: H1: mu < mu0
+        2: H1: mu != mu0
+        */
+        
             function gammafn(n){
                 function gammaEntero(n) {
                     if (n === 1) return 1;
