@@ -509,7 +509,9 @@ export const stat = {
         // empieza el test'
         let mean, sd, n, H1;
         if (Array.isArray(dataMean)) {
-            const sum = dataMean.reduce((acc, val) => acc + val, 0);
+            let sum = 0
+            for (let i = 0; i < dataMean.length; i++) sum += dataMean[i];
+
             mean = sum / dataMean.length;
             const variance = dataMean.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (dataMean.length - 1);
             sd = Math.sqrt(variance);

@@ -101,7 +101,7 @@
                 <div class="mb-3">
                     <label for="dataArray" class="form-label">Arreglo de datos:</label>
                     <input type="text" class="form-control" id="dataArray" placeholder="[1, 2, 3, 4, 5]"
-                        value="1.2,1.3,1.35,1.98,1.56,1.45">
+                        value="101.3,	108.6,	123.4,	114.8,	118.1,	107.1,	114.4,	120.1,	105.3,	116.6,	106.7,	107.2,	109.5">
                 </div>
                 <button class="btn btn-secondary" onclick="ejecutarTestConArreglo()">Calcular con Arreglo</button>
             </div>
@@ -156,12 +156,17 @@
             // empieza el test'
             let mean, sd, n, H1;
             if (Array.isArray(dataMean)) {
-                const sum = dataMean.reduce((acc, val) => acc + val, 0);
+
+                let sum = 0
+                for (let i = 0; i < dataMean.length; i++) sum += dataMean[i];
+
                 mean = sum / dataMean.length;
                 const variance = dataMean.reduce((acc, val) => acc + Math.pow(val - mean, 2), 0) / (dataMean.length - 1);
                 sd = Math.sqrt(variance);
                 n = dataMean.length;
                 H1 = datasd;
+                console.log(`raw data=${dataMean}`);
+                console.log(`mean=${mean}, sd=${sd}, n=${n}, H1=${H1}`);
             } else {
                 mean = dataMean;
                 sd = datasd;
@@ -173,6 +178,7 @@
 
 
             const t = (mean - mu0) / (sd / Math.sqrt(n));
+            console.log(`${t}=(${mean} - ${mu0}) / (${sd} / Math.sqrt(${n}));`);
             const v = n - 1;
             let area, pvalue
 
