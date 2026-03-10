@@ -1,4 +1,6 @@
 // tlacuache-modulo.js
+import jStat from "https://cdn.jsdelivr.net/npm/jstat@latest/+esm";
+
 export const pregunta = {
     hayRepetidos(arreglo) {
         /*
@@ -455,6 +457,77 @@ export const stat = {
         };
         return [sorted[0], getQuartile(q1_pos), getQuartile(q2_pos), getQuartile(q3_pos), sorted[n - 1]];
     },
+    two_sampTTest(arg1, arg2, arg3, arg4 = false, S2_, n2_, H1_, pooled_ = false) {
+        /*
+```javascript
+        sintaxis
+        two_sampTTest(datos1, datos2, H1, pooled)
+        two_sampTTest(media1, sd1, n1, media2, sd2, n2, H1, pooled)
+```
+
+        */
+        let mean1, sd1, n1, mean2, sd2, n2, H1, pooled;
+        if (Array.isArray(arg1) && Array.isArray(arg2)) {
+            let sum1 = 0, sum2 = 0;
+            n1 = arg1.length;
+            n2 = arg2.length;
+
+            for (let i = 0; i < n1; i++) sum1 += arg1[i];
+            for (let i = 0; i < n2; i++) sum2 += arg2[i];
+
+            mean1 = sum1 / n1;
+            mean2 = sum2 / n2;
+
+            let S1 = 0, S2 = 0;
+            for (let i = 0; i < arg1.length; i++) S1 += Math.pow(arg1[i] - mean1, 2);
+            for (let i = 0; i < arg2.length; i++) S2 += Math.pow(arg2[i] - mean2, 2);
+            sd1 = Math.sqrt(S1 / (arg1.length - 1));
+            sd2 = Math.sqrt(S2 / (arg2.length - 1));
+
+            pooled = arg4;
+            H1 = arg3;
+
+        } else {
+            mean1 = arg1;
+            sd1 = arg2;
+            n1 = arg3;
+            mean2 = arg4;
+            sd2 = S2_;
+            n2 = n2_;
+            H1 = H1_;
+            pooled = pooled_;
+        }
+
+        //Vamos a desplegar los datos estadísticos 
+        //console.log(`mean=${mean1}, sd=${sd1}, n=${n1}`);
+        //console.log(`mean=${mean2}, sd=${sd2}, n=${n2}`);
+        //console.log(`pooled=${pooled}, H1 ${H1}`);
+        let t, p_value, df
+        if (pooled) {
+            const sp = ((n1 - 1) * sd1 ** 2 + (n2 - 1) * sd2 ** 2) / (n1 + n2 - 2);
+            t = (mean1 - mean2) / Math.sqrt(sp * (1 / n1 + 1 / n2));
+            df = n1 + n2 - 2
+            //console.log(`t=${t}`);
+            //console.log(`df=${df}`);
+        } else {
+            t = (mean1 - mean2) / Math.sqrt(sd1 ** 2 / n1 + sd2 ** 2 / n2);
+            df = (sd1 ** 2 / n1 + sd2 ** 2 / n2) ** 2 / ((sd1 ** 2 / n1) ** 2 / (n1 - 1) + (sd2 ** 2 / n2) ** 2 / (n2 - 1));
+            //console.log(`t=${t}`);
+            //console.log(`df=${df}`);
+        }
+        if (H1 === '<') {
+            p_value = jStat.studentt.cdf(t, df)
+        } else if (H1 === '>') {
+            p_value = jStat.studentt.cdf(Math.abs(t), df)
+        } else {
+            p_value = 2 * (1 - jStat.studentt.cdf(Math.abs(t), df));
+        }
+        //console.log(`p_value=${p_value}`);
+        return [t, p_value, df]
+
+
+
+    },
     t_test(mu0, dataMean, datasd = 0, datan, dataH1 = 0) {
         /*
         sintaxis
@@ -488,6 +561,8 @@ export const stat = {
                 return gammaFraccion(n);
             }
         }
+
+
 
         function f(t) {
             return Math.pow(1 + t * t / v, -(v + 1) / 2);
@@ -544,7 +619,8 @@ export const stat = {
 
         //console.log(`Integral de f(${t}) a \\infty = ${pvalue}`);
         return [t, pvalue]
-    }
+    },
+
 }
 //Hacer el método del trapecio con estructura como ans={n: n, y:y, x:x ...}
 export function metTrapecio(a, b, n, fun) {
