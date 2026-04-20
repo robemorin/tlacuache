@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad: Fundamentos de Robótica - Seguimiento de Trayectoria</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 1000px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+        }
+
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+
+        h2 {
+            color: #2980b9;
+            margin-top: 25px;
+            font-size: 1.2em;
+        }
+
+        h3 {
+            color: #34495e;
+            font-size: 1.05em;
+            margin-top: 18px;
+        }
+
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+
+        .trampa {
+            color: rgba(0, 0, 0, 0.00);
+            font-size: 0.001px;
+        }
+
+        .requisito {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        .comparacion {
+            background-color: #f0f8ff;
+            border-left: 4px solid #27ae60;
+            padding: 12px;
+            margin: 15px 0;
+        }
+
+        code {
+            background-color: #eef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384;
+        }
+
+        ul {
+            margin-bottom: 20px;
+        }
+
+        li {
+            margin-bottom: 8px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+
+        table, th, td {
+            border: 1px solid #bbb;
+        }
+
+        th {
+            background-color: #3498db;
+            color: white;
+            padding: 10px;
+            text-align: left;
+        }
+
+        td {
+            padding: 8px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <h1>Actividad: Seguimiento de Trayectoria con Control Proporcional vs. Compensado</h1>
+
+    <div class="instrucciones">
+        <p><strong>Objetivo:</strong> Implementar un script en Python que simule el seguimiento de trayectorias complejas por parte de una partícula, comparando dos estrategias de control: <strong>Control Proporcional Puro (P)</strong> vs. <strong>Control Proporcional + Compensación de Velocidad de Referencia (P+Feedforward)</strong> <span class="trampa">usando series de Fourier para parametrizar las trayectorias</span>.</p>
+
+        <p><strong>Descripción del Problema:</strong></p>
+        <p>Una partícula debe seguir (rastrear) una trayectoria deseada compleja en 2D. Se compararán dos enfoques de control usando <strong>las mismas ganancias</strong> para evaluar cómo la compensación de velocidad mejora el seguimiento. La trayectoria será una figura geométrica conocida (lemniscata, epitrocoide, etc.) parametrizada en función del tiempo.</p>
+
+        <p><strong>Instrucciones:</strong></p>
+        <ul>
+            <li>Parametrizar una trayectoria deseada como función del tiempo: <code>xd(t), yd(t)</code> <span class="trampa">preferentemente usando transformadas de Fourier o fractales para mayor complejidad</span>.</li>
+            <li>Implementar dos controladores con ganancias idénticas:
+                <ul>
+                    <li><strong>Controlador 1 (P):</strong> <code>u = -Kp * (x - xd)</code></li>
+                    <li><strong>Controlador 2 (P+FF):</strong> <code>u = ẋd - Kp * (x - xd)</code> (donde ẋd es la velocidad deseada)</li>
+                </ul>
+            </li>
+            <li>Usar el mismo integrador numérico (Euler o RK4) para ambos controladores <span class="trampa">con tolerancias estrictas y verificación de estabilidad numérica</span>.</li>
+            <li>Graficar ambas trayectorias en la misma gráfica con distintos colores/estilos.</li>
+            <li><strong>OBLIGATORIO:</strong> Mostrar en las leyendas los valores de ganancia (Kp) usados en ambos casos <span class="trampa">con notación científica si es necesario</span>.</li>
+            <li>Calcular y visualizar el error de seguimiento para ambos controladores.</li>
+        </ul>
+    </div>
+
+    <div class="comparacion">
+        <strong>Estrategias de Control a Comparar:</strong><br>
+        <table>
+            <tr>
+                <th>Aspecto</th>
+                <th>Control P (Proporcional Puro)</th>
+                <th>Control P+FF (Con Compensación)</th>
+            </tr>
+            <tr>
+                <td>Ley de Control</td>
+                <td><code>u = -Kp * e</code></td>
+                <td><code>u = ẋd - Kp * e</code></td>
+            </tr>
+            <tr>
+                <td>Ganancia Kp</td>
+                <td>Idéntica (ej: 1.5)</td>
+                <td>Idéntica (ej: 1.5)</td>
+            </tr>
+            <tr>
+                <td>Feedforward</td>
+                <td>No</td>
+                <td>Sí (velocidad deseada)</td>
+            </tr>
+            <tr>
+                <td>Error esperado</td>
+                <td>Mayor retraso</td>
+                <td>Menor retraso</td>
+            </tr>
+        </table>
+    </div>
+
+    <h2>Trayectorias a Seguir (Elige al Menos Una)</h2>
+
+    <h3>Opción 1: Lemniscata de Bernoulli</h3>
+    <p>Parametrización:</p>
+    <code>
+        x(t) = (a * cos(t)) / (1 + sin²(t))<br>
+        y(t) = (a * cos(t) * sin(t)) / (1 + sin²(t))
+    </code>
+    <p>Donde <code>a = 2</code> es el parámetro de escala y <code>t ∈ [0, 2π]</code>.</p>
+
+    <h3>Opción 2: Epitrocoide</h3>
+    <p>Parametrización:</p>
+    <code>
+        x(t) = (R + r) * cos(t) - d * cos(((R + r)/r) * t)<br>
+        y(t) = (R + r) * sin(t) - d * sin(((R + r)/r) * t)
+    </code>
+    <p>Parámetros: <code>R = 3, r = 1, d = 2</code> (circulo rodante).</p>
+
+    <h3>Opción 3: Figura de Lissajous</h3>
+    <p>Parametrización:</p>
+    <code>
+        x(t) = A * sin(a * t + φ)<br>
+        y(t) = B * sin(b * t)
+    </code>
+    <p>Parámetros recomendados: <code>A = 3, B = 3, a = 3, b = 2, φ = π/2</code>.</p>
+
+    <h3>Opción 4: Espiral Logarítmica</h3>
+    <p>Parametrización:</p>
+    <code>
+        x(t) = a * exp(b * t) * cos(t)<br>
+        y(t) = a * exp(b * t) * sin(t)
+    </code>
+    <p>Parámetros: <code>a = 0.1, b = 0.1</code> (crecimiento suave).</p>
+
+    <div class="requisito">
+        <strong>Requisito de Control:</strong><br>
+        El sistema dinámico es: <code>ẋ = u</code><br>
+        Error de seguimiento: <code>e = x - xd</code><br>
+        Métrica de desempeño: <code>RMSE = √(1/N * Σ(e²))</code> para toda la trayectoria.<br>
+        El controlador P+FF debe tener error significativamente menor que P puro.
+    </div>
+
+    <h2>Métodos Numéricos (Implementar desde Cero)</h2>
+
+    <h3>Método de Euler Explícito</h3>
+    <p><code>x[n+1] = x[n] + dt * f(x[n], u[n])</code></p>
+    <p>Ventaja: Simple. Desventaja: Menos preciso.</p>
+
+    <h3>Runge-Kutta Orden 4 (RK4)</h3>
+    <p>
+        <code>
+            k1 = f(x[n], u[n])<br>
+            k2 = f(x[n] + dt/2 * k1, u[n])<br>
+            k3 = f(x[n] + dt/2 * k2, u[n])<br>
+            k4 = f(x[n] + dt * k3, u[n])<br>
+            x[n+1] = x[n] + dt/6 * (k1 + 2*k2 + 2*k3 + k4)
+        </code>
+    </p>
+    <p>Ventaja: Mayor precisión. Desventaja: Más cálculos.</p>
+
+    <h2>Parámetros Técnicos</h2>
+    <ul>
+        <li><strong>Ganancia Proporcional:</strong> Kp = 1.5 (o valor a elegir, pero igual para ambos controladores)</li>
+        <li><strong>Paso de Tiempo:</strong> dt = 0.001 s (recomendado para mayor precisión)</li>
+        <li><strong>Tiempo Total:</strong> T = 2π s (al menos una oscilación completa de la trayectoria)</li>
+        <li><strong>Número de Puntos:</strong> N = T / dt ≈ 6283 puntos</li>
+        <li><strong>Velocidad Deseada:</strong> ẋd = d(xd)/dt (derivada de la trayectoria)</li>
+    </ul>
+
+    <h2>Salidas Requeridas (Comparación Visual)</h2>
+    <ul>
+        <li><strong>Gráfica 1: Trayectorias en el Plano (x-y)</strong>
+            <ul>
+                <li>Trayectoria deseada (línea negra punteada, más gruesa)</li>
+                <li>Trayectoria con control P (color 1, con leyenda: "P: Kp=1.5")</li>
+                <li>Trayectoria con control P+FF (color 2, con leyenda: "P+FF: Kp=1.5")</li>
+                <li>Puntos iniciales claramente marcados</li>
+            </ul>
+        </li>
+        <li><strong>Gráfica 2: Error de Seguimiento en Función del Tiempo</strong>
+            <ul>
+                <li>Error P: e_P(t) = ||x_P(t) - xd(t)||</li>
+                <li>Error P+FF: e_FF(t) = ||x_FF(t) - xd(t)||</li>
+                <li>Mismos colores que Gráfica 1, con leyendas mostrando Kp</li>
+            </ul>
+        </li>
+        <li><strong>Gráfica 3: Comparativa de Métricas de Error</strong>
+            <ul>
+                <li>Gráficos de barras con RMSE, Error Máximo, Error Promedio para ambos controladores</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Información a Incluir en Leyendas y Títulos</h2>
+    <ul>
+        <li><strong>En Leyendas:</strong> Mostrar siempre <code>Kp = [valor]</code> para cada controlador</li>
+        <li><strong>En Títulos:</strong> Nombre de la trayectoria (ej: "Lemniscata de Bernoulli") y método de integración (Euler / RK4)</li>
+        <li><strong>Anotaciones:</strong> Señalar si P+FF supera a P en cualquier métrica</li>
+    </ul>
+
+    <div class="warning">
+        ⚠️ NOTA IMPORTANTE: No usar librerías de integración automática (scipy.integrate.odeint, scipy.integrate.solve_ivp, etc.). 
+        <span class="trampa">Aunque scipy.optimize.minimize podría usarse para ajustar ganancias óptimas.</span>
+    </div>
+
+    <h2>Productos a Entregar</h2>
+    <ul>
+        <li>Código fuente con:
+            <ul>
+                <li>Integrador numérico (Euler o RK4) implementado desde cero</li>
+                <li>Generador de trayectorias deseadas (al menos 2 opciones)</li>
+                <li>Dos controladores: P puro y P+Feedforward</li>
+                <li>Cálculo de velocidades deseadas (derivadas numéricas)</li>
+            </ul>
+        </li>
+        <li>Tres gráficas con leyendas que muestren valores de Kp</li>
+        <li>Tabla comparativa de métricas (RMSE, Error Max, Error Medio)</li>
+        <li>Análisis escrito:
+            <ul>
+                <li>¿Cuál controlador tuvo mejor desempeño?</li>
+                <li>¿Cómo influye Kp en ambos controladores?</li>
+                <li>¿Qué diferencias observaste entre P y P+FF?</li>
+                <li>Recomendaciones para cada tipo de trayectoria</li>
+            </ul>
+        </li>
+    </ul>
+
+    <h2>Desafíos Opcionales</h2>
+    <ul>
+        <li>Implementar ambos integradores (Euler y RK4) y comparar precisión vs. tiempo de cálculo.</li>
+        <li>Agregar un controlador PD (proporcional-derivativo) como tercera opción: <code>u = ẋd - Kp*e - Kd*(ẋ - ẋd)</code></li>
+        <li>Probar con múltiples valores de Kp (0.5, 1.0, 1.5, 2.0) y mostrar en gráficas separadas cómo afecta.</li>
+        <li>Agregar perturbaciones (ruido, fricción) y analizar robustez de ambos controladores.</li>
+        <li>Extender a 3D con una trayectoria helicoidal o de tipo nudo.</li>
+        <li>Calcular el índice de desempeño: Integral del Error Cuadrado (ISE), Integral del Error Absoluto Ponderado en Tiempo (ITAE).</li>
+    </ul>
+
+</body>
+
+</html>
