@@ -1,5 +1,6 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
+
 export const metadata = {
     tema: "Funciones",
     subtema: "Modelos",
@@ -13,25 +14,25 @@ export async function generar(i) {
     const umbral = 20;       // Límite del primer tramo (m3)
     const r1 = 4;            // Tarifa baja ($4 por m3)
     const r2 = 7;            // Tarifa alta ($7 por m3 excedente)
-    
+
     // Pregunta A: Consumo bajo (12 m3)
-    const consumoBajo = 12; 
-    
+    const consumoBajo = 12;
+
     // Pregunta B: Consumo alto (30 m3)
-    const consumoAlto = 30; 
+    const consumoAlto = 30;
 
     // Pregunta C: Factura objetivo ($175) -> Para despejar x
     // Cálculo inverso mental: 175 = (20*4) + 7(x-20) -> 175 = 80 + 7(x-20) -> 95/7... 
     // Mejor ajustamos el costo objetivo para que de un entero exacto.
     // Probemos con x = 35 m3. Costo = 80 + 7(15) = 80 + 105 = 185.
-    const costoObjetivo = 185; 
+    const costoObjetivo = 185;
     const consumoRespuestaC = 35; // La respuesta esperada para el inciso C
 
     // Costo base del primer tramo completo (20 * 4 = 80)
     const costoBase = r1 * umbral;
 
     // --- HTML DEL PROBLEMA ---
-   const html = `
+    const html = `
         <div class="problema-ib">            
             <p><strong>${i}.</strong> La compañía de agua de una ciudad calcula el costo mensual del agua, $C(x)$ (en dólares), basándose en el volumen consumido, $x$ (en $m^3$). Las tarifas se definen mediante la siguiente función a trozos:</p>
             
@@ -45,6 +46,8 @@ export async function generar(i) {
                     <span class="ib-texto">Calcule el costo si una familia consume ${consumoBajo} $m^3$ en un mes.</span>
                     <span class="ib-mark">[2]</span>
                 </li>
+                <!--Si necesita renglones-->
+                <tlacuache-renglon n="8" color="gray" alto="25"></tlacuache-renglon>
                 <li>
                     <span class="ib-texto">Calcule el costo si una familia consume ${consumoAlto} $m^3$ en un mes.</span>
                     <span class="ib-mark">[2]</span>

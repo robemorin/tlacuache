@@ -1,7 +1,7 @@
 import * as tlacu from 'https://robemorin.github.io/tlacuache/src/tlacuache-modulo.mjs';
 import 'https://robemorin.github.io/tlacuache/src/tlacuache-elements.js'
 export const metadata = {
-    tema: "1. Álgebra",          // Nivel 1
+    tema: "Álgebra",          // Nivel 1
     subtema: "Fundamentos",   // Nivel 2
     seccion: "Números Reales",// Nivel 3 (NUEVO)
     titulo: "Suma simple",    // Título del ejercicio

@@ -61,24 +61,26 @@ export async function generar(i) {
             <li>
                 <span class="ib-texto">$\\mu = ${dibujos[0].mu}, \\; \\sigma = ${dibujos[0].sigma}$. Represente la probabilidad de obtener un valor ${dibujos[0].limiteText} ($${dibujos[0].condicion}$).</span>
                 <span class="ib-mark">[3]</span>
-                <div style="display:flex; justify-content:center; margin:15px 0;">
-                    <tlacuache-dist-normal mean="${dibujos[0].mu}" s="${dibujos[0].sigma}"></tlacuache-dist-normal>
-                </div>
             </li>
+            <div style="display:flex; justify-content:center; margin:15px 0;">
+                <tlacuache-dist-normal mean="${dibujos[0].mu}" s="${dibujos[0].sigma}"></tlacuache-dist-normal>
+            </div>
+
             <li>
                 <span class="ib-texto">$\\mu = ${dibujos[1].mu}, \\; \\sigma = ${dibujos[1].sigma}$. Represente la probabilidad de obtener un valor ${dibujos[1].limiteText} ($${dibujos[1].condicion}$).</span>
                 <span class="ib-mark">[3]</span>
-                <div style="display:flex; justify-content:center; margin:15px 0;">
-                    <tlacuache-dist-normal mean="${dibujos[1].mu}" s="${dibujos[1].sigma}"></tlacuache-dist-normal>
-                </div>
             </li>
+            <div style="display:flex; justify-content:center; margin:15px 0;">
+                <tlacuache-dist-normal mean="${dibujos[1].mu}" s="${dibujos[1].sigma}"></tlacuache-dist-normal>
+            </div>
+
             <li>
                 <span class="ib-texto">$\\mu = ${dibujos[2].mu}, \\; \\sigma = ${dibujos[2].sigma}$. Represente la probabilidad de obtener un valor ${dibujos[2].limiteText} ($${dibujos[2].condicion}$).</span>
                 <span class="ib-mark">[3]</span>
-                <div style="display:flex; justify-content:center; margin:15px 0;">
-                    <tlacuache-dist-normal mean="${dibujos[2].mu}" s="${dibujos[2].sigma}"></tlacuache-dist-normal>
-                </div>
             </li>
+            <div style="display:flex; justify-content:center; margin:15px 0;">
+                <tlacuache-dist-normal mean="${dibujos[2].mu}" s="${dibujos[2].sigma}"></tlacuache-dist-normal>
+            </div>
         </ol>
     </div>
     `;
@@ -108,15 +110,16 @@ export async function generar(i) {
             <li>
                 <span class="ib-texto">Dibuje la curva de distribución normal en los ejes proporcionados, asegurándose de que la media se encuentre en el centro y estime el ancho usando la desviación estándar. Sombree la región que representa la probabilidad de que un cliente tarde <strong>más de $${limit2}$ minutos</strong>.</span>
                 <span class="ib-mark">[5]</span>
-                <div style="height: 250px; border: 2px dashed #999; margin-top: 15px; border-radius: 5px; background-color: #fcfcfc; width: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">
-                    (Espacio cuadriculado para que el estudiante dibuje su propia curva y sombree)
-                </div>
             </li>
+            <div style="height: 250px; border: 2px dashed #999; margin-top: 15px; border-radius: 5px; background-color: #fcfcfc; width: 100%; display: flex; align-items: center; justify-content: center; color: #aaa;">
+                (Espacio cuadriculado para que el estudiante dibuje su propia curva y sombree)
+            </div>
+
             <li>
                 <span class="ib-texto">Calcule la probabilidad de que un cliente seleccionado al azar tarde más de $${limit2}$ minutos en almorzar.</span>
                 <span class="ib-mark">[2]</span>
-                <tlacuache-renglon n="2" color="gray" alto="25"></tlacuache-renglon>
             </li>
+            <tlacuache-renglon n="2" color="gray" alto="25"></tlacuache-renglon>
         </ol>
     </div>
     `;
@@ -145,15 +148,16 @@ export async function generar(i) {
             <li>
                 <span class="ib-texto">Utilizando la siguiente gráfica en blanco, ubique el volumen $V$ a partir del cual el café se derrama y sombree el área correspondiente al porcentaje dado.</span>
                 <span class="ib-mark">[4]</span>
-                <div style="display:flex; justify-content:center; margin:15px 0;">
-                    <tlacuache-dist-normal mean="${mu3}" s="${sigma3}"></tlacuache-dist-normal>
-                </div>
             </li>
+            <div style="display:flex; justify-content:center; margin:15px 0;">
+                <tlacuache-dist-normal mean="${mu3}" s="${sigma3}"></tlacuache-dist-normal>
+            </div>
+
             <li>
                 <span class="ib-texto">Halle el volumen mínimo de café que provoca que el vaso se derrame.</span>
                 <span class="ib-mark">[4]</span>
-                <tlacuache-renglon n="2" color="gray" alto="25"></tlacuache-renglon>
             </li>
+            <tlacuache-renglon n="2" color="gray" alto="25"></tlacuache-renglon>
         </ol>
     </div>
     `;

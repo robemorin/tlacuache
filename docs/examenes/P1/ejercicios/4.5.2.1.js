@@ -34,28 +34,31 @@ export async function generar(i) {
 
     const html = `
     <div class="ib-texto">
-        <p><strong>\${i}.</strong> El tiempo de vida útil de unos focos LED industriales sigue una distribución normal con una media de $\\mu = \${mu}$ horas y una desviación estándar de $\\sigma = \${sigma}$ horas.</p>
+        <p><strong>${i}.</strong> El tiempo de vida útil de unos focos LED industriales sigue una distribución normal con una media de $\\mu = ${mu}$ horas y una desviación estándar de $\\sigma = ${sigma}$ horas.</p>
         <ol class="ib-lista" type="a">
-            <li>Halle la probabilidad de que un foco elegido al azar dure más de $\${x1}$ horas.
-                <div class="ib-mark">[2]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <li>
+                <span class="ib-texto">Halle la probabilidad de que un foco elegido al azar dure más de $${x1}$ horas.</span>
+                <span class="ib-mark">[2]</span>
             </li>
-            <li>Calcule la probabilidad de que la vida útil de un foco elegido al azar se encuentre entre $\${x2}$ y $\${x3}$ horas.
-                <div class="ib-mark">[2]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <tlacuache-renglon n="5" color="gray" alto="25"></tlacuache-renglon>
+
+            <li>
+                <span class="ib-texto">Calcule la probabilidad de que la vida útil de un foco elegido al azar se encuentre entre $${x2}$ y $${x3}$ horas.</span>
+                <span class="ib-mark">[2]</span>
             </li>
-            <li>El fabricante ofrece reemplazar gratuitamente los focos que fallen muy rápido. Si deciden aplicar esta garantía únicamente al $\${p3 * 100}\\%$ de los focos con menor duración, halle el tiempo máximo de vida útil, $k$, para que un foco esté cubierto por la garantía.
-                <div class="ib-mark">[3]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <tlacuache-renglon n="5" color="gray" alto="25"></tlacuache-renglon>
+
+            <li>
+                <span class="ib-texto">El fabricante ofrece reemplazar gratuitamente los focos que fallen muy rápido. Si deciden aplicar esta garantía únicamente al $${p3 * 100}$% de los focos con menor duración, halle el tiempo máximo de vida útil, $k$, para que un foco esté cubierto por la garantía.</span>
+                <span class="ib-mark">[3]</span>
             </li>
-            <li>Se selecciona una muestra aleatoria de $\${n}$ focos de esta fábrica. Halle la probabilidad de que exactamente $\${r}$ de estos focos duren más de $\${x1}$ horas.
-                <div class="ib-mark">[3]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <tlacuache-renglon n="5" color="gray" alto="25"></tlacuache-renglon>
+
+            <li>
+                <span class="ib-texto">Se selecciona una muestra aleatoria de $${n}$ focos de esta fábrica. Halle la probabilidad de que exactamente $${r}$ de estos focos duren más de $${x1}$ horas.</span>
+                <span class="ib-mark">[3]</span>
             </li>
+            <tlacuache-renglon n="5" color="gray" alto="25"></tlacuache-renglon>
         </ol>
     </div>
     `;
@@ -65,21 +68,21 @@ export async function generar(i) {
         <p><strong>Solución:</strong></p>
         <ol class="ib-lista" type="a">
             <li>
-                $X \\sim N(\${mu}, \${sigma}^2)$<br>
-                $P(X > \${x1}) \\approx \${p1.toFixed(4)}$
+                $X \\sim N(${mu}, ${sigma}^2)$<br>
+                $P(X > ${x1}) \\approx ${p1.toFixed(4)}$
             </li>
             <li>
-                $P(\${x2} < X < \${x3}) \\approx \${p2.toFixed(4)}$
+                $P(${x2} < X < ${x3}) \\approx ${p2.toFixed(4)}$
             </li>
             <li>
-                $P(X < k) = \${p3}$<br>
+                $P(X < k) = ${p3}$<br>
                 Utilizando la distribución normal inversa:<br>
-                $k \\approx \${k.toFixed(1)}$ horas
+                $k \\approx ${k.toFixed(1)}$ horas
             </li>
             <li>
-                Sea $Y$ el número de focos que duran más de $\${x1}$ horas en una muestra de $\${n}$.<br>
-                $Y \\sim B(\${n}, \${p1.toFixed(4)})$<br>
-                $P(Y = \${r}) \\approx \${p4.toFixed(4)}$
+                Sea $Y$ el número de focos que duran más de ${x1}$ horas en una muestra de ${n}$.<br>
+                $Y \\sim B(${n}, ${p1.toFixed(4)})$<br>
+                $P(Y = ${r}) \\approx ${p4.toFixed(4)}$
             </li>
         </ol>
     </div>

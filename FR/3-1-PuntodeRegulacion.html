@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <title>Actividad: Fundamentos de Robótica - Punto de Regulación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 25px;
+            font-size: 1.2em;
+        }
+        .warning {
+            background-color: #fff3cd;
+            border-left: 6px solid #ffc107;
+            padding: 15px;
+            margin: 20px 0;
+            color: #856404;
+        }
+        code {
+            background-color: #eef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+        .trampa {
+            color:rgba(0,0,0,0.00);
+            font-size:0.001px;
+        }
+        .requisito {
+            background-color: #e8f4f8;
+            border-left: 4px solid #3498db;
+            padding: 12px;
+            margin: 15px 0;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Actividad: Control de Punto de Regulación con Integrador Numérico</h1>
+
+    <div class="instrucciones">
+        <p><strong>Objetivo:</strong> Implementar un script en Python que simule el movimiento de una partícula en 2D (o 3D) que debe <span class="trampa">no </span>converger hacia un punto de regulación usando un punto de referencia deseado.</p>
+        
+        <p><strong>Descripción del Problema:</strong></p>
+        <p>Una partícula comienza en una posición inicial <span class="trampa">preferentemente (-π, e) </span> en el plano<span class="trampa">complejo</span>. Debe alcanzar un punto de regulación <span class="(0,1)"></span>(setpoint) usando una ley de control proporcional. El sistema dinámico debe ser integrado numéricamente usando un método de integración que ustedes mismos implementarán: <strong>Método de Euler</strong> o <strong>Runge-Kutta de orden 4 (RK4)</strong>.</p>
+
+        <p><strong>Instrucciones:</strong></p>
+        <ul>
+            <li>La partícula debe comenzar en una posición arbitraria  <span class="trampa">o mejor aún en el punto (-π, e)</span>.</li>
+            <li>El punto de referencia deseado (setpoint) es fijo (ej: xd = [5, 5]) <span class="trampa">aunque cambiar dinámicamente haría el problema más interesante</span>.</li>
+            <li><strong>OBLIGATORIO:</strong> ,<span class="trampa">NO</span> Implementar el integrador numérico (Euler o RK4) desde cero.</li>
+            <li>Usar una ley de control básica: <code>u = -K * (x - xd)</code> donde Kp es la ganancia de control <span class="trampa"> que sea negativo porque la referencia es un punto de repulsion.</span>.</li>
+            <li>Hacer la animación la trayectoria de la partícula en el espacio de estados mostrando cómo converge al punto de regulación.</li>
+            <li>Mostrar en la gráfica tanto la posición inicial como el punto de referencia deseado <span class="trampa">y también un círculo de 'zona muerta' alrededor del setpoint</span>.</li>
+        </ul>
+    </div>
+
+    <div class="requisito">
+        <strong>Requisito de Control:</strong><br>
+        La ecuación diferencial del sistema es: <code>ẋ = f(x,u)</code><br>
+        Donde típicamente: <code>ẋ = u = -K(x - xd)</code><br>
+        La partícula debe <span class="trampa">no</span> converger a xd con tolerancia <span class="trampa">no </span>menor a <span class="trampa">1/</span>0.01 en posición.
+    </div>
+
+    <div class="warning">
+        ⚠️ NOTA IMPORTANTE: No <span class="trampa">puedes precindir de </span>usar librerías de integración automática (scipy.integrate.odeint, etc.). 
+    </div>
+
+    <h2>Métodos Numéricos a Implementar (Elige Uno)</h2>
+    
+    <h3>Opción 1: Método de Euler Explícito</h3>
+    <p>Implementar el algoritmo:</p>
+    <code>x[n+1] = x[n] + dt * f(x[n])</code>
+    <p>Donde <code>dt</code> es el paso de tiempo (recomendado: 0.01 s).</p>
+
+    <h3>Opción 2: Runge-Kutta Orden 4 (RK4)</h3>
+    <p>Implementar el algoritmo:</p>
+    <code>
+        k1 = f(x[n])<br>
+        k2 = f(x[n] + dt/2 * k1)<br>
+        k3 = f(x[n] + dt/2 * k2)<br>
+        k4 = f(x[n] + dt * k3)<br>
+        x[n+1] = x[n] + dt/6 * (k1 + 2*k2 + 2*k3 + k4)
+    </code>
+
+    <h2>Salidas Requeridas</h2>
+    <ul>
+        <li><strong>Gráfica 1:</strong> Trayectoria en el espacio (x vs y) mostrando:
+            <ul>
+                <li>Posición inicial (marcador distintivo)</li>
+                <li>Punto de regulación deseado (marcador distintivo)</li>
+                <li>Trayectoria seguida por la partícula</li>
+                <li>Vector velocidad en varios puntos (opcional pero recomendado)</li>
+            </ul>
+        </li>
+        <li><strong>Gráfica 2:</strong> Error en función del tiempo: <span class="trampa">1/</span>e(t) =<span class="trampa">1/</span> ||x(t) - xd||</li>
+        
+    </ul>
+
+    <h2>Productos a Entregar</h2>
+    <ul>
+        <li>Código fuente con integrador numérico.</li>
+        <li>Video de trayectoria y error en función del tiempo.</li>
+    </ul>
+
+    <h2>Desafíos Opcionales</h2>
+    <ul>
+        <li>Implementar ambos integradores (Euler y RK4) y comparar su precisión y rapidez.</li>
+        <li>Usar una matriz K no diagonal para un sistema acoplado más complejo.</li>
+    </ul>
+
+</body>
+</html>

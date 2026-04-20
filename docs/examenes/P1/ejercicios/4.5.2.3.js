@@ -30,24 +30,25 @@ export async function generar(i) {
 
     const html = `
     <div class="ib-texto">
-        <p><strong>\${i}.</strong> Las calificaciones de un examen estandarizado de matemáticas se distribuyen de forma normal con una media de $\\mu = \${mu}$ puntos y una desviación estándar de $\\sigma = \${sigma}$ puntos.</p>
+        <p><strong>${i}.</strong> Las calificaciones de un examen estandarizado de matemáticas se distribuyen de forma normal con una media de $\\mu = ${mu}$ puntos y una desviación estándar de $\\sigma = ${sigma}$ puntos.</p>
         <ol class="ib-lista" type="a">
-            <li>La universidad concede una beca de excelencia al $\${pctTop}\\%$ de los estudiantes con las calificaciones más altas. Calcule la calificación mínima necesaria para obtener dicha beca.
-                <div class="ib-mark">[3]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <li>
+                <span class="ib-texto">La universidad concede una beca de excelencia al $${pctTop}$% de los estudiantes con las calificaciones más altas. Calcule la calificación mínima necesaria para obtener dicha beca.</span>
+                <span class="ib-mark">[3]</span>
             </li>
-            <li>El $\${pctBot}\\%$ de los estudiantes con peores resultados deben repetir el curso. Halle la calificación máxima de un estudiante que debe repetir el curso.
-                <div class="ib-mark">[2]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <tlacuache-renglon n="8" color="gray" alto="25"></tlacuache-renglon>
+
+            <li>
+                <span class="ib-texto">El $${pctBot}$% de los estudiantes con peores resultados deben repetir el curso. Halle la calificación máxima de un estudiante que debe repetir el curso.</span>
+                <span class="ib-mark">[2]</span>
             </li>
-            <li>Halle la probabilidad de que un estudiante elegido al azar haya obtenido una calificación entre $\${x1}$ y $\${x2}$ puntos.
-                <div class="ib-mark">[2]</div>
-                <tlacuache-renglon></tlacuache-renglon>
-                <tlacuache-renglon></tlacuache-renglon>
+            <tlacuache-renglon n="6" color="gray" alto="25"></tlacuache-renglon>
+
+            <li>
+                <span class="ib-texto">Halle la probabilidad de que un estudiante elegido al azar haya obtenido una calificación entre $${x1}$ y $${x2}$ puntos.</span>
+                <span class="ib-mark">[2]</span>
             </li>
+            <tlacuache-renglon n="6" color="gray" alto="25"></tlacuache-renglon>
         </ol>
     </div>
     `;
@@ -57,17 +58,17 @@ export async function generar(i) {
         <p><strong>Solución:</strong></p>
         <ol class="ib-lista" type="a">
             <li>
-                $X \\sim N(\${mu}, \${sigma}^2)$<br>
-                Sea $k_1$ la calificación mínima requerida. $P(X > k_1) = \${pTop}$<br>
-                $P(X < k_1) = \${1 - pTop}$<br>
-                $k_1 = \text{invNorm}(\${1 - pTop}, \${mu}, \${sigma}) \\approx \${k1.toFixed(2)}$ puntos
+                $X \\sim N(${mu}, ${sigma}^2)$<br>
+                Sea $k_1$ la calificación mínima requerida. $P(X > k_1) = ${pTop}$<br>
+                $P(X < k_1) = ${1 - pTop}$<br>
+                $k_1 = \\text{invNorm}(${1 - pTop}, ${mu}, ${sigma}) \\approx ${k1.toFixed(2)}$ puntos
             </li>
             <li>
-                Sea $k_2$ la calificación máxima. $P(X < k_2) = \${pBot}$<br>
-                $k_2 = \text{invNorm}(\${pBot}, \${mu}, \${sigma}) \\approx \${k2.toFixed(2)}$ puntos
+                Sea $k_2$ la calificación máxima. $P(X < k_2) = ${pBot}$<br>
+                $k_2 = \\text{invNorm}(${pBot}, ${mu}, ${sigma}) \\approx ${k2.toFixed(2)}$ puntos
             </li>
             <li>
-                $P(\${x1} < X < \${x2}) \\approx \${pMiddle.toFixed(4)}$
+                $P(${x1} < X < ${x2}) \\approx ${pMiddle.toFixed(4)}$
             </li>
         </ol>
     </div>

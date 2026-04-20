@@ -87,7 +87,7 @@ function renderizarMenu(datos, contenedor) {
     datos.forEach(tema => {
         // NIVEL 1: TEMA (Details Principal)
         const detalleTema = document.createElement('details');
-        detalleTema.open = false; // Temas abiertos por defecto
+        detalleTema.open = true; // Temas abiertos por defecto
         detalleTema.className = 'nivel-tema';
         const resumenTema = document.createElement('summary');
         resumenTema.textContent = tema.nombre;
@@ -100,7 +100,7 @@ function renderizarMenu(datos, contenedor) {
             // NIVEL 2: SUBTEMA (Details Anidado)
             // Usamos details aquí para colapsar subtemas si hay muchos
             const detalleSub = document.createElement('details');
-            detalleSub.open = false;
+            detalleSub.open = true;
             detalleSub.className = 'nivel-subtema';
 
             const resumenSub = document.createElement('summary');
@@ -192,7 +192,6 @@ window.generarExamen = async function () {
         <li>En esta prueba es necesario usar una calculadora gráfica</li>
         <li>Conteste todas las preguntas en el cuadernillo</li>
         <li>Salvo se indique lo contrario en la pregunta, todas las respuestas numéricas deberán ser exactas o aproximadas a tres cifras significativas</li><li>Use tinta negra o azul, excepto en diagramas que debe usarse lápiz </li><li>Se necesita una copia sin anotaciones del cuadernillo de fórmulas de Matemáticas Aplicaciones e Interpretaciones NM para la prueba</li>
-        <li> No está permitido apuntes, ni hablar durante el examen</li>
         </ul>
     </div>
     <div style="font-size:0.7em;text-align: justify;">
