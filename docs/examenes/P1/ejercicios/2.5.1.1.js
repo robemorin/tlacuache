@@ -16,7 +16,7 @@ export async function generar(i) {
             <br>
             <ol class="ib-lista" type="a">
                 <li>
-                    <span class="ib-texto">Escribe una función senoidal de la forma $h(t) = A \\sin(f\\cdot t) + k$ que modele la altura $h$ (en metros) de la persona sobre el suelo en función del tiempo $t$ (en minutos).</span>
+                    <span class="ib-texto">Escribe una función senoidal de la forma $h(t) = -A \\cos(f\\cdot t) + k$ que modele la altura $h$ (en metros) de la persona sobre el suelo en función del tiempo $t$ (en minutos).</span>
                     <span class="ib-mark">[4]</span>
                 </li>
                 <li>
@@ -28,6 +28,7 @@ export async function generar(i) {
                     <span class="ib-mark">[2]</span>
                 </li>
             </ol>
+            <tlacuache-renglon n="18" color="gray" alto="30"></tlacuache-renglon>
         </div>
     `;
 

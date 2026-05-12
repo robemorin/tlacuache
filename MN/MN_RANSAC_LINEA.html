@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Métodos Numéricos - RANSAC Línea</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        header img {
+            height: 100px;
+        }
+        h1, h2, h3 {
+            margin: 0;
+            text-align: center;
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+            font-weight: bold;
+        }
+        .matriz {
+            border-left: solid 1px black;
+            border-right: solid 1px black;
+        }
+        ol {
+            counter-reset: list;
+        }
+        ol > li {
+            list-style: none;
+        }
+        .mainP > li:before {
+            content: counter(list, upper-roman) ") ";
+            counter-increment: list;
+        }
+        ol > li:before {
+            content: counter(list, lower-alpha) ") ";
+            counter-increment: list;
+        }
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+        }
+    </style>
+    <script>
+        function main() {
+            var tol = Math.random() + 0.1;
+            document.getElementById('tol').innerHTML = (1.5 * tol).toFixed(2);
+            const m = (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 1 + 0.5);
+            const b = (Math.random() < 0.5 ? -1 : 1) * (Math.random() * 10 + 1);
+            let x = 0;
+			let P=''
+            for (var i = 0; i < 30; ++i) {
+                x += Math.random();
+                
+                if (Math.random() < 0.3) {
+                    y = (15 * m * (Math.random()) + b)
+                } else {
+                    y = (m * x + b + Math.random() * tol);
+                }
+                P += `[${x.toFixed(2)}, ${y.toFixed(2)}]${i < 29 ? ', ' : ''}`;
+            }
+            document.getElementById('python').innerHTML = `P = np.array([${P}])`
+			}
+    </script>
+</head>
+<body onload="main()">
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Métodos Numéricos</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+        <img src="http://www.fimemonclova.uadec.mx//wp-content/uploads/2021/02/El_logologologo_intermedio_small-1.png" alt="Logo FIME">
+    </header>
+    <main>
+        <h2>Aplique RANSAC para encontrar la ecuación de la línea que se ajuste a la mayor cantidad de datos, use una tolerancia de <span id="tol"></span></h2>
+		<div id="python">
+
+		</div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera datos aleatorios cada vez que se carga. Asegúrate de que JavaScript esté habilitado para ver los datos.
+        </div>
+    </main>
+</body>
+</html>
