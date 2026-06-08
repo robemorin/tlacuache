@@ -64,6 +64,19 @@
                 "orden": 1
               }
             ]
+          },
+          {
+            "id": 2,
+            "nombre": "1.2.2. Sucesiones geométricas y sumas parciales",
+            "ejercicios": [
+              {
+                "id": "1.2.2.1.js",
+                "titulo": "Sucesiones geométricas - Crecimiento poblacional",
+                "ruta": "./ejercicios/1.2.2.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
           }
         ]
       },
@@ -81,6 +94,13 @@
                 "ruta": "./ejercicios/1.3.1.1.js",
                 "puntos": 7,
                 "orden": 1
+              },
+              {
+                "id": "1.3.1.2.js",
+                "titulo": "Plan de ahorro e inversión para una casa",
+                "ruta": "./ejercicios/1.3.1.2.js",
+                "puntos": 7,
+                "orden": 2
               }
             ]
           }
@@ -100,6 +120,13 @@
                 "ruta": "./ejercicios/1.4.1.1.js",
                 "puntos": 4,
                 "orden": 1
+              },
+              {
+                "id": "1.4.1.2.js",
+                "titulo": "Límites de error y certeza en mediciones de velocidad",
+                "ruta": "./ejercicios/1.4.1.2.js",
+                "puntos": 6,
+                "orden": 2
               }
             ]
           },
@@ -145,8 +172,21 @@
     "subtemas": [
       {
         "id": 1,
-        "nombre": "1. Modelos",
+        "nombre": "2.1 Conceptos básicos de funciones",
         "secciones": [
+          {
+            "id": 1,
+            "nombre": "2.1.1 Notación de funciones",
+            "ejercicios": [
+              {
+                "id": "2.1.1.1.js",
+                "titulo": "Evaluación e inversa de una función discreta",
+                "ruta": "./ejercicios/2.1.1.1.js",
+                "puntos": 5,
+                "orden": 1
+              }
+            ]
+          },
           {
             "id": 4,
             "nombre": "4. Funciones a trozos",
@@ -372,6 +412,19 @@
             ]
           },
           {
+            "id": 3,
+            "nombre": "3.2.3. Reglas del seno y coseno (Rumbos)",
+            "ejercicios": [
+              {
+                "id": "3.2.3.1.js",
+                "titulo": "Navegación y rumbos en triángulos no rectángulos",
+                "ruta": "./ejercicios/3.2.3.1.js",
+                "puntos": 8,
+                "orden": 1
+              }
+            ]
+          },
+          {
             "id": 5,
             "nombre": "3.2.5. Ángulos de elevación y depresión",
             "ejercicios": [
@@ -394,6 +447,25 @@
         ]
       },
       {
+        "id": 3,
+        "nombre": "Geometría de coordenadas",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "Punto medio y distancia entre dos puntos",
+            "ejercicios": [
+              {
+                "id": "3.3.1.1.js",
+                "titulo": "Distancias y ángulos en un triángulo 3D",
+                "ruta": "./ejercicios/3.3.1.1.js",
+                "puntos": 9,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
+      {
         "id": 4,
         "nombre": "3.2. Diagramas de Voronoi",
         "secciones": [
@@ -407,6 +479,13 @@
                 "ruta": "./ejercicios/3.4.1.1.js",
                 "puntos": 6,
                 "orden": 1
+              },
+              {
+                "id": "3.4.1.2.js",
+                "titulo": "Análisis y cálculo de diagramas de Voronoi",
+                "ruta": "./ejercicios/3.4.1.2.js",
+                "puntos": 9,
+                "orden": 2
               }
             ]
           }
@@ -485,6 +564,20 @@
                 "ruta": "./ejercicios/4.2.1.3.js",
                 "puntos": 7,
                 "orden": 3
+              },
+              {
+                "id": "4.2.1.4.js",
+                "titulo": "Análisis de velocidad con curva de frecuencia acumulada",
+                "ruta": "./ejercicios/4.2.1.4.js",
+                "puntos": 8,
+                "orden": 4
+              },
+              {
+                "id": "4.2.1.5.js",
+                "titulo": "Velocidad de coches en carretera",
+                "ruta": "./ejercicios/4.2.1.5.js",
+                "puntos": 8,
+                "orden": 5
               }
             ]
           },
@@ -537,6 +630,13 @@
                 "ruta": "./ejercicios/4.3.3.1.js",
                 "puntos": 8,
                 "orden": 1
+              },
+              {
+                "id": "4.3.3.2.js",
+                "titulo": "Ranking de perros pastores",
+                "ruta": "./ejercicios/4.3.3.2.js",
+                "puntos": 6,
+                "orden": 2
               }
             ]
           }
@@ -556,6 +656,13 @@
                 "ruta": "./ejercicios/4.4.1.1.js",
                 "puntos": 5,
                 "orden": 1
+              },
+              {
+                "id": "4.4.1.2.js",
+                "titulo": "Distribución de probabilidad de diferencia en dos dados/ruletas",
+                "ruta": "./ejercicios/4.4.1.2.js",
+                "puntos": 8,
+                "orden": 2
               }
             ]
           },
@@ -688,6 +795,13 @@
                 "ruta": "./ejercicios/4.6.1.2.js",
                 "puntos": 6,
                 "orden": 2
+              },
+              {
+                "id": "4.6.1.3.js",
+                "titulo": "Prueba Chi-cuadrado de Independencia",
+                "ruta": "./ejercicios/4.6.1.3.js",
+                "puntos": 8,
+                "orden": 3
               }
             ]
           }

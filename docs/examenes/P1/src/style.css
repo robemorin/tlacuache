@@ -2,10 +2,11 @@
 
 :root {
     --sidebar-width: 300px;
-    --primary-color: #004a87; /* Azul Institucional */
+    --primary-color: #004a87;
+    /* Azul Institucional */
     --bg-gray: #f4f4f9;
     --border-color: #ddd;
-    --paper-shadow: 0 0 15px rgba(0,0,0,0.1);
+    --paper-shadow: 0 0 15px rgba(0, 0, 0, 0.1);
 }
 
 /* --- CONFIGURACIÓN BASE --- */
@@ -15,7 +16,8 @@ body {
     display: flex;
     height: 100vh;
     background-color: var(--bg-gray);
-    overflow: hidden; /* Scroll manejado por áreas individuales */
+    overflow: hidden;
+    /* Scroll manejado por áreas individuales */
 }
 
 /* --- BARRA LATERAL (MENÚ) --- */
@@ -27,7 +29,7 @@ body {
     flex-direction: column;
     height: 100%;
     z-index: 10;
-    box-shadow: 2px 0 5px rgba(0,0,0,0.05);
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.05);
 }
 
 .brand {
@@ -35,8 +37,17 @@ body {
     background: var(--primary-color);
     color: white;
 }
-.brand h2 { margin: 0; font-size: 1.2rem; }
-.brand p { margin: 5px 0 0; font-size: 0.8rem; opacity: 0.8; }
+
+.brand h2 {
+    margin: 0;
+    font-size: 1.2rem;
+}
+
+.brand p {
+    margin: 5px 0 0;
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
 
 .tab-container {
     flex: 1;
@@ -45,7 +56,10 @@ body {
 }
 
 /* Acordeón del Menú */
-details { margin-bottom: 10px; }
+details {
+    margin-bottom: 10px;
+}
+
 summary {
     cursor: pointer;
     font-weight: bold;
@@ -54,8 +68,16 @@ summary {
     border-radius: 4px;
     list-style: none;
 }
-summary::after { content: "+"; float: right; font-weight: bold; }
-details[open] summary::after { content: "-"; }
+
+summary::after {
+    content: "+";
+    float: right;
+    font-weight: bold;
+}
+
+details[open] summary::after {
+    content: "-";
+}
 
 fieldset {
     border: 1px solid #eee;
@@ -63,7 +85,12 @@ fieldset {
     padding: 5px;
     border-radius: 4px;
 }
-legend { font-size: 0.85rem; color: #666; font-weight: bold; }
+
+legend {
+    font-size: 0.85rem;
+    color: #666;
+    font-weight: bold;
+}
 
 .control-ejercicio {
     display: flex;
@@ -74,8 +101,14 @@ legend { font-size: 0.85rem; color: #666; font-weight: bold; }
     padding: 2px 5px;
     border-radius: 3px;
 }
-.control-ejercicio:hover { background-color: #e3f2fd; }
-.control-ejercicio input { margin-right: 8px; }
+
+.control-ejercicio:hover {
+    background-color: #e3f2fd;
+}
+
+.control-ejercicio input {
+    margin-right: 8px;
+}
 
 /* Botones de Acción */
 .contenedor-boton {
@@ -95,10 +128,24 @@ button {
     font-weight: bold;
     transition: background 0.2s;
 }
-.btn-primary { background: var(--primary-color); color: white; }
-.btn-primary:hover { background: #003366; }
-.btn-secondary { background: #e2e6ea; color: #333; }
-.btn-secondary:hover { background: #dbe2e8; }
+
+.btn-primary {
+    background: var(--primary-color);
+    color: white;
+}
+
+.btn-primary:hover {
+    background: #003366;
+}
+
+.btn-secondary {
+    background: #e2e6ea;
+    color: #333;
+}
+
+.btn-secondary:hover {
+    background: #dbe2e8;
+}
 
 /* --- ÁREA PRINCIPAL (Simulación Papel) --- */
 .main-content {
@@ -111,7 +158,8 @@ button {
 
 .examen_completo {
     background: white;
-    width: 21cm; /* Ancho A4 */
+    width: 21cm;
+    /* Ancho A4 */
     min-height: 29.7cm;
     padding: 2cm;
     box-shadow: var(--paper-shadow);
@@ -119,21 +167,46 @@ button {
 }
 
 /* Encabezado del Examen */
-.encabezado-examen { text-align: center; margin-bottom: 20px; }
-.encabezado-examen h1 { font-size: 16pt; margin: 0; text-transform: uppercase; }
-.encabezado-examen h2 { font-size: 14pt; margin: 5px 0; font-weight: normal; }
-.datos-alumno { margin-top: 30px; text-align: left; line-height: 1.5; }
-.separador-header { border: 0; border-top: 2px solid black; margin-bottom: 30px; }
+.encabezado-examen {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+.encabezado-examen h1 {
+    font-size: 16pt;
+    margin: 0;
+    text-transform: uppercase;
+}
+
+.encabezado-examen h2 {
+    font-size: 14pt;
+    margin: 5px 0;
+    font-weight: normal;
+}
+
+.datos-alumno {
+    margin-top: 30px;
+    text-align: left;
+    line-height: 1.5;
+}
+
+.separador-header {
+    border: 0;
+    border-top: 2px solid black;
+    margin-bottom: 30px;
+}
 
 /* --- ESTRUCTURA DE LA PREGUNTA (Flexbox) --- */
 /* --- OPCIÓN B: Puntos Flotando (Top Right) --- */
 
 .pregunta-wrapper {
     display: flex;
-    flex-direction: column;      /* <--- ESTO hace que se apilen verticalmente */
-    align-items: flex-end;       /* Alinea el puntaje a la DERECHA del contenedor */
+    flex-direction: column;
+    /* <--- ESTO hace que se apilen verticalmente */
+    align-items: flex-end;
+    /* Alinea el puntaje a la DERECHA del contenedor */
     margin-bottom: 30px;
-    
+
     /* Reglas de impresión */
     break-before: page;
     page-break-before: always;
@@ -141,10 +214,13 @@ button {
 
 /* Puntos flotando a la derecha */
 .info-pregunta {
-    width: 100%;                 /* Ocupa todo el ancho para controlar su texto */
-    text-align: right;           /* Texto alineado a la derecha */
-    margin-bottom: 5px;          /* Espacio entre el puntaje y la pregunta */
-    
+    width: 100%;
+    /* Ocupa todo el ancho para controlar su texto */
+    text-align: right;
+    /* Texto alineado a la derecha */
+    margin-bottom: 5px;
+    /* Espacio entre el puntaje y la pregunta */
+
     /* Estilo visual */
     font-weight: bold;
     font-size: 1rem;
@@ -152,8 +228,10 @@ button {
 }
 
 .contenido-pregunta {
-    width: 100%;                 /* Ocupa todo el ancho disponible */
-    text-align: left;            /* Asegura que la pregunta se alinee a la izquierda */
+    width: 100%;
+    /* Ocupa todo el ancho disponible */
+    text-align: left;
+    /* Asegura que la pregunta se alinee a la izquierda */
 }
 
 .contenido-pregunta p:first-child {
@@ -166,6 +244,7 @@ button {
     font-weight: bold;
     color: #000;
 }
+
 /* --- ESTILOS ESPECÍFICOS (IB / Matemáticas) - VERSIÓN FINAL ANTI-TRASLAPE --- */
 
 /* NIVEL 1: Lista Principal (a, b, c...) */
@@ -178,33 +257,42 @@ button {
 }
 
 /* ITEM DE NIVEL 1 */
-.ib-lista > li {
+.ib-lista>li {
     display: flex;
-    flex-wrap: wrap; /* <--- CLAVE: Permite que los elementos bajen de línea */
+    flex-wrap: wrap;
+    /* <--- CLAVE: Permite que los elementos bajen de línea */
     justify-content: space-between;
     align-items: baseline;
-    margin-bottom: 15px; /* Un poco más de aire entre incisos principales */
+    margin-bottom: 15px;
+    /* Un poco más de aire entre incisos principales */
     page-break-inside: avoid;
     counter-increment: ib-counter;
 }
 
+.newpage {
+    break-before: page;
+    page-break-before: always;
+}
+
 /* Generador de letra (a), (b)... */
-.ib-lista > li::before {
+.ib-lista>li::before {
     content: "(" counter(ib-counter, lower-alpha) ")";
     font-weight: bold;
     margin-right: 12px;
     /* Evita que la letra se encoja o se mueva */
-    flex: 0 0 auto; 
+    flex: 0 0 auto;
 }
 
-.ib-lista > li > p {
+.ib-lista>li>p {
     /* ANTES (Causaba el error): width: 100%; flex: 1 1 100%; */
-    
+
     /* AHORA (Corrección): Ocupar solo el espacio sobrante */
-    width: auto;      
-    flex: 1;          /* Crece para llenar el renglón pero comparte espacio con (a) */
+    width: auto;
+    flex: 1;
+    /* Crece para llenar el renglón pero comparte espacio con (a) */
     margin: 0 0 5px 0;
-    min-width: 200px; /* Evita que se aplaste demasiado si la pantalla es pequeña */
+    min-width: 200px;
+    /* Evita que se aplaste demasiado si la pantalla es pequeña */
 }
 
 /* NIVEL 2: Sublista (i, ii, iii...) */
@@ -213,13 +301,13 @@ button {
     counter-reset: ib-sub-counter;
     padding-left: 20px;
     margin-top: 5px;
-    
+
     /* <--- CLAVE: La sublista fuerza una nueva línea y ocupa todo el ancho */
-    flex-basis: 100%; 
+    flex-basis: 100%;
     width: 100%;
 }
 
-.ib-lista ol > li {
+.ib-lista ol>li {
     display: flex;
     justify-content: space-between;
     align-items: baseline;
@@ -228,7 +316,7 @@ button {
 }
 
 /* Generador de romanos (i), (ii)... */
-.ib-lista ol > li::before {
+.ib-lista ol>li::before {
     content: "(" counter(ib-sub-counter, lower-roman) ")";
     font-weight: bold;
     margin-right: 8px;
@@ -238,7 +326,8 @@ button {
 
 /* Textos y Marcas */
 .ib-texto {
-    flex: 1; /* Ocupa el espacio disponible */
+    flex: 1;
+    /* Ocupa el espacio disponible */
     padding-right: 1rem;
 }
 
@@ -247,7 +336,8 @@ button {
     white-space: nowrap;
     min-width: 30px;
     text-align: right;
-    margin-left: auto; /* Empuja el puntaje siempre a la derecha */
+    margin-left: auto;
+    /* Empuja el puntaje siempre a la derecha */
 }
 
 
@@ -270,13 +360,14 @@ button {
     max-height: 85vh;
     background: white;
     border: 1px solid #ccc;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.25);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.25);
     z-index: 1000;
     padding: 15px;
     overflow-y: auto;
     border-radius: 8px;
     display: none;
-    pointer-events: none; /* Click-through */
+    pointer-events: none;
+    /* Click-through */
 }
 
 #preview-overlay h4 {
@@ -287,11 +378,16 @@ button {
     padding-bottom: 5px;
 }
 
-.preview-body { font-size: 0.85rem; }
-.preview-body img, .preview-body .ggb-lienzo { 
-    max-width: 100% !important; 
-    height: auto !important; 
+.preview-body {
+    font-size: 0.85rem;
 }
+
+.preview-body img,
+.preview-body .ggb-lienzo {
+    max-width: 100% !important;
+    height: auto !important;
+}
+
 .preview-footer {
     margin-top: 10px;
     padding-top: 5px;
@@ -301,8 +397,21 @@ button {
 }
 
 /* Loader y Errores */
-.loader, .loader-preview { text-align: center; color: #666; padding: 20px; font-style: italic; }
-.error-box { color: #721c24; background: #f8d7da; border: 1px solid #f5c6cb; padding: 10px; border-radius: 4px; }
+.loader,
+.loader-preview {
+    text-align: center;
+    color: #666;
+    padding: 20px;
+    font-style: italic;
+}
+
+.error-box {
+    color: #721c24;
+    background: #f8d7da;
+    border: 1px solid #f5c6cb;
+    padding: 10px;
+    border-radius: 4px;
+}
 
 /* --- HOJA DE RESPUESTAS --- */
 .seccion-respuestas {
@@ -311,12 +420,20 @@ button {
     break-before: page;
     page-break-before: always;
 }
-.seccion-respuestas h2 { text-align: center; text-transform: uppercase; border-bottom: 2px solid #333; padding-bottom: 10px; }
+
+.seccion-respuestas h2 {
+    text-align: center;
+    text-transform: uppercase;
+    border-bottom: 2px solid #333;
+    padding-bottom: 10px;
+}
+
 .lista-respuestas {
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
     gap: 15px;
 }
+
 .item-respuesta {
     background: #f9f9f9;
     padding: 10px;
@@ -324,10 +441,11 @@ button {
     break-inside: avoid;
     font-size: 0.9rem;
 }
+
 /* --- ESTILOS PARA MENÚ DE 4 NIVELES --- */
 
 /* Nivel 1: Tema */
-.nivel-tema > summary {
+.nivel-tema>summary {
     background-color: #e0e0e0;
     font-size: 1rem;
     padding: 10px;
@@ -336,23 +454,28 @@ button {
 
 /* Nivel 2: Subtema */
 .nivel-subtema {
-    margin-left: 10px; /* Indentación */
+    margin-left: 10px;
+    /* Indentación */
     margin-top: 5px;
-    border-left: 2px solid var(--primary-color); /* Línea guía visual */
+    border-left: 2px solid var(--primary-color);
+    /* Línea guía visual */
 }
 
-.nivel-subtema > summary {
+.nivel-subtema>summary {
     background-color: transparent;
     padding: 5px 10px;
     font-weight: 600;
 }
-.nivel-subtema > summary::after {
-    font-size: 0.8rem; /* Flecha más pequeña */
+
+.nivel-subtema>summary::after {
+    font-size: 0.8rem;
+    /* Flecha más pequeña */
 }
 
 /* Nivel 3: Sección (Fieldset) */
 .contenedor-secciones fieldset {
-    margin: 5px 0 10px 15px; /* Más indentación */
+    margin: 5px 0 10px 15px;
+    /* Más indentación */
     background: white;
     border: 1px solid #eee;
 }
@@ -365,20 +488,28 @@ button {
 }
 
 /* --- REGLAS DE IMPRESIÓN (Ctrl + P) --- */
-@media screen{
-    tlacuache-renglon, .no-screen{
+@media screen {
+
+    tlacuache-renglon,
+    .no-screen {
         display: none !important;
     }
-    
+
 }
+
 @media print {
+
     /* Ocultar UI */
-    .sidebar, .no-print, .contenedor-boton, #preview-overlay { 
-        display: none !important; 
+    .sidebar,
+    .no-print,
+    .contenedor-boton,
+    #preview-overlay {
+        display: none !important;
     }
-    
+
     /* Resetear Layout */
-    body, .main-content {
+    body,
+    .main-content {
         background: white;
         height: auto;
         margin: 0;
@@ -395,19 +526,21 @@ button {
     }
 
     /* Colores y Fuentes */
-    * { 
-        color: black !important; 
-        -webkit-print-color-adjust: exact; /* Intentar mantener fondos tenues si navegador permite */
+    * {
+        color: black !important;
+        -webkit-print-color-adjust: exact;
+        /* Intentar mantener fondos tenues si navegador permite */
     }
-    
+
     /* Manejo de páginas */
     .pregunta-wrapper {
         break-before: page;
         page-break-before: always;
         margin-top: 0;
-        padding-top: 1cm; /* Aire superior en cada hoja */
+        padding-top: 1cm;
+        /* Aire superior en cada hoja */
     }
-    
+
     .seccion-respuestas {
         break-before: page;
     }
