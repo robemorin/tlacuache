@@ -1,0 +1,203 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Determinantes</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 15px;
+        }
+
+        .mainP>li:before {
+            content: counter(list, decimal) ") ";
+            counter-increment: list;
+            font-weight: bold;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generateMatrix(n) {
+            let matrix = [];
+            for (let i = 0; i < n; i++) {
+                let row = [];
+                for (let j = 0; j < n; j++) {
+                    row.push(Math.floor(Math.random() * 21) - 10); // Valores de -10 a 10
+                }
+                matrix.push(row);
+            }
+            return matrix;
+        }
+
+        function formatMatrixMathJax(matrix, index) {
+            let rows = matrix.map(row => row.join(" & "));
+            return "\\[ M_{" + index + "} = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            for (let i = 1; i <= 5; i++) {
+                let size = Math.floor(Math.random() * 3) + 3; // Matrices de 3x3, 4x4 o 5x5
+                let matrix = generateMatrix(size);
+                content += "<li>Calcular el determinante de la siguiente matriz:<br>";
+                content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+                content += formatMatrixMathJax(matrix, i);
+                content += "</div></li>";
+            }
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Cálculo de Determinantes usando Python y Numpy</h2>
+        <p>Escribe un programa en Python utilizando la librería <code>numpy</code> para obtener el determinante de las
+            siguientes matrices. A continuación se muestra un ejemplo de cómo calcular el determinante de una matriz de
+            2x2. <strong>¡Escribe el código tú mismo, no está permitido copiar y pegar el ejemplo!</strong></p>
+
+        <h3>Ejemplo:</h3>
+        <div class="no-copy">
+            import numpy as np<br>
+            <br>
+            # Definir la matriz<br>
+            A = np.array([<br>[3, 8],<br> [4, 6]])<br>
+            <br>
+            # Calcular el determinante<br>
+            det_A = np.linalg.det(A)<br>
+            <br>
+            # Imprimir el resultado<br>
+            print(f"El determinante de la matriz A es: {det_A}")
+        </div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> Manda como evidencia una captura de pantalla donde se vean
+            claramente los 5 ejercicios asignados en esta página, junto con otra captura mostrando el código de tu
+            programa en Python y el resultado obtenido en consola al ejecutarlo.
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu
+            captura de pantalla de los ejercicios antes de recargar la página.
+        </div>
+    </main>
+</body>
+
+</html>
