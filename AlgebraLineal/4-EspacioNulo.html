@@ -1,0 +1,239 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Espacio Nulo</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .mainP>li:before {
+            content: counter(list, decimal) ") ";
+            counter-increment: list;
+            font-weight: bold;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            overflow-x: auto;
+            margin-top: 10px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generateRankDeficientMatrix(size) {
+            let matrix = [];
+            // Generar las primeras filas de manera aleatoria
+            for (let i = 0; i < size - 1; i++) {
+                let row = [];
+                for (let j = 0; j < size; j++) {
+                    row.push(Math.floor(Math.random() * 9) - 4); // Valores de -4 a 4
+                }
+                matrix.push(row);
+            }
+
+            // Generar la última fila como una combinación lineal de las anteriores
+            let lastRow = new Array(size).fill(0);
+            for (let i = 0; i < size - 1; i++) {
+                let coeff = Math.floor(Math.random() * 5) - 2; // Valores de -2 a 2
+                if (coeff === 0) coeff = 1;
+                for (let j = 0; j < size; j++) {
+                    lastRow[j] += coeff * matrix[i][j];
+                }
+            }
+            matrix.push(lastRow);
+
+            // Revolver las filas para que la fila dependiente no sea siempre la última
+            for (let i = matrix.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [matrix[i], matrix[j]] = [matrix[j], matrix[i]];
+            }
+
+            return matrix;
+        }
+
+        function formatMatrixMathJax(matrix, name) {
+            let rows = matrix.map(row => row.join(" & "));
+            return "\\[ " + name + " = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            // Solo 2 problemas como fue solicitado
+            for (let i = 1; i <= 2; i++) {
+                let size = Math.floor(Math.random() * 2) + 3; // Matrices de 3x3 o 4x4
+                let A = generateRankDeficientMatrix(size);
+
+                content += "<li>Dada la siguiente matriz cuadrada de rango deficiente, calcula <strong>a mano</strong> su espacio nulo (kernel) y luego comprueba el resultado con Python:<br>";
+                content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+                content += formatMatrixMathJax(A, "A");
+                content += "</div></li>";
+            }
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Cálculo del Espacio Nulo (Kernel)</h2>
+        <p>A continuación se presentan 2 matrices cuadradas que tienen rango deficiente (es decir, su determinante es
+            cero). Debes calcular el <strong>espacio nulo</strong> de cada una realizando la reducción por renglones
+            (Gauss-Jordan) <strong>a mano</strong> y luego escribir un programa en Python para comprobar tus resultados.
+        </p>
+
+        <p><em>Sugerencia para Python:</em> Para obtener resultados exactos con fracciones (iguales a los que obtendrías
+            a mano), es muy recomendable usar la librería <code>sympy</code> en lugar de <code>scipy</code> o
+            <code>numpy</code>, ya que estas últimas entregan resultados decimales normalizados que son difíciles de
+            comparar con tus cálculos manuales.</p>
+
+        <h3>Ejemplo en Python usando SymPy:</h3>
+        <div class="no-copy">
+            import sympy as sp<br>
+            # La respuesta propocionada no es única, también podría ser cualquier múltiplo de los vectores
+            resultantes.<br>
+            <br>
+            # Definir la matriz<br>
+            # Ejemplo de matriz de 3x3 de rango deficiente<br>
+            A = sp.Matrix([<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[1, 2, 3],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[4, 5, 6],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[7, 8, 9]<br>
+            ])<br>
+            <br>
+            # Calcular el espacio nulo (kernel)<br>
+            espacio_nulo = A.nullspace()<br>
+            <br>
+            print("Los vectores base que conforman el espacio nulo son:")<br>
+            for i, vec in enumerate(espacio_nulo):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print(f"Vector {i+1}:\n{vec}\n")
+        </div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> Manda como evidencia fotografías de la reducción por renglones
+            hecha a mano para encontrar el espacio nulo, una captura de pantalla donde se vean claramente los ejercicios
+            asignados en esta página, junto con otra captura mostrando el código de tu programa en Python y el resultado
+            obtenido en consola al ejecutarlo.
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu
+            captura de pantalla de los ejercicios antes de recargar la página.
+        </div>
+    </main>
+</body>
+
+</html>

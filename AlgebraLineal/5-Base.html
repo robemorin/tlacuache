@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Base Linealmente Independiente</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .mainP>li:before {
+            content: counter(list, decimal) ") ";
+            counter-increment: list;
+            font-weight: bold;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generateDependentMatrix(rows, cols) {
+            let matrix = [];
+            for (let i = 0; i < rows; i++) {
+                let row = [];
+                for (let j = 0; j < cols; j++) {
+                    row.push(Math.floor(Math.random() * 9) - 4);
+                }
+                matrix.push(row);
+            }
+            // Hacemos que la última columna sea comb. lineal de las primeras dos, asegurando que sea un conjunto dependiente
+            if (cols >= 3) {
+                let coeff1 = Math.floor(Math.random() * 3) - 1;
+                let coeff2 = Math.floor(Math.random() * 3) - 1;
+                if (coeff1 === 0 && coeff2 === 0) coeff1 = 1;
+                for (let i = 0; i < rows; i++) {
+                    matrix[i][cols - 1] = coeff1 * matrix[i][0] + coeff2 * matrix[i][1];
+                }
+
+                // Mezclar las columnas para que no siempre la última sea la dependiente
+                for (let i = cols - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    for (let r = 0; r < rows; r++) {
+                        let temp = matrix[r][i];
+                        matrix[r][i] = matrix[r][j];
+                        matrix[r][j] = temp;
+                    }
+                }
+            }
+            return matrix;
+        }
+
+        function formatMatrixMathJax(matrix, name) {
+            let rows = matrix.map(row => row.join(" & "));
+            return "\\[ " + name + " = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            for (let i = 1; i <= 2; i++) { // Solo 2 problemas
+                let rows = Math.floor(Math.random() * 2) + 3; // 3 o 4 filas
+                let cols = Math.floor(Math.random() * 2) + 4; // 4 o 5 columnas
+                let A = generateDependentMatrix(rows, cols);
+
+                content += "<li>Dada la siguiente matriz formada por vectores columna, calcula <strong>a mano</strong> una base que sea linealmente independiente (una base para su espacio columna), y luego comprueba tu resultado con Python:<br>";
+                content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+                content += formatMatrixMathJax(A, "A");
+                content += "</div></li>";
+            }
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Cálculo de una Base Linealmente Independiente</h2>
+        <p>A continuación se te proporcionan matrices cuyos vectores columna forman un conjunto linealmente dependiente.
+            Debes extraer un subconjunto de esos vectores columna que forme una <strong>base linealmente
+                independiente</strong> realizando la reducción por renglones (escalonamiento) <strong>a mano</strong>, e
+            identificando cuáles columnas corresponden a las columnas pivote. Posteriormente, escribe un programa en
+            Python para comprobar tus resultados.</p>
+
+        <h3>Ejemplo en Python usando SymPy:</h3>
+        <div class="no-copy">
+            import sympy as sp<br>
+            # La respuesta propocionada no es única, también podría ser cualquier múltiplo de los vectores
+            resultantes. <br>
+            <br>
+            # Definir la matriz<br>
+            A = sp.Matrix([<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[1, 2, 3, 4],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[2, 4, 6, 8],<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;[0, 1, 0, 1]<br>
+            ])<br>
+            <br>
+            # Extraer la base del espacio columna (los vectores linealmente independientes)<br>
+            base_columna = A.columnspace()<br>
+            <br>
+            print("La base linealmente independiente (formada por las columnas pivote originales) es:")<br>
+            for i, vec in enumerate(base_columna):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print(f"Vector {i+1}:\n{vec}\n")
+        </div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> Manda como evidencia fotografías de la reducción de la matriz
+            hecha a mano, una captura de pantalla de los ejercicios aquí generados, y otra captura mostrando tu programa
+            de Python ejecutándose con los resultados.
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu
+            captura de pantalla de los ejercicios antes de recargar la página.
+        </div>
+    </main>
+</body>
+
+</html>

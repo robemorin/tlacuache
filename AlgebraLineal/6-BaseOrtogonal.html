@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Base Ortogonal (Gram-Schmidt)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 25px;
+        }
+
+        .mainP>li:before {
+            content: counter(list, decimal) ") ";
+            counter-increment: list;
+            font-weight: bold;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generateMatrix(n) {
+            let matrix = [];
+            for (let i = 0; i < n; i++) {
+                let row = [];
+                for (let j = 0; j < n; j++) {
+                    row.push(Math.floor(Math.random() * 9) - 4);
+                }
+                matrix.push(row);
+            }
+            // 50% de probabilidad de ser de rango deficiente (dependencia lineal en las columnas)
+            if (Math.random() < 0.5) {
+                let coeff1 = Math.floor(Math.random() * 3) - 1;
+                let coeff2 = Math.floor(Math.random() * 3) - 1;
+                if (coeff1 === 0 && coeff2 === 0) coeff1 = 1;
+                
+                for (let i = 0; i < n; i++) {
+                    matrix[i][n-1] = coeff1 * matrix[i][0] + coeff2 * matrix[i][1];
+                }
+            }
+            return matrix;
+        }
+
+        function formatMatrixMathJax(matrix, name) {
+            let rows = matrix.map(row => row.join(" & "));
+            return "\\[ " + name + " = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            for (let i = 1; i <= 2; i++) { // Solo 2 problemas
+                let A = generateMatrix(3);
+                
+                content += "<li>Aplica el <strong>proceso de Gram-Schmidt</strong> a mano a las columnas de la siguiente matriz de $3 \\times 3$. Considera que la matriz puede ser de rango pleno o deficiente, por lo que debes determinar por ti mismo si en algún punto el proceso debe parar (por ejemplo, si obtienes el vector cero).<br>";
+                content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+                content += formatMatrixMathJax(A, "A");
+                content += "</div></li>";
+            }
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Base Ortogonal (Proceso de Gram-Schmidt)</h2>
+        <p>A continuación se te proporcionan matrices de $3 \times 3$. Debes aplicar el <strong>proceso de Gram-Schmidt a mano</strong> sobre las columnas de cada matriz para encontrar un conjunto ortogonal. Presta atención: algunas matrices pueden ser de rango deficiente, lo que significa que en algún paso podrías obtener un vector nulo. Debes identificar cuándo sucede esto y parar el proceso para ese vector.</p>
+        
+        <p><em>Sugerencia para Python:</em> Al igual que con el espacio nulo, la librería <code>sympy</code> cuenta con un método excelente para aplicar Gram-Schmidt y obtener resultados exactos con fracciones, lo que facilita comparar con lo que hiciste a mano.</p>
+
+        <h3>Ejemplo en Python usando SymPy:</h3>
+        <div class="no-copy">
+            import sympy as sp<br>
+            <br>
+            # Definir la matriz con los vectores columna<br>
+            A = sp.Matrix([[1, 1, 0], [1, 2, 0], [0, 1, 2]])<br>
+            <br>
+            # Extraer las columnas de la matriz como una lista de vectores<br>
+            columnas = [A.col(i) for i in range(A.shape[1])]<br>
+            <br>
+            # Aplicar Gram-Schmidt para obtener una base ortogonal<br>
+            base_ortogonal = sp.GramSchmidt(columnas)<br>
+            <br>
+            print("Vectores de la Base Ortogonal:")<br>
+            for i, vec in enumerate(base_ortogonal):<br>
+            &nbsp;&nbsp;&nbsp;&nbsp;print(f"u_{i+1} =\n{vec}\n")<br>
+        </div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> Manda como evidencia fotografías de tus cálculos hechos a mano para ortogonalizar los vectores, una captura de pantalla de los ejercicios generados aquí, y otra captura mostrando tu código de Python y su resultado de ejecución.
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar la página.
+        </div>
+    </main>
+</body>
+
+</html>
