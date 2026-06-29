@@ -1,0 +1,294 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Representación Gráfica y Conversión de Complejos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Ejercicio " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function getRandomCartesians() {
+            let list = [
+                { tex: "1 + i", re: 1, im: 1 },
+                { tex: "-2 + 2i", re: -2, im: 2 },
+                { tex: "-\sqrt{3} - i", re: -1.732, im: -1 },
+                { tex: "3 - 3i", re: 3, im: -3 },
+                { tex: "2\sqrt{3} + 2i", re: 3.464, im: 2 },
+                { tex: "-4i", re: 0, im: -4 },
+                { tex: "3", re: 3, im: 0 }
+            ];
+            // barajar y devolver 2 distintos
+            let shuffled = list.sort(() => 0.5 - Math.random());
+            return [shuffled[0], shuffled[1]];
+        }
+
+        function getRandomExponentials() {
+            let list = [
+                { tex: "2 e^{i \\frac{\\pi}{4}}", r: 2, theta: "\\pi/4" },
+                { tex: "4 e^{i \\frac{2\\pi}{3}}", r: 4, theta: "2\\pi/3" },
+                { tex: "3 e^{-i \\frac{\\pi}{6}}", r: 3, theta: "-\\pi/6" },
+                { tex: "5 e^{i \\pi}", r: 5, theta: "\\pi" },
+                { tex: "6 e^{-i \\frac{\\pi}{2}}", r: 6, theta: "-\\pi/2" },
+                { tex: "1 e^{i \\frac{5\\pi}{4}}", r: 1, theta: "5\\pi/4" }
+            ];
+            let shuffled = list.sort(() => 0.5 - Math.random());
+            return [shuffled[0], shuffled[1]];
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            // Problema 1: Cartesiana a Exponencial
+            let cartesianas = getRandomCartesians();
+            content += `<li><strong>(De forma Cartesiana a Exponencial y Gráfico)</strong> Convierte los siguientes números complejos a su <strong>forma exponencial o de Euler</strong> ($z = r e^{i \\theta}$):<br>`;
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += `\\[ z_1 = ${cartesianas[0].tex}, \\quad z_2 = ${cartesianas[1].tex} \\]`;
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Realiza lo siguiente a mano para cada uno:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Calcula el módulo $r = |z|$ (expresión exacta con radical si aplica).</li>";
+            content += "<li><strong>b)</strong> Obtén el argumento principal $\\theta$ en radianes (en múltiplos de $\\pi$). Considera la ubicación en el cuadrante del plano de Argand.</li>";
+            content += "<li><strong>c)</strong> Expresa el número en su forma exponencial $r e^{i \\theta}$.</li>";
+            content += "<li><strong>d)</strong> Realiza un bosquejo del plano complejo de Argand y dibuja el vector de posición correspondiente, señalando el módulo $r$ y el ángulo $\\theta$.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 2: Exponencial a Cartesiana
+            let exponenciales = getRandomExponentials();
+            content += `<li><strong>(De forma Exponencial a Cartesiana y Gráfico)</strong> Convierte los siguientes números complejos a su <strong>forma cartesiana o binómica</strong> ($z = a + bi$):<br>`;
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += `\\[ w_1 = ${exponenciales[0].tex}, \\quad w_2 = ${exponenciales[1].tex} \\]`;
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Realiza lo siguiente a mano para cada uno:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Obtén el valor exacto de la parte real $a = r \\cos\\theta$ y la parte imaginaria $b = r \\sin\\theta$ utilizando razones trigonométricas exactas de ángulos notables.</li>";
+            content += "<li><strong>b)</strong> Escribe el número en su forma cartesiana $a + bi$.</li>";
+            content += "<li><strong>c)</strong> Grafica el número complejo en el plano de Argand representando el vector de posición y el ángulo indicado.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 3: Visualización en Python
+            content += `<li><strong>(Graficar Vectores Complejos en Python)</strong> Utiliza programación en Python para graficar de forma conjunta los cuatro números complejos anteriores ($z_1, z_2, w_1, w_2$) en un solo plano complejo de Argand:<br>`;
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Escribe un script en Python que defina los cuatro números (usa la notación de complejos nativos en Python <code>a + bj</code> o el módulo <code>cmath</code>).</li>";
+            content += "<li><strong>b)</strong> Utiliza <code>matplotlib.pyplot</code> para dibujar cada número complejo como un **vector (flecha)** que parte desde el origen $(0,0)$ hasta el punto en el plano.</li>";
+            content += "<li><strong>c)</strong> Asigna colores distintos a cada vector, dibuja los ejes cartesianos (horizontal para reales y vertical para imaginarios), agrega una rejilla de fondo e incluye una leyenda con las etiquetas correspondientes.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+            
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Representación Gráfica y Conversión de Números Complejos</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora</div>
+        
+        <p>Los números complejos pueden representarse como puntos o vectores en un plano bidimensional llamado **Plano de Argand**, donde el eje horizontal representa la parte real y el eje vertical la parte imaginaria. En esta ficha de trabajo, dominarás la transición geométrica de números complejos entre su <strong>forma cartesiana o binómica</strong> ($a+bi$) y su **forma exponencial o de Euler** ($re^{i\theta}$), y aprenderás a visualizarlos programáticamente usando vectores en Python.</p>
+        
+        <h3>Ejemplo de Conversión y Gráfico en Python:</h3>
+        <p>A continuación se muestra un script guía que define un número complejo, lo convierte entre formas polar/exponencial, y grafica el vector correspondiente en el plano de Argand:</p>
+        
+        <div class="no-copy">import cmath
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Definir un complejo en forma cartesiana
+z = -2 + 2j
+
+# Conversión a forma polar/exponencial
+r, theta = cmath.polar(z)
+print("--- Conversión Cartesiana -> Exponencial ---")
+print(f"Rectangular: {z}")
+print(f"Exponencial: {r:.4f} * e^(i * {theta/cmath.pi:.4f}*pi)\n")
+
+# 2. Definir un complejo en forma exponencial (ej: w = 3 * e^(i * pi/6))
+w_r = 3
+w_theta = cmath.pi / 6
+w = cmath.rect(w_r, w_theta)
+print("--- Conversión Exponencial -> Cartesiana ---")
+print(f"Exponencial: {w_r} * e^(i * pi/6)")
+print(f"Rectangular: {w.real:.4f} + {w.imag:.4f}i\n")
+
+# 3. Graficar en el plano de Argand
+plt.figure(figsize=(6, 6))
+
+# Dibujar vectores usando quiver (flecha desde el origen)
+plt.quiver(0, 0, z.real, z.imag, angles='xy', scale_units='xy', scale=1, color='blue', label='z = -2 + 2i')
+plt.quiver(0, 0, w.real, w.imag, angles='xy', scale_units='xy', scale=1, color='red', label='w = 3*e^(i*pi/6)')
+
+# Ajustes de límites y ejes
+plt.xlim(-5, 5)
+plt.ylim(-5, 5)
+plt.axhline(0, color='black', linewidth=0.8)
+plt.axvline(0, color='black', linewidth=0.8)
+plt.grid(True, which='both', linestyle=':', alpha=0.5)
+plt.legend()
+plt.title("Representación en el Plano Complejo de Argand")
+plt.xlabel("Eje Real (Re)")
+plt.ylabel("Eje Imaginario (Im)")
+plt.show()
+</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos hechos a mano para el **Ejercicio 1** (cálculo de módulo, argumento en radianes, forma exponencial y dibujo a mano de los vectores de $z_1$ y $z_2$ en el plano de Argand).</li>
+                <li>Tus cálculos hechos a mano para el **Ejercicio 2** (obtención de coordenadas cartesianas mediante funciones trigonométricas exactas y el dibujo a mano de los vectores $w_1$ y $w_2$).</li>
+                <li>Una captura de pantalla de esta página web donde se vean las combinaciones asignadas para ti.</li>
+                <li>Captura de pantalla del script de Python del **Ejercicio 3** mostrando la gráfica de los 4 vectores generada en tu computadora.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

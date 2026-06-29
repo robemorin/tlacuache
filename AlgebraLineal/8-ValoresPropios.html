@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Valores y Vectores Propios</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Problema " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #17a2b8;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generate2x2NiceMatrix() {
+            // Genera una matriz 2x2 con valores propios enteros
+            // A = P * D * P^-1
+            // P = [[1, 1], [1, 2]], P^-1 = [[2, -1], [-1, 1]]
+            // D = [[L1, 0], [0, L2]]
+            let l1 = Math.floor(Math.random() * 7) - 3; // -3 a 3
+            let l2 = Math.floor(Math.random() * 7) - 3; // -3 a 3
+            if (l1 === l2) l2 += 2; // tratar de que sean distintos
+            
+            let a = 2*l1 - l2;
+            let b = -l1 + l2;
+            let c = 2*l1 - 2*l2;
+            let d = -l1 + 2*l2;
+            
+            return [[a, b], [c, d]];
+        }
+
+        function generate3x3NiceMatrix() {
+            // Genera una matriz 3x3 con valores propios enteros usando una matriz P predefinida
+            // P = [[1, 0, 1], [0, 1, 1], [1, 1, 1]], det(P) = -1
+            // P^-1 = [[0, -1, 1], [-1, 0, 1], [1, 1, -1]]
+            let l1 = Math.floor(Math.random() * 6) - 2; // -2 a 3
+            let l2 = Math.floor(Math.random() * 6) - 2;
+            let l3 = Math.floor(Math.random() * 6) - 2;
+            if (l1 === l2) l2 += 2;
+            if (l2 === l3) l3 -= 2;
+
+            // A = P * D * P^-1
+            // [ 1  0  1 ]   [ L1  0   0  ]   [  0 -1  1 ]
+            // [ 0  1  1 ] * [  0  L2  0  ] * [ -1  0  1 ]
+            // [ 1  1  1 ]   [  0   0  L3 ]   [  1  1 -1 ]
+            
+            // P*D:
+            // [ L1  0  L3 ]
+            // [  0 L2  L3 ]
+            // [ L1 L2  L3 ]
+            
+            // A = (P*D) * P^-1:
+            let a11 = l3;
+            let a12 = -l1 + l3;
+            let a13 = l1 - l3;
+            
+            let a21 = -l2 + l3;
+            let a22 = l3;
+            let a23 = l2 - l3;
+            
+            let a31 = -l2 + l3;
+            let a32 = -l1 + l3;
+            let a33 = l1 + l2 - l3;
+            
+            // Para evitar confusión de nombres, reasignamos las variables en JS:
+            let a = l3;
+            let b = -l1 + l3;
+            let c = l1 - l3;
+            
+            let d = -l2 + l3;
+            let e = l3;
+            let f = l2 - l3;
+            
+            let g = -l2 + l3;
+            let h = -l1 + l3;
+            let i = l1 + l2 - l3;
+            
+            return [[a, b, c], [d, e, f], [g, h, i]];
+        }
+
+        function generate4x4Matrix() {
+            let matrix = [];
+            for (let i = 0; i < 4; i++) {
+                let row = [];
+                for (let j = 0; j < 4; j++) {
+                    row.push(Math.floor(Math.random() * 9) - 4); // valores de -4 a 4
+                }
+                matrix.push(row);
+            }
+            return matrix;
+        }
+
+        function formatMatrixMathJax(matrix, name) {
+            let rows = matrix.map(row => row.join(" & "));
+            return "\\[ " + name + " = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            // Problema 1: 2x2. A mano.
+            let A1 = generate2x2NiceMatrix();
+            content += "<li><strong>(Resolución Manual Completa)</strong> Dada la siguiente matriz de $2 \\times 2$:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A1, "A");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Realiza los siguientes incisos de forma manual y comprueba el resultado con tu código:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Encuentra el <strong>polinomio característico</strong> $p(\\lambda) = \\det(A - \\lambda I)$.</li>";
+            content += "<li><strong>b)</strong> Encuentra los <strong>valores propios</strong> (raíces del polinomio característico).</li>";
+            content += "<li><strong>c)</strong> Determina los <strong>vectores propios</strong> asociados a cada uno de los valores propios encontrados.</li>";
+            content += "<li><strong>d)</strong> Grafica en un plano cartesiano (a mano o usando Matplotlib) cada vector propio original $v$ y su correspondiente vector transformado $Av$. Muestra visualmente que el vector transformado es colineal con el original y que su longitud cambia por un factor de $\\lambda$.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 2: 3x3. A mano y verificar con Python.
+            let A2 = generate3x3NiceMatrix();
+            content += "<li><strong>(A mano y verificar con Python)</strong> Para la siguiente matriz de $3 \\times 3$:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A2, "B");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Calcula a mano el <strong>polinomio característico</strong> de la matriz.</li>";
+            content += "<li><strong>b)</strong> Encuentra los <strong>valores propios</strong>.</li>";
+            content += "<li><strong>c)</strong> Resuelve los sistemas homogéneos correspondientes para obtener los <strong>vectores propios</strong> asociados.</li>";
+            content += "<li><strong>d)</strong> Escribe un script en Python para validar las raíces de tu polinomio característico y los vectores propios obtenidos.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 3: 3x3. Resolver con Python.
+            let A3 = generate3x3NiceMatrix();
+            content += "<li><strong>(Resolver en Python)</strong> Utiliza programación en Python para analizar la siguiente matriz:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A3, "C");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Obtén simbólicamente el polinomio característico de la matriz $C$.</li>";
+            content += "<li><strong>b)</strong> Obtén sus valores propios y vectores propios con sus respectivas multiplicidades.</li>";
+            content += "<li><strong>c)</strong> Comprueba matemáticamente la ecuación $C v = \\lambda v$ para cada par propio e imprime en pantalla un mensaje confirmando si se cumple.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 4: 4x4. Solo con Python.
+            let A4 = generate4x4Matrix();
+            content += "<li><strong>(Resolver únicamente en Python)</strong> Dada la siguiente matriz de $4 \\times 4$ generada de forma aleatoria:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A4, "D");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Resuelve los siguientes puntos exclusivamente utilizando programación en Python (SymPy o NumPy):";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Obtén el polinomio característico de la matriz $D$.</li>";
+            content += "<li><strong>b)</strong> Encuentra todos los valores propios (incluyendo complejos, en caso de haberlos).</li>";
+            content += "<li><strong>c)</strong> Encuentra los vectores propios asociados.</li>";
+            content += "<li><strong>d)</strong> Verifica de manera programática la ecuación $D v = \\lambda v$ para cada uno de los vectores propios e imprime el resultado confirmando la igualdad.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Valores y Vectores Propios (Eigenvalores y Eigenvectores)</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora</div>
+        
+        <p>Esta ficha de trabajo se enfoca en el cálculo y la comprensión geométrica de los <strong>valores y vectores propios</strong>. Resolverás ejercicios de forma analítica (a mano) para entender el proceso algebraico detrás de la ecuación fundamental $Av = \lambda v$, y aprenderás a graficar y comprobar estos resultados empleando librerías de Python.</p>
+        
+        <h3>Ejemplo de Guía en Python usando SymPy y Matplotlib:</h3>
+        <p>A continuación se muestra un código ejemplo que calcula el polinomio característico, valores y vectores propios de una matriz de $2 \times 2$, y posteriormente genera un gráfico que muestra un vector propio $v$ y su transformación lineal $Av$.</p>
+        
+        <div class="no-copy">import sympy as sp
+import numpy as np
+import matplotlib.pyplot as plt
+
+# 1. Definir la matriz de manera simbólica
+A = sp.Matrix([[3, 2], [0, 1]])
+
+# Definir la variable simbólica lambda
+lam = sp.symbols('lambda')
+
+# a) Obtener el polinomio característico
+p_char = A.charpoly(lam)
+print("--- Polinomio Característico ---")
+print(f"p(lambda) = {p_char.as_expr()}\n")
+
+# b) Obtener valores y vectores propios
+# eigenvects() devuelve una lista de tuplas: (valor_propio, multiplicidad, [vectores_propios])
+par_propio = A.eigenvects()
+print("--- Valores y Vectores Propios ---")
+for val, mult, vects in par_propio:
+    print(f"Valor propio: {val} (Multiplicidad: {mult})")
+    for v in vects:
+        print(f" Vector propio asociado:\n{v}\n")
+
+# c) Visualización gráfica (Ejemplo para el valor propio lambda = 3, v = [1, 0])
+# Convertimos la matriz A a formato numérico de NumPy para operar con gráficos
+A_np = np.array(A.tolist(), dtype=float)
+
+# Vector propio asociado a lambda = 3
+v = np.array([1, 0])
+# Calcular la transformación del vector propio
+Av = A_np.dot(v)
+
+# Graficar
+plt.figure(figsize=(6, 6))
+# Dibujar vector propio v
+plt.quiver(0, 0, v[0], v[1], angles='xy', scale_units='xy', scale=1, color='blue', label=f'v (Vector propio)')
+# Dibujar vector transformado Av
+plt.quiver(0, 0, Av[0], Av[1], angles='xy', scale_units='xy', scale=1, color='red', 
+           linestyle='--', alpha=0.7, label=f'A*v (Transformado, lambda*v)')
+
+plt.xlim(-5, 5)
+plt.ylim(-5, 5)
+plt.axhline(0, color='black', linewidth=0.8)
+plt.axvline(0, color='black', linewidth=0.8)
+plt.grid(True, which='both', linestyle=':', alpha=0.5)
+plt.legend()
+plt.title("Efecto de la transformación lineal en un Vector Propio")
+plt.show()</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos hechos a mano para el <strong>Problema 1</strong> (incisos a, b, c) y el gráfico de vectores propios (inciso d).</li>
+                <li>Tus cálculos hechos a mano para el <strong>Problema 2</strong> (incisos a, b y c).</li>
+                <li>Una captura de pantalla de esta página web con las matrices asignadas.</li>
+                <li>Capturas de pantalla o reportes de la correcta ejecución de tus scripts de Python que verifican los tres problemas.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

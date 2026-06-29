@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Matrices de Rotación (2D y 3D)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Problema " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #fd7e14;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function getRandomAngle() {
+            let angles = [30, 45, 60, 90, 120, 135, 150];
+            return angles[Math.floor(Math.random() * angles.length)];
+        }
+
+        function generate2DFigure() {
+            // Retorna vértices de un polígono simple: Triángulo, Cuadrado o Trapecio
+            let figures = [
+                {
+                    name: "Triángulo",
+                    points: [[1, 1], [4, 1], [2, 4]]
+                },
+                {
+                    name: "Cuadrado",
+                    points: [[1, 1], [3, 1], [3, 3], [1, 3]]
+                },
+                {
+                    name: "Paralelogramo",
+                    points: [[0, 0], [3, 0], [4, 2], [1, 2]]
+                }
+            ];
+            return figures[Math.floor(Math.random() * figures.length)];
+        }
+
+        function generate3DAngles() {
+            return {
+                alpha: getRandomAngle(),
+                beta: getRandomAngle(),
+                gamma: getRandomAngle()
+            };
+        }
+
+        function formatPointsMathJax(points) {
+            let ptsStr = points.map((p, i) => `P_{${i+1}}(${p[0]}, ${p[1]})`).join(", ");
+            return `\\text{Vértices: } \\{ ${ptsStr} \\}`;
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            // Problema 1: Rotación 2D (A mano y Python)
+            let fig = generate2DFigure();
+            let theta = getRandomAngle();
+            content += "<li><strong>(Rotación en 2D a mano y Python)</strong> Considera la figura geométrica definida por los siguientes puntos en el plano cartesiano:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += `<strong>Figura:</strong> ${fig.name} <br> ${formatPointsMathJax(fig.points)} <br>`;
+            content += `<strong>Ángulo de rotación:</strong> $\\theta = ${theta}^\\circ$ (en sentido antihorario respecto al origen)`;
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Lleva a cabo las siguientes tareas:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Escribe la matriz de rotación en 2D, $R(\\theta)$, sustituyendo las funciones trigonométricas con valores exactos o decimales aproximados.</li>";
+            content += "<li><strong>b)</strong> Aplica la matriz de rotación $R(\\theta)$ a cada uno de los vértices de la figura original para obtener las coordenadas de los nuevos vértices transformados.</li>";
+            content += "<li><strong>c)</strong> Dibuja en papel cuadriculado (o empleando Python) el plano cartesiano donde muestres la figura original y la figura rotada.</li>";
+            content += "<li><strong>d)</strong> Escribe un script de Python que grafique ambas figuras y valide tus cálculos.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 2: Rotación 3D mediante Ángulos de Euler ZYZ (Python)
+            let angles = generate3DAngles();
+            let points3D = [[1, 2, 3], [-1, 3, 0], [2, 0, 4]];
+            let pts3DStr = points3D.map((p, i) => `Q_{${i+1}} = \\begin{bmatrix} ${p[0]} \\\\ ${p[1]} \\\\ ${p[2]} \\end{bmatrix}`).join(", ");
+            content += "<li><strong>(Rotación 3D con Ángulos de Euler ZYZ en Python)</strong> En el espacio tridimensional $\\mathbb{R}^3$, se tienen los siguientes vectores de posición:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += `\\[ ${pts3DStr} \\]`;
+            content += `Aplica una rotación utilizando la secuencia de <strong>Ángulos de Euler ZYZ</strong> con los siguientes ángulos:<br>`;
+            content += `\\[ \\alpha = ${angles.alpha}^\\circ, \\quad \\beta = ${angles.beta}^\\circ, \\quad \\gamma = ${angles.gamma}^\\circ \\]`;
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Usa programación en Python para resolver lo siguiente:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Define las matrices de rotación básicas $R_z(\\theta)$ y $R_y(\\theta)$.</li>";
+            content += "<li><strong>b)</strong> Construye la matriz de rotación completa de Euler ZYZ: $R_{ZYZ}(\\alpha, \\beta, \\gamma) = R_z(\\alpha) R_y(\\beta) R_z(\\gamma)$.</li>";
+            content += "<li><strong>c)</strong> Multiplica la matriz obtenida por cada uno de los vectores dados para encontrar sus nuevas coordenadas tras la rotación.</li>";
+            content += "<li><strong>d)</strong> Comprueba programáticamente que la matriz resultante $R_{ZYZ}$ es una matriz ortogonal (calculando $R_{ZYZ}^T R_{ZYZ}$) y muestra el resultado en pantalla.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 3: Consulta Teórica
+            content += "<li><strong>(Consulta de Investigación sobre Matrices de Rotación)</strong> Investiga y redacta detalladamente las respuestas a las siguientes preguntas sobre las propiedades matemáticas y físicas de las matrices de rotación:";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a) Preservación de Longitudes:</strong> Demuestra algebraicamente que si $R$ es una matriz de rotación (ortogonal), entonces para cualquier vector $x$ se cumple que la norma no cambia, es decir: $\\|Rx\\| = \\|x\\|$. <em>(Pista: usa la relación entre norma, producto punto y transpuesta $x^T R^T R x$).</em></li>";
+            content += "<li><strong>b) Significado del Determinante:</strong> Las matrices de rotación pura tienen siempre un determinante de $+1$ (grupo especial ortogonal $SO(n)$). ¿Qué transformación física representaría una matriz ortogonal cuyo determinante fuera $-1$? Pon un ejemplo geométrico en 2D.</li>";
+            content += "<li><strong>c) Matriz Inversa y Transpuesta:</strong> Explica por qué para las matrices de rotación la inversa es igual a su transpuesta ($R^{-1} = R^T$) y qué ventaja computacional representa esto al realizar transformaciones en tiempo real en videojuegos, animación 3D o robótica.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Matrices de Rotación y Ángulos de Euler</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora</div>
+        
+        <p>En esta ficha de trabajo, estudiarás el uso de las <strong>matrices de rotación en 2D y 3D</strong>, que son fundamentales en áreas como la computación gráfica, la robótica y la física. Aprenderás a transformar coordenadas planas, a encadenar rotaciones tridimensionales usando los **Ángulos de Euler ZYZ** y a analizar las propiedades algebraicas que definen a este grupo de matrices.</p>
+        
+        <h3>Ejemplo de Rotación en 2D usando Python:</h3>
+        <p>El siguiente código muestra cómo definir la matriz de rotación en 2D para un ángulo de $45^\circ$, aplicarla a un triángulo y graficar el resultado usando <code>matplotlib</code>:</p>
+        
+        <div class="no-copy">import numpy as np
+import matplotlib.pyplot as plt
+
+# Definir el ángulo en radianes
+theta = np.radians(45)
+
+# Matriz de rotación en 2D
+R = np.array([
+    [np.cos(theta), -np.sin(theta)],
+    [np.sin(theta),  np.cos(theta)]
+])
+
+# Vértices del triángulo: [x, y] por columna
+# Añadimos el primer punto al final para cerrar la figura al dibujar
+vertices_originales = np.array([
+    [1, 4, 2, 1], # coordenadas X
+    [1, 1, 4, 1]  # coordenadas Y
+])
+
+# Aplicar la rotación a todos los vértices
+vertices_rotados = R.dot(vertices_originales)
+
+# Graficar
+plt.figure(figsize=(6, 6))
+plt.plot(vertices_originales[0], vertices_originales[1], 'bo-', label='Original')
+plt.plot(vertices_rotados[0], vertices_rotados[1], 'ro-', label='Rotado (45°)')
+plt.fill(vertices_originales[0], vertices_originales[1], alpha=0.1, color='blue')
+plt.fill(vertices_rotados[0], vertices_rotados[1], alpha=0.1, color='red')
+
+plt.xlim(-5, 6)
+plt.ylim(-5, 6)
+plt.axhline(0, color='black', linewidth=0.8)
+plt.axvline(0, color='black', linewidth=0.8)
+plt.grid(True, which='both', linestyle=':', alpha=0.5)
+plt.legend()
+plt.title("Rotación de un polígono en 2D")
+plt.show()</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos hechos a mano para el <strong>Problema 1</strong> (incisos a, b y c con tu dibujo correspondiente).</li>
+                <li>Una captura de pantalla de esta página web con la figura, el ángulo y los puntos 3D generados para ti.</li>
+                <li>La impresión en pantalla y captura del código de Python resolviendo las rotaciones 3D del <strong>Problema 2</strong> (incluyendo la comprobación de ortogonalidad).</li>
+                <li>Las respuestas completas, formales y fundamentadas a la consulta del <strong>Problema 3</strong>.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

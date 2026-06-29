@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Números Complejos (Operaciones Básicas)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Ejercicio " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #007bff;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generateComplex() {
+            let re = Math.floor(Math.random() * 9) - 4; // -4 a 4
+            let im = Math.floor(Math.random() * 9) - 4; // -4 a 4
+            if (im === 0) im = 2; // evitar parte imaginaria nula
+            if (re === 0) re = 3; // evitar parte real nula
+            return { re, im };
+        }
+
+        function formatComplexMathJax(z) {
+            let sign = z.im >= 0 ? "+" : "";
+            return `${z.re}${sign}${z.im}i`;
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            for (let i = 1; i <= 3; i++) {
+                let z1 = generateComplex();
+                let z2 = generateComplex();
+                
+                content += `<li><strong>(Operaciones Básicas y Comprobación)</strong> Dados los números complejos:<br>`;
+                content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+                content += `\\[ z_1 = ${formatComplexMathJax(z1)}, \\quad z_2 = ${formatComplexMathJax(z2)} \\]`;
+                content += "</div>";
+                content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+                content += "Resuelve las siguientes operaciones a mano y <strong>comprueba tus respuestas</strong> mediante operaciones inversas:";
+                content += "<ul>";
+                content += "<li><strong>a) Suma:</strong> Calcula $s = z_1 + z_2$. Comprueba restando: $s - z_2$ y verifica que sea igual a $z_1$.</li>";
+                content += "<li><strong>b) Resta:</strong> Calcula $d = z_1 - z_2$. Comprueba sumando: $d + z_2$ y verifica que sea igual a $z_1$.</li>";
+                content += "<li><strong>c) Multiplicación:</strong> Calcula $m = z_1 \\cdot z_2$.</li>";
+                content += "<li><strong>d) División:</strong> Calcula el cociente $q = \\frac{z_1}{z_2}$ (multiplicando numerador y denominador por el conjugado de $z_2$). <strong>Comprueba tu respuesta</strong> multiplicando: $q \\cdot z_2$ y demuestra paso a paso que el resultado es exactamente $z_1$.</li>";
+                content += "<li><strong>e) Módulo y Conjugado:</strong> Obtén el conjugado de $z_1$ ($\\bar{z}_1$) y su módulo $|z_1|$.</li>";
+                content += "</ul>";
+                content += "</div></li>";
+            }
+            
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Operaciones Básicas con Números Complejos</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 45 minutos (a mano y validando en Python)</div>
+        
+        <p>En esta ficha de trabajo, consolidarás tus habilidades en la aritmética elemental de los <strong>números complejos</strong> en su forma rectangular. Resolverás operaciones fundamentales (suma, resta, multiplicación, división, conjugado y módulo) y pondrás especial énfasis en <strong>comprobar analíticamente tus resultados</strong> utilizando las operaciones aritméticas inversas antes de confirmarlos con Python.</p>
+        
+        <h3>Ejemplo de Operaciones y Comprobación en Python:</h3>
+        <p>El siguiente código de Python muestra cómo realizar las operaciones básicas de forma exacta usando SymPy y cómo realizar las multiplicaciones de comprobación del cociente obtenido:</p>
+        
+        <div class="no-copy">import sympy as sp
+
+# Definir los números complejos simbólicamente
+z1 = 3 + 4*sp.I
+z2 = 1 - 2*sp.I
+
+print("--- Operaciones Aritméticas ---")
+suma = z1 + z2
+resta = z1 - z2
+mult = z1 * z2
+division = sp.simplify(z1 / z2)
+
+print(f"z1 + z2 = {suma}")
+print(f"z1 - z2 = {resta}")
+print(f"z1 * z2 = {mult}")
+print(f"z1 / z2 = {division}\n")
+
+print("--- Comprobación de Resultados ---")
+# Comprobar la suma: s - z2 == z1
+print(f"Comprobación Suma (s - z2): {suma - z2} (¿Es igual a z1?: {suma - z2 == z1})")
+# Comprobar la resta: d + z2 == z1
+print(f"Comprobación Resta (d + z2): {resta + z2} (¿Es igual a z1?: {resta + z2 == z1})")
+# Comprobar la división: q * z2 == z1
+comp_div = sp.simplify(division * z2)
+print(f"Comprobación División (q * z2): {comp_div} (¿Es igual a z1?: {comp_div == z1})")
+</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos hechos a mano detallados para resolver las operaciones y sus respectivas **comprobaciones analíticas** (sumas, restas y divisiones inversas) para los tres ejercicios.</li>
+                <li>Una captura de pantalla de esta página web con los números complejos que te fueron generados de manera aleatoria.</li>
+                <li>Captura de pantalla de la terminal de Python ejecutando la verificación de tus operaciones y comprobando la exactitud de tus resultados.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

@@ -1,0 +1,881 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Exámenes de Álgebra Lineal</title>
+    <style>
+        /* Base & Theme Variables (Premium Dark Mode Interface, Clean Print Mode) */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-secondary: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Control Panel Styles */
+        .control-panel {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 40px;
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .brand p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 4px 0 0 0;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .controls input[type="number"] {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 80px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .controls input[type="number"]:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        /* Preview Container */
+        .exams-container {
+            width: 100%;
+            max-width: 850px;
+            padding: 0 20px 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Printable Page Styles (Screen Preview) */
+        .exam-sheet {
+            background-color: white;
+            color: #1e293b;
+            padding: 25mm 20mm;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+            position: relative;
+            min-height: 297mm; /* A4 aspect ratio or standard Letter size */
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Exam Header */
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .exam-header img {
+            height: 80px;
+            width: auto;
+        }
+
+        .exam-header-text {
+            text-align: right;
+        }
+
+        .exam-header-text h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: #0f172a;
+        }
+
+        .exam-header-text h2 {
+            font-size: 1rem;
+            margin: 4px 0 0 0;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .exam-header-text h3 {
+            font-size: 0.85rem;
+            margin: 2px 0 0 0;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* Student Details Form */
+        .student-info {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            background-color: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-field span {
+            border-bottom: 1px solid #cbd5e1;
+            margin-top: 6px;
+            height: 20px;
+        }
+
+        /* Exam Body */
+        .exam-body h2 {
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0f172a;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .exam-body h2 span.exam-code {
+            font-size: 0.9rem;
+            background-color: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #475569;
+        }
+
+        .instructions {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* Question Styles */
+        .questions-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: question-counter;
+        }
+
+        .question-item {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .question-item::before {
+            counter-increment: question-counter;
+            content: counter(question-counter) ". ";
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1rem;
+        }
+
+        .question-text {
+            display: inline;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+
+        /* Matrix/Vector Display within exams */
+        .matrix-display-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .mjx-chtml {
+            margin: 5px 0 !important;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .control-panel {
+                display: none !important;
+            }
+
+            .exams-container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                gap: 0 !important;
+            }
+
+            .exam-sheet, .answers-sheet {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 15mm 15mm !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                height: auto !important;
+                min-height: 0 !important;
+            }
+
+            .answers-sheet:last-child {
+                page-break-after: avoid !important;
+            }
+        }
+
+        /* Answers Sheet Styling */
+        .answers-sheet {
+            background-color: white;
+            color: #1e293b;
+            padding: 25mm 20mm;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+            margin-top: 40px;
+            box-sizing: border-box;
+        }
+
+        .answers-sheet h2 {
+            font-size: 1.4rem;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 8px;
+            color: #0f172a;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .exam-answer-block {
+            margin-bottom: 40px;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .exam-answer-block:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .exam-answer-block h3 {
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-top: 0;
+            margin-bottom: 15px;
+            background-color: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .answer-item {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .answer-item strong {
+            color: #0f172a;
+        }
+    </style>
+    <script>
+        // Exact fraction class for math solvers
+        function gcd(a, b) {
+            return b ? gcd(b, a % b) : Math.abs(a);
+        }
+
+        class Fraction {
+            constructor(num, den = 1) {
+                if (den < 0) {
+                    num = -num;
+                    den = -den;
+                }
+                let g = gcd(num, den);
+                this.num = g === 0 ? 0 : num / g;
+                this.den = g === 0 ? 1 : den / g;
+            }
+            add(o) { return new Fraction(this.num * o.den + o.num * this.den, this.den * o.den); }
+            sub(o) { return new Fraction(this.num * o.den - o.num * this.den, this.den * o.den); }
+            mul(o) { return new Fraction(this.num * o.num, this.den * o.den); }
+            div(o) { return new Fraction(this.num * o.den, this.den * o.num); }
+            neg() { return new Fraction(-this.num, this.den); }
+            isZero() { return this.num === 0; }
+            toString() {
+                if (this.den === 1) return this.num.toString();
+                return `${this.num}/${this.den}`;
+            }
+            toLatex() {
+                if (this.den === 1) return this.num.toString();
+                return `\\frac{${this.num}}{${this.den}}`;
+            }
+        }
+
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        generateExams();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // --- Core Math Solver Engine ---
+
+        // Calculate Determinant
+        function getDeterminant(matrix) {
+            let n = matrix.length;
+            if (n === 1) return matrix[0][0];
+            if (n === 2) return matrix[0][0] * matrix[1][1] - matrix[0][1] * matrix[1][0];
+            let det = 0;
+            for (let j = 0; j < n; j++) {
+                let sub = [];
+                for (let i = 1; i < n; i++) {
+                    sub.push(matrix[i].filter((_, colIdx) => colIdx !== j));
+                }
+                let sign = (j % 2 === 0) ? 1 : -1;
+                det += sign * matrix[0][j] * getDeterminant(sub);
+            }
+            return det;
+        }
+
+        // Reduced Row Echelon Form (RREF) solver using Fraction class
+        function rref(matrix) {
+            let R = matrix.map(row => row.map(val => new Fraction(val)));
+            let rows = R.length;
+            let cols = R[0].length;
+            let lead = 0;
+            let pivots = [];
+            for (let r = 0; r < rows; r++) {
+                if (lead >= cols) break;
+                let i = r;
+                while (R[i][lead].isZero()) {
+                    i++;
+                    if (i === rows) {
+                        i = r;
+                        lead++;
+                        if (lead === cols) return { R, pivots };
+                    }
+                }
+                if (i !== r) {
+                    let temp = R[i];
+                    R[i] = R[r];
+                    R[r] = temp;
+                }
+                let lv = R[r][lead];
+                R[r] = R[r].map(val => val.div(lv));
+                for (let i = 0; i < rows; i++) {
+                    if (i !== r) {
+                        let lv2 = R[i][lead];
+                        R[i] = R[i].map((val, idx) => val.sub(lv2.mul(R[r][idx])));
+                    }
+                }
+                pivots.push(lead);
+                lead++;
+            }
+            return { R, pivots };
+        }
+
+        // --- Core Math Generators from original files ---
+
+        // Helper to generate matrix with values from min to max
+        function generateMatrix(rows, cols, min = -10, max = 10) {
+            let matrix = [];
+            for (let i = 0; i < rows; i++) {
+                let row = [];
+                for (let j = 0; j < cols; j++) {
+                    row.push(Math.floor(Math.random() * (max - min + 1)) + min);
+                }
+                matrix.push(row);
+            }
+            return matrix;
+        }
+
+        // Helper to format matrix/vector in MathJax
+        function formatMatrixMathJax(matrix, name = "") {
+            let rows = matrix.map(row => row.join(" & "));
+            let prefix = name ? name + " = " : "";
+            return prefix + "\\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix}";
+        }
+
+        // 1. Determinantes (size 3x3 or 4x4)
+        function getDeterminantsProblem() {
+            let size = Math.floor(Math.random() * 2) + 3; // 3x3 or 4x4
+            let A = generateMatrix(size, size, -8, 8);
+            let det = getDeterminant(A);
+            return {
+                text: "Calcular el determinante de la siguiente matriz.",
+                latex: "\\[ " + formatMatrixMathJax(A, "A") + " \\]",
+                answer: `$\\det(A) = ${det}$`
+            };
+        }
+
+        // 2. Operaciones con Vectores
+        function getVectorOpsProblem() {
+            let u = [];
+            let v = [];
+            for (let i = 0; i < 3; i++) {
+                u.push(Math.floor(Math.random() * 17) - 8);
+                v.push(Math.floor(Math.random() * 17) - 8);
+            }
+            let dot = u[0]*v[0] + u[1]*v[1] + u[2]*v[2];
+            let cross = [
+                u[1]*v[2] - u[2]*v[1],
+                u[2]*v[0] - u[0]*v[2],
+                u[0]*v[1] - u[1]*v[0]
+            ];
+            let normU = Math.sqrt(u[0]*u[0] + u[1]*u[1] + u[2]*u[2]);
+            let normV = Math.sqrt(v[0]*v[0] + v[1]*v[1] + v[2]*v[2]);
+            let angleDeg = 0;
+            if (normU > 0 && normV > 0) {
+                let cosTh = Math.max(-1, Math.min(1, dot / (normU * normV)));
+                angleDeg = Math.acos(cosTh) * 180 / Math.PI;
+            }
+            let rel = "Ninguno";
+            if (dot === 0) rel = "Ortogonales";
+            else {
+                // parallel check: cross product is zero vector
+                if (cross[0] === 0 && cross[1] === 0 && cross[2] === 0) rel = "Paralelos";
+            }
+
+            let uFormatted = "\\vec{u} = \\begin{bmatrix} " + u.join(" \\\\ ") + " \\end{bmatrix}";
+            let vFormatted = "\\vec{v} = \\begin{bmatrix} " + v.join(" \\\\ ") + " \\end{bmatrix}";
+            return {
+                text: "Para los siguientes vectores de $\\mathbb{R}^3$, determina: <br>&nbsp;&nbsp;&nbsp;&nbsp;a) El producto punto $\\vec{u} \\cdot \\vec{v}$<br>&nbsp;&nbsp;&nbsp;&nbsp;b) El producto cruz $\\vec{u} \\times \\vec{v}$<br>&nbsp;&nbsp;&nbsp;&nbsp;c) El coseno del ángulo entre ellos y si son ortogonales, paralelos o ninguno.",
+                latex: "\\[ " + uFormatted + ", \\quad " + vFormatted + " \\]",
+                answer: `a) $\\vec{u} \\cdot \\vec{v} = ${dot}$, b) $\\vec{u} \\times \\vec{v} = \\begin{bmatrix} ${cross.join(" \\\\ ")} \\end{bmatrix}$, c) $\\cos(\\theta) = ${normU * normV === 0 ? 0 : (dot / (normU * normV)).toFixed(4)}$ ($\\theta \\approx ${angleDeg.toFixed(2)}^\\circ$), Relación: ${rel}`
+            };
+        }
+
+        // 3. Operaciones con Matrices
+        function getMatrixOpsProblem() {
+            let m = Math.floor(Math.random() * 2) + 2; // 2 or 3
+            let n = Math.floor(Math.random() * 2) + 2;
+            let p = Math.floor(Math.random() * 2) + 2;
+
+            let A = generateMatrix(m, n, -6, 6);
+            let B = generateMatrix(m, n, -6, 6);
+            let C = generateMatrix(n, p, -6, 6);
+
+            let k = Math.floor(Math.random() * 9) - 4; // -4 to 4
+            if (k === 0) k = 3;
+
+            // Answers
+            let AplusB = [];
+            let kAminusB = [];
+            for (let i = 0; i < m; i++) {
+                let r1 = [];
+                let r2 = [];
+                for (let j = 0; j < n; j++) {
+                    r1.push(A[i][j] + B[i][j]);
+                    r2.push(k * A[i][j] - B[i][j]);
+                }
+                AplusB.push(r1);
+                kAminusB.push(r2);
+            }
+
+            let AtimesC = [];
+            for (let i = 0; i < m; i++) {
+                let row = [];
+                for (let j = 0; j < p; j++) {
+                    let sum = 0;
+                    for (let l = 0; l < n; l++) {
+                        sum += A[i][l] * C[l][j];
+                    }
+                    row.push(sum);
+                }
+                AtimesC.push(row);
+            }
+
+            return {
+                text: `Dadas las siguientes matrices $A$, $B$ y $C$, y el escalar $k = ${k}$, realiza las siguientes operaciones:<br>&nbsp;&nbsp;&nbsp;&nbsp;a) $A + B$<br>&nbsp;&nbsp;&nbsp;&nbsp;b) $k \\cdot A - B$<br>&nbsp;&nbsp;&nbsp;&nbsp;c) $A \\cdot C$`,
+                latex: "\\[ " + formatMatrixMathJax(A, "A") + ", \\quad " + formatMatrixMathJax(B, "B") + ", \\quad " + formatMatrixMathJax(C, "C") + " \\]",
+                answer: `a) $A+B = ${formatMatrixMathJax(AplusB)}$, b) $${k}A - B = ${formatMatrixMathJax(kAminusB)}$, c) $AC = ${formatMatrixMathJax(AtimesC)}$`
+            };
+        }
+
+        // 4. Espacio Nulo (Rank deficient)
+        function generateRankDeficientMatrix(size) {
+            let matrix = [];
+            for (let i = 0; i < size - 1; i++) {
+                let row = [];
+                for (let j = 0; j < size; j++) {
+                    row.push(Math.floor(Math.random() * 7) - 3); // -3 to 3
+                }
+                matrix.push(row);
+            }
+
+            // Linear combination for the last row to guarantee determinant is 0
+            let lastRow = new Array(size).fill(0);
+            for (let i = 0; i < size - 1; i++) {
+                let coeff = Math.floor(Math.random() * 3) - 1; // -1, 0, 1
+                if (coeff === 0) coeff = 1;
+                for (let j = 0; j < size; j++) {
+                    lastRow[j] += coeff * matrix[i][j];
+                }
+            }
+            matrix.push(lastRow);
+
+            // Shuffle rows
+            for (let i = matrix.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [matrix[i], matrix[j]] = [matrix[j], matrix[i]];
+            }
+            return matrix;
+        }
+
+        function getNullSpaceProblem() {
+            let size = 3; // Keep it 3x3 for exam spacing
+            let A = generateRankDeficientMatrix(size);
+            
+            // Solver
+            let { R, pivots } = rref(A);
+            // Find free variables
+            let free = [];
+            for (let j = 0; j < size; j++) {
+                if (!pivots.includes(j)) free.push(j);
+            }
+
+            let solText = "";
+            if (free.length === 0) {
+                solText = "\\{ \\vec{0} \\}";
+            } else {
+                let vectors = [];
+                for (let f of free) {
+                    let vec = new Array(size).fill(null);
+                    vec[f] = new Fraction(1);
+                    // set other free variables to 0
+                    for (let f2 of free) {
+                        if (f2 !== f) vec[f2] = new Fraction(0);
+                    }
+                    // solve for pivot variables
+                    for (let r = 0; r < pivots.length; r++) {
+                        let p = pivots[r];
+                        // x_p = - R[r][f] * x_f
+                        vec[p] = R[r][f].neg();
+                    }
+                    // Format vector to latex
+                    let rows = vec.map(val => val.toLatex());
+                    vectors.push("\\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix}");
+                }
+                solText = "Gen \\left\\{ " + vectors.join(", ") + " \\right\\}";
+            }
+
+            return {
+                text: "Encuentra el espacio nulo de la siguiente matriz.",
+                latex: "\\[ " + formatMatrixMathJax(A, "A") + " \\]",
+                answer: `Espacio Nulo: $E_N(A) = ${solText}$`
+            };
+        }
+
+        // 5. Base linealmente independiente
+        function generateDependentMatrix(rows, cols) {
+            let matrix = [];
+            for (let i = 0; i < rows; i++) {
+                let row = [];
+                for (let j = 0; j < cols; j++) {
+                    row.push(Math.floor(Math.random() * 7) - 3);
+                }
+                matrix.push(row);
+            }
+            // Columns linear dependency
+            if (cols >= 3) {
+                let coeff1 = Math.floor(Math.random() * 3) - 1;
+                let coeff2 = Math.floor(Math.random() * 3) - 1;
+                if (coeff1 === 0 && coeff2 === 0) coeff1 = 1;
+                for (let i = 0; i < rows; i++) {
+                    matrix[i][cols - 1] = coeff1 * matrix[i][0] + coeff2 * matrix[i][1];
+                }
+                // Swap columns randomly
+                for (let i = cols - 1; i > 0; i--) {
+                    const j = Math.floor(Math.random() * (i + 1));
+                    for (let r = 0; r < rows; r++) {
+                        let temp = matrix[r][i];
+                        matrix[r][i] = matrix[r][j];
+                        matrix[r][j] = temp;
+                    }
+                }
+            }
+            return matrix;
+        }
+
+        function getBasisProblem() {
+            let rows = 3;
+            let cols = 4;
+            let A = generateDependentMatrix(rows, cols);
+
+            // Solver
+            let { R, pivots } = rref(A);
+            let basisCols = pivots.map(p => `c_{${p+1}}`);
+            let basisText = "Base = \\{ " + pivots.map(p => {
+                let col = A.map(row => row[p]);
+                return "\\begin{bmatrix} " + col.join(" \\\\ ") + " \\end{bmatrix}";
+            }).join(", ") + " \\}";
+
+            // Linear combinations for free variables
+            let freeText = [];
+            for (let colIdx = 0; colIdx < cols; colIdx++) {
+                if (!pivots.includes(colIdx)) {
+                    let terms = [];
+                    for (let r = 0; r < pivots.length; r++) {
+                        let val = R[r][colIdx];
+                        if (!val.isZero()) {
+                            terms.push(`${val.toLatex()} \\cdot c_{${pivots[r]+1}}`);
+                        }
+                    }
+                    freeText.push(`c_{${colIdx+1}} = ${terms.join(" + ")}`);
+                }
+            }
+
+            return {
+                text: "Calcula el espacio columna de la siguiente matriz. La(s) columna(s) sobrante(s) expresala(s) en términos de las columnas base.",
+                latex: "\\[ " + formatMatrixMathJax(A, "A") + " \\]",
+                answer: `Columnas base: $${basisCols.join(", ")}$. $${basisText}$. Relaciones: $${freeText.join(", ")}$`
+            };
+        }
+
+        // --- Exam Generator Logic ---
+
+        function generateExams() {
+            const countInput = document.getElementById('examCount');
+            const numExams = parseInt(countInput.value) || 1;
+            const container = document.getElementById('examsContainer');
+            container.innerHTML = '';
+
+            let answerSheetHtml = `
+                <div class="answers-sheet">
+                    <h2>Clave de Respuestas</h2>
+            `;
+
+            for (let examIndex = 1; examIndex <= numExams; examIndex++) {
+                const examCode = "AL-" + examIndex//Math.floor(1000 + Math.random() * 9000);
+                const sheet = document.createElement('div');
+                sheet.className = 'exam-sheet';
+
+                // Questions & Solver
+                const p1 = getDeterminantsProblem();
+                const p2 = getVectorOpsProblem();
+                const p3 = getMatrixOpsProblem();
+                const p4 = getNullSpaceProblem();
+                const p5 = getBasisProblem();
+
+                // Header
+                let html = `
+                    <div class="exam-header">
+                        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+                        <div class="exam-header-text">
+                            <h1>Universidad Autónoma de Coahuila</h1>
+                            <h2>FIME Monclova</h2>
+                            <h3>Álgebra Lineal &bull; Docente: MC. Roberto Morin</h3>
+                        </div>
+                    </div>
+                    <div class="student-info">
+                        <div class="info-field">Nombre del Alumno:<span></span></div>
+                        <div class="info-field">Matrícula:<span></span></div>
+                        <div class="info-field">Fecha:<span></span></div>
+                    </div>
+                    <div class="exam-body">
+                        <h2>Examen Parcial de Álgebra Lineal <span class="exam-code">Clave: ${examCode}</span></h2>
+                        <div class="instructions">
+                            <strong>Instrucciones:</strong> Resuelve cada uno de los siguientes problemas detallando todo el procedimiento a mano en hojas aparte.
+                        </div>
+                        <ul class="questions-list">
+                `;
+
+                // All questions fit on a single page since there are no workspace boxes.
+                html += `
+                            <li class="question-item">
+                                <div class="question-text">${p1.text}</div>
+                                <div class="matrix-display-container">${p1.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p2.text}</div>
+                                <div class="matrix-display-container">${p2.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p3.text}</div>
+                                <div class="matrix-display-container">${p3.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p4.text}</div>
+                                <div class="matrix-display-container">${p4.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p5.text}</div>
+                                <div class="matrix-display-container">${p5.latex}</div>
+                            </li>
+                `;
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+
+                sheet.innerHTML = html;
+                container.appendChild(sheet);
+
+                // Add to answer sheet
+                answerSheetHtml += `
+                    <div class="exam-answer-block">
+                        <h3>Examen Clave: ${examCode}</h3>
+                        <div class="answer-item"><strong>1. Determinante:</strong> ${p1.answer}</div>
+                        <div class="answer-item"><strong>2. Vectores:</strong> ${p2.answer}</div>
+                        <div class="answer-item"><strong>3. Matrices:</strong> ${p3.answer}</div>
+                        <div class="answer-item"><strong>4. Espacio Nulo:</strong> ${p4.answer}</div>
+                        <div class="answer-item"><strong>5. Base:</strong> ${p5.answer}</div>
+                    </div>
+                `;
+            }
+
+            answerSheetHtml += `</div>`;
+
+            // Append answers sheet to container
+            container.innerHTML += answerSheetHtml;
+
+            // Typeset MathJax
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function printPDF() {
+            window.print();
+        }
+    </script>
+</head>
+<body>
+    <div class="control-panel">
+        <div class="brand">
+            <h1>Generador de Exámenes</h1>
+            <p>Álgebra Lineal &bull; FIME Monclova</p>
+        </div>
+        <div class="controls">
+            <div class="input-group">
+                <label for="examCount">Cantidad</label>
+                <input type="number" id="examCount" min="1" max="100" value="5">
+            </div>
+            <button class="btn" onclick="generateExams()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Generar Nuevos
+            </button>
+            <button class="btn btn-success" onclick="printPDF()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Imprimir / Guardar PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="exams-container" id="examsContainer">
+        <!-- Generando exámenes... -->
+    </div>
+</body>
+</html>

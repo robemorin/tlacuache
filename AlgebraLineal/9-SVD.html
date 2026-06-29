@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Descomposición en Valores Singulares (SVD)</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Problema " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #6f42c1;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generate2x2NiceMatrix() {
+            // Genera una matriz A de 2x2 simple para que A^T*A tenga valores propios enteros bonitos.
+            // Por ejemplo, matrices con entradas pequeñas:
+            let list = [
+                [[3, 0], [4, 5]],
+                [[1, 2], [2, 1]],
+                [[2, 1], [1, 2]],
+                [[4, 0], [3, 5]],
+                [[2, 2], [-1, 1]]
+            ];
+            return list[Math.floor(Math.random() * list.length)];
+        }
+
+        function generate3x2Matrix() {
+            let matrix = [];
+            for (let i = 0; i < 3; i++) {
+                let row = [];
+                for (let j = 0; j < 2; j++) {
+                    row.push(Math.floor(Math.random() * 7) - 3);
+                }
+                matrix.push(row);
+            }
+            return matrix;
+        }
+
+        function generateDiagonalizable2x2() {
+            // A = P * D * P^-1
+            // P = [[1, 1], [0, 1]], P^-1 = [[1, -1], [0, 1]]
+            // D = [[L1, 0], [0, L2]]
+            let l1 = 2;
+            let l2 = 3;
+            if (Math.random() < 0.5) {
+                l1 = 3;
+                l2 = 2;
+            }
+            let a = l1;
+            let b = -l1 + l2;
+            let c = 0;
+            let d = l2;
+            return [[a, b], [c, d]];
+        }
+
+        function formatMatrixMathJax(matrix, name) {
+            let rows = matrix.map(row => row.join(" & "));
+            return "\\[ " + name + " = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            // Problema 1: SVD 2x2 (A mano y verificar con Python)
+            let A1 = generate2x2NiceMatrix();
+            content += "<li><strong>(Descomposición SVD a mano y Python)</strong> Dada la siguiente matriz de $2 \\times 2$ $A$:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A1, "A");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Lleva a cabo la Descomposición en Valores Singulares ($A = U S V^T$) realizando lo siguiente:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Calcula la matriz de covarianza (asociada) $A^T A$ a mano.</li>";
+            content += "<li><strong>b)</strong> Encuentra los valores propios de $A^T A$ (valores singulares al cuadrado, $\\sigma_i^2$) y obtén los valores singulares $\\sigma_i$ ordenados de mayor a menor para construir la matriz $S$.</li>";
+            content += "<li><strong>c)</strong> Encuentra los vectores propios ortonormales de $A^T A$. Estos formarán las columnas de la matriz $V$ (debes transponerla al final para obtener $V^T$).</li>";
+            content += "<li><strong>d)</strong> Calcula las columnas de la matriz $U$ utilizando la relación $u_i = \\frac{1}{\\sigma_i} A v_i$.</li>";
+            content += "<li><strong>e)</strong> Escribe la descomposición final $A = U S V^T$ y comprueba la multiplicación a mano. Valida todo el procedimiento usando Python.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 2: SVD de Matriz No Cuadrada (Python)
+            let A2 = generate3x2Matrix();
+            content += "<li><strong>(SVD de Matriz No Cuadrada en Python)</strong> Encuentra la Descomposición en Valores Singulares para la siguiente matriz no cuadrada de $3 \\times 2$ $B$ usando programación en Python (<code>numpy.linalg.svd</code> con <code>full_matrices=True</code>):<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A2, "B");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "Lleva a cabo las siguientes actividades y comprueba que las matrices $U$ y $V$ son ortogonales:";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Obtén e imprime en pantalla las matrices $U$, $S$ y $V^T$ de la SVD.</li>";
+            content += "<li><strong>b)</strong> Indica las dimensiones de $U$, $S$ y $V^T$ y comprueba que el producto $U S V^T$ reconstruye exactamente a $B$.</li>";
+            content += "<li><strong>c)</strong> Calcula y muestra en Python los productos $U^T U$, $U U^T$, $V^T V$ y $V V^T$. ¿Qué matrices especiales obtienes?</li>";
+            content += "<li><strong>d)</strong> Redacta tu conclusión: basándote en los resultados del inciso anterior, ¿qué propiedad cumplen las matrices $U$ y $V$?, ¿cómo se define formalmente este tipo de matrices en álgebra lineal?</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 3: Diagonalización y Potencia de Matrices A^n (A mano y Python)
+            let A3 = generateDiagonalizable2x2();
+            content += "<li><strong>(Potencia de una Matriz $A^n$)</strong> Dada la siguiente matriz de $2 \\times 2$ $C$:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatMatrixMathJax(A3, "C");
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Diagonaliza la matriz $C$ a mano obteniendo $C = P D P^{-1}$.</li>";
+            content += "<li><strong>b)</strong> Utilizando la propiedad $C^n = P D^n P^{-1}$, calcula analíticamente a mano la matriz expresada para $C^{10}$ (mantén las potencias indicadas en la diagonal).</li>";
+            content += "<li><strong>c)</strong> Implementa un código en Python que compare el tiempo de cálculo para obtener $C^{50000}$ usando dos métodos distintos: (1) multiplicación sucesiva de la matriz $C$ y (2) mediante la potencia de su forma diagonalizada. Mide la diferencia de velocidad usando el reloj del sistema (módulo <code>time</code>) e imprime una breve conclusión.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Descomposición en Valores Singulares (SVD) y Potencia de Matrices</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora</div>
+        
+        <p>En esta ficha de trabajo, estudiarás la <strong>Descomposición en Valores Singulares (SVD)</strong>, viendo cómo se relaciona con los valores propios de la matriz de covarianza $A^T A$. Además, analizarás la eficiencia de la diagonalización para calcular potencias grandes de matrices ($A^n$) y medirás el tiempo de ejecución en Python para comprender la enorme ventaja algorítmica de este método.</p>
+        
+        <h3>Ejemplo de SVD y Medición de Tiempo para $A^n$ en Python:</h3>
+        <p>El siguiente código ilustra cómo obtener la SVD usando NumPy y cómo medir la diferencia en tiempo de cómputo para la potencia de una matriz:</p>
+        
+        <div class="no-copy">import numpy as np
+import time
+
+# --- Parte 1: Descomposición SVD ---
+A = np.array([[3.0, 0.0],
+              [4.0, 5.0]])
+
+# linalg.svd retorna U, la diagonal S (como vector de valores singulares) y V^T
+U, s, Vt = np.linalg.svd(A)
+S = np.diag(s) # Convertir el vector s a matriz diagonal
+
+print("--- Descomposición SVD de A ---")
+print("U =\n", U)
+print("S =\n", S)
+print("V^T =\n", Vt)
+print("Reconstrucción (U * S * V^T) =\n", U.dot(S).dot(Vt), "\n")
+
+
+# --- Parte 2: Eficiencia en Potencias de Matrices (C^n) ---
+C = np.array([[2.0, 1.0],
+              [0.0, 3.0]])
+
+n = 50000
+
+# Método 1: Multiplicación sucesiva iterativa
+start_time = time.time()
+C_mult = np.eye(2)
+for _ in range(n):
+    C_mult = C_mult.dot(C)
+time_mult = time.time() - start_time
+
+# Método 2: Usando Diagonalización C = P * D * P^-1
+# Obtenemos valores y vectores propios de C
+eigenvalues, P = np.linalg.eig(C)
+P_inv = np.linalg.inv(P)
+
+start_time = time.time()
+D_n = np.diag(eigenvalues ** n)
+C_diag = P.dot(D_n).dot(P_inv)
+time_diag = time.time() - start_time
+
+print("--- Comparación de Tiempos para C^n (n = 50,000) ---")
+print(f"Método por multiplicación iterativa: {time_mult:.6f} segundos")
+print(f"Método por diagonalización: {time_diag:.6f} segundos")
+print(f"¿Los resultados coinciden?: {np.allclose(C_mult, C_diag)}")
+print(f"La diagonalización es {time_mult / max(time_diag, 1e-9):.2f} veces más rápida.")
+</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos manuales detallados del <strong>Problema 1</strong> (incisos a, b, c, d, e).</li>
+                <li>Tus cálculos manuales detallados del <strong>Problema 3</strong> (incisos a y b).</li>
+                <li>Una captura de pantalla de esta página web con las matrices generadas para tu práctica.</li>
+                <li>Capturas de pantalla del código de Python y su terminal de salida resolviendo la SVD del <strong>Problema 2</strong>, y la medición de tiempos del <strong>Problema 3</strong> (mostrando la diferencia de velocidad obtenida en tu computadora).</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

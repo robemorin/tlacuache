@@ -1,0 +1,351 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Cambio de Base y Base Ortogonal</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Problema " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #28a745;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function isLI(vectors) {
+            let mat = vectors.map(v => [...v]);
+            let k = mat.length;
+            let n = mat[0].length;
+            let lead = 0;
+            for (let r = 0; r < k; r++) {
+                if (n <= lead) return false;
+                let i = r;
+                while (mat[i][lead] === 0) {
+                    i++;
+                    if (k === i) {
+                        i = r;
+                        lead++;
+                        if (n === lead) return false;
+                    }
+                }
+                let temp = mat[i]; mat[i] = mat[r]; mat[r] = temp;
+                let val = mat[r][lead];
+                for (let j = 0; j < n; j++) mat[r][j] /= val;
+                for (let i2 = 0; i2 < k; i2++) {
+                    if (i2 !== r) {
+                        let val2 = mat[i2][lead];
+                        for (let j = 0; j < n; j++) mat[i2][j] -= val2 * mat[r][j];
+                    }
+                }
+                lead++;
+            }
+            return true;
+        }
+
+        function generateLIBase(k, n) {
+            // Genera k vectores linealmente independientes en R^n
+            let vectors;
+            let attempts = 0;
+            do {
+                vectors = [];
+                for (let i = 0; i < k; i++) {
+                    let vec = [];
+                    for (let j = 0; j < n; j++) {
+                        vec.push(Math.floor(Math.random() * 7) - 3); // valores de -3 a 3
+                    }
+                    vectors.push(vec);
+                }
+                attempts++;
+            } while (!isLI(vectors) && attempts < 100);
+            return vectors;
+        }
+
+        function generatePointInB(k) {
+            let coords = [];
+            for (let i = 0; i < k; i++) {
+                coords.push(Math.floor(Math.random() * 7) - 3); // valores de -3 a 3
+            }
+            // Evitar que sea el vector nulo por completo
+            if (coords.every(c => c === 0)) {
+                coords[0] = 2;
+            }
+            return coords;
+        }
+
+        function formatProblemMathJax(vectors, coordB, index) {
+            let n = vectors[0].length;
+            let k = vectors.length;
+            
+            let vecStrings = vectors.map((v, idx) => {
+                let col = v.join(" \\\\ ");
+                return `v_{${idx+1}} = \\begin{bmatrix} ${col} \\end{bmatrix}`;
+            });
+            
+            let coordStr = coordB.join(" \\\\ ");
+            
+            return `\\[ B = \\left\\{ ${vecStrings.join(", ")} \\right\\} \\quad \\text{y el punto } [P]_B = \\begin{bmatrix} ${coordStr} \\end{bmatrix} \\]`;
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            // Problema 1: Dimensión 3, 3 vectores (Base completa de R^3). A mano y verificar con Python.
+            let B1 = generateLIBase(3, 3);
+            let P1 = generatePointInB(3);
+            content += "<li><strong>(A mano y verificar con Python)</strong> A partir de la base original $B = \\{v_1, v_2, v_3\\}$ de $\\mathbb{R}^3$ y el punto $P$ cuyas coordenadas en esa base original son $[P]_B$:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatProblemMathJax(B1, P1, 1);
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Expresa el punto $P$ en coordenadas de la base canónica $C$ (es decir, obtén $[P]_C$). <em>(Pista: dado que ya tienes $[P]_B$, simplemente haz la combinación lineal de los vectores de $B$ usando los coeficientes de $[P]_B$).</em></li>";
+            content += "<li><strong>b)</strong> Aplica el proceso de Gram-Schmidt a mano a los vectores de la base original $B$ para obtener una base ortogonal $B' = \\{u_1, u_2, u_3\\}$.</li>";
+            content += "<li><strong>c)</strong> Expresa el punto $P$ en coordenadas de la nueva base ortogonal $B'$ ($[P]_{B'}$) a mano usando la fórmula de proyección ortogonal: $c_i = \\frac{P \\cdot u_i}{u_i \\cdot u_i}$.</li>";
+            content += "<li><strong>d)</strong> Comprueba que tu respuesta es correcta reconstruyendo $P$ a partir de la combinación lineal de los vectores de $B'$ con las coordenadas de $[P]_{B'}$ y verificando que coincida con $[P]_C$. Confirma todos los pasos implementando y ejecutando el script de Python.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 2: Dimensión 4, 3 vectores (Subespacio de R^4). Con Python.
+            let B2 = generateLIBase(3, 4);
+            let P2 = generatePointInB(3);
+            content += "<li><strong>(Resolver usando Python)</strong> Considera el conjunto de vectores linealmente independientes $B = \\{v_1, v_2, v_3\\}$ en $\\mathbb{R}^4$ (que forman una base para un subespacio de dimensión 3) y el punto $P$ dado por $[P]_B$ en este subespacio:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatProblemMathJax(B2, P2, 2);
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Obtén el punto en coordenadas canónicas de $\\mathbb{R}^4$ ($[P]_C$).</li>";
+            content += "<li><strong>b)</strong> Encuentra la base ortogonal $B' = \\{u_1, u_2, u_3\\}$ para este subespacio aplicando el proceso de Gram-Schmidt.</li>";
+            content += "<li><strong>c)</strong> Expresa el punto $P$ en la base ortogonal $B'$ ($[P]_{B'}$) mediante proyecciones.</li>";
+            content += "<li><strong>d)</strong> Comprueba la validez de tus coordenadas obteniendo la combinación lineal correspondiente a $[P]_{B'}$ y comparándola con $[P]_C$.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+
+            // Problema 3: Dimensión 5, 4 vectores (Subespacio de R^5). Con Python.
+            let B3 = generateLIBase(4, 5);
+            let P3 = generatePointInB(4);
+            content += "<li><strong>(Resolver usando Python)</strong> Considera el conjunto de vectores linealmente independientes $B = \\{v_1, v_2, v_3, v_4\\}$ en $\\mathbb{R}^5$ y el punto $P$ en dicho subespacio dado por $[P]_B$:<br>";
+            content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+            content += formatProblemMathJax(B3, P3, 3);
+            content += "</div>";
+            content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+            content += "<ul>";
+            content += "<li><strong>a)</strong> Obtén el punto en coordenadas canónicas de $\\mathbb{R}^5$ ($[P]_C$).</li>";
+            content += "<li><strong>b)</strong> Encuentra la base ortogonal $B' = \\{u_1, u_2, u_3, u_4\\}$ aplicando Gram-Schmidt.</li>";
+            content += "<li><strong>c)</strong> Expresa el punto $P$ en la base ortogonal $B'$ ($[P]_{B'}$) usando proyecciones.</li>";
+            content += "<li><strong>d)</strong> Comprueba el resultado en tu script verificando si la combinación lineal obtenida es igual a $[P]_C$.</li>";
+            content += "</ul>";
+            content += "</div></li>";
+            
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Cambio de Base y Base Ortogonal (Dimensiones Mayores)</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora (combinando cálculos a mano y Python)</div>
+        
+        <p>En esta ficha de trabajo, estudiarás el <strong>cambio de base</strong> y el <strong>proceso de ortogonalización de Gram-Schmidt</strong> en subespacios de $\mathbb{R}^n$. El primer ejercicio deberá resolverse a mano detalladamente y después verificarse en Python. Los problemas 2 y 3 (de dimensiones mayores en $\mathbb{R}^4$ y $\mathbb{R}^5$) se resolverán directamente usando programación en Python.</p>
+        
+        <p><strong>Aviso importante:</strong> A diferencia de otros temas donde se da el punto en la base canónica, en esta ficha <strong>se te da directamente el punto expresado en la base original ($[P]_B$)</strong>. Esto simplifica tu punto de partida, ya que no tienes que resolver un sistema de ecuaciones para el inciso a).</p>
+        
+        <h3>Ejemplo de Guía en Python usando SymPy (Caso para Subespacio de $\mathbb{R}^4$):</h3>
+        <p>El siguiente script muestra cómo representar los vectores, calcular el punto en la base canónica, ortogonalizar los vectores de la base y encontrar las nuevas coordenadas del punto mediante la proyección ortogonal, comprobando la exactitud de los resultados al final.</p>
+        
+        <div class="no-copy">import sympy as sp
+
+# 1. Definir los vectores de la base original B en R^4
+v1 = sp.Matrix([1, -1, 0, 2])
+v2 = sp.Matrix([0, 2, 1, -1])
+v3 = sp.Matrix([1, 1, 1, 0])
+
+# Lista de vectores originales
+base_original = [v1, v2, v3]
+
+# Coordenadas del punto P en la base B: [P]_B = [2, -1, 3]^T
+c_B = sp.Matrix([2, -1, 3])
+
+print("--- Coordenadas en la Base Original (B) ---")
+print(f"[P]_B =\n{c_B}\n")
+
+# 2. Calcular las coordenadas en la base canónica C (obtenemos [P]_C)
+# Hacemos la combinación lineal: P = c1*v1 + c2*v2 + c3*v3
+P = sum(c_B[i] * base_original[i] for i in range(len(base_original)))
+
+print("--- Coordenadas en la Base Canónica (C) ---")
+print(f"[P]_C =\n{P}\n")
+
+# 3. Aplicar Gram-Schmidt para obtener la base ortogonal B' = {u_1, u_2, u_3}
+base_ortogonal = sp.GramSchmidt(base_original)
+
+print("--- Vectores de la Base Ortogonal B' (Gram-Schmidt) ---")
+for i, u in enumerate(base_ortogonal):
+    print(f"u_{i+1} =\n{u}\n")
+
+# 4. Calcular coordenadas de P en la base ortogonal B' mediante proyecciones
+# Dado que B' es ortogonal, cada coordenada c_i' se obtiene con: (P . u_i) / (u_i . u_i)
+c_B_prime = sp.Matrix([
+    P.dot(u) / u.dot(u) for u in base_ortogonal
+])
+
+print("--- Coordenadas en la Base Ortogonal (B') ---")
+print(f"[P]_B' =\n{c_B_prime}\n")
+
+# 5. Comprobación final
+# Reconstruimos P sumando c_i'*u_i y validamos que sea igual a [P]_C
+P_comprobado = sum(c_B_prime[i] * base_ortogonal[i] for i in range(len(base_ortogonal)))
+print("--- Comprobación ---")
+print(f"¿La reconstrucción coincide con [P]_C?: {P == P_comprobado}")</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos detallados hechos a mano correspondientes a los incisos a), b), c) y d) del <strong>Problema 1</strong>.</li>
+                <li>Una captura de pantalla de esta página donde se vean los tres problemas que te fueron generados.</li>
+                <li>Una captura de pantalla o código que muestre la ejecución de tu script en Python resolviendo y verificando los problemas 1, 2 y 3.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

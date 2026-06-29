@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Álgebra Lineal - Representación Matricial de Números Complejos</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        header img {
+            height: 100px;
+        }
+
+        h1,
+        h2,
+        h3 {
+            margin: 0;
+            text-align: center;
+        }
+
+        h1 {
+            color: #333;
+        }
+
+        h2 {
+            color: #666;
+            margin-top: 10px;
+        }
+
+        h3 {
+            color: #888;
+            margin-top: 5px;
+        }
+
+        main {
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        ol {
+            counter-reset: list;
+        }
+
+        ol>li {
+            list-style: none;
+            margin-bottom: 45px;
+        }
+
+        .mainP>li:before {
+            content: "Ejercicio " counter(list, decimal) ": ";
+            counter-increment: list;
+            font-weight: bold;
+            font-size: 1.2em;
+            color: #2c3e50;
+        }
+
+        .note {
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 10px;
+            border-radius: 4px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+        }
+
+        .no-copy {
+            user-select: none;
+            -webkit-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            pointer-events: none;
+            background-color: #272822;
+            color: #f8f8f2;
+            padding: 15px;
+            border-radius: 5px;
+            font-family: 'Courier New', Courier, monospace;
+            margin-bottom: 20px;
+            white-space: pre-wrap;
+            line-height: 1.4;
+        }
+
+        div.matrix-display {
+            background-color: #f8f9fa;
+            padding: 10px;
+            border-left: 4px solid #6f42c1;
+            overflow-x: auto;
+            margin-top: 10px;
+            text-align: center;
+        }
+        
+        .tiempo-estimado {
+            text-align: center;
+            font-weight: bold;
+            color: #dc3545;
+            margin-bottom: 20px;
+        }
+    </style>
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        main();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        function generateComplex() {
+            let re = Math.floor(Math.random() * 7) - 3; // -3 a 3
+            let im = Math.floor(Math.random() * 7) - 3; // -3 a 3
+            if (im === 0) im = 2; 
+            if (re === 0) re = 1; 
+            return { re, im };
+        }
+
+        function formatMatrixMathJax(z, name) {
+            return `${name} = \\begin{bmatrix} ${z.re} & ${-z.im} \\\\ ${z.im} & ${z.re} \\end{bmatrix}`;
+        }
+
+        function main() {
+            let container = document.getElementById('ejercicios');
+            let content = "<ol class='mainP'>";
+            
+            for (let i = 1; i <= 3; i++) {
+                let z1 = generateComplex();
+                let z2 = generateComplex();
+                
+                content += `<li><strong>(Operaciones Matriciales y Equivalencia Compleja)</strong> Sean $Z_1$ y $Z_2$ las representaciones matriciales de dos números complejos:<br>`;
+                content += "<div class='matrix-display' style='font-size: 1.1em;'>";
+                content += `\\[ ${formatMatrixMathJax(z1, "Z_1")} \\quad \\text{y} \\quad ${formatMatrixMathJax(z2, "Z_2")} \\]`;
+                content += "</div>";
+                content += "<div style='margin-top: 10px; margin-left: 20px;'>";
+                content += "Lleva a cabo las siguientes operaciones a mano interpretando los números complejos como matrices de $2 \\times 2$, y <strong>comprueba analíticamente tus respuestas</strong> mediante operaciones inversas:";
+                content += "<ul>";
+                content += "<li><strong>a) Suma:</strong> Calcula $S = Z_1 + Z_2$. Comprueba restando: $S - Z_2$ y verifica que sea igual a $Z_1$.</li>";
+                content += "<li><strong>b) Resta:</strong> Calcula $D = Z_1 - Z_2$. Comprueba sumando: $D + Z_2$ y verifica que sea igual a $Z_1$.</li>";
+                content += "<li><strong>c) Multiplicación:</strong> Calcula el producto matricial $M = Z_1 \\cdot Z_2$.</li>";
+                content += "<li><strong>d) División (Inversa):</strong> Calcula $Q = Z_1 \\cdot Z_2^{-1}$. Recuerda que para una matriz de $2 \\times 2$, $A^{-1} = \\frac{1}{\\det(A)} \\begin{bmatrix} d & -b \\\\ -c & a \\end{bmatrix}$. <strong>Comprueba tu resultado</strong> multiplicando: $Q \\cdot Z_2$ para demostrar que se obtiene exactamente $Z_1$.</li>";
+                content += "<li><strong>e) Transposición y Determinante (Conjugado y Módulo):</strong> Obtén la transpuesta $Z_1^T$ y el determinante $\\det(Z_1)$. Explica qué operaciones en los números complejos tradicionales corresponden a estas propiedades matriciales.</li>";
+                content += "</ul>";
+                content += "</div></li>";
+            }
+            
+            content += "</ol>";
+            container.innerHTML = content;
+        }
+    </script>
+</head>
+
+<body>
+    <header>
+        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+        <div>
+            <h1>Álgebra Lineal</h1>
+            <h2>Universidad Autónoma de Coahuila</h2>
+            <h2>FIME Monclova</h2>
+            <h3>Docente: MC. Roberto Morin</h3>
+        </div>
+    </header>
+    <main>
+        <h2>Ficha de Trabajo: Representación Matricial de Números Complejos</h2>
+        <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora (a mano y validando en Python)</div>
+        
+        <p>Un número complejo $z = a + bi$ puede mapearse exactamente a una matriz de $2 \times 2$ de la forma $\begin{bmatrix} a & -b \\ b & a \end{bmatrix}$. En esta ficha, resolverás las operaciones aritméticas básicas de números complejos utilizando este formalismo matricial. Descubrirás propiedades notables, como que el conjugado complejo equivale a la <strong>transposición matricial</strong> ($Z^T$) y el módulo al cuadrado equivale al <strong>determinante</strong> ($\det(Z)$).</p>
+        
+        <h3>Ejemplo de Operaciones Matriciales en Python:</h3>
+        <p>El siguiente script muestra cómo representar números complejos en forma de matrices de $2 \times 2$ usando SymPy, realizar las operaciones y verificar los resultados de comprobación:</p>
+        
+        <div class="no-copy">import sympy as sp
+
+# Definir matrices que representan z1 = 3 + 4i y z2 = 1 - 2i
+# z = a + bi -> [[a, -b], [b, a]]
+Z1 = sp.Matrix([
+    [3, -4],
+    [4,  3]
+])
+
+Z2 = sp.Matrix([
+    [1, 2],
+    [-2, 1]
+])
+
+print("--- Operaciones con Representación Matricial ---")
+suma = Z1 + Z2
+resta = Z1 - Z2
+mult = Z1 * Z2
+div = Z1 * Z2.inv() # División z1 / z2 se hace multiplicando por la inversa
+
+print("Z1 + Z2 =\n", suma)
+print("\nZ1 - Z2 =\n", resta)
+print("\nZ1 * Z2 =\n", mult)
+print("\nZ1 * Z2^-1 (División) =\n", div)
+
+print("\n--- Comprobaciones Matriciales ---")
+print("Comprobación Suma (S - Z2 == Z1):", (suma - Z2) == Z1)
+print("Comprobación Resta (D + Z2 == Z1):", (resta + Z2) == Z1)
+# Comprobación de división: Q * Z2 == Z1
+comp_div = div * Z2
+print("Comprobación División (Q * Z2 == Z1):", comp_div == Z1)
+
+print("\n--- Propiedades Especiales ---")
+print("Transpuesta de Z1 (Equivale al conjugado z1_barra):\n", Z1.T)
+print(f"Determinante de Z1 (Equivale a |z1|^2 = 3^2 + 4^2): {Z1.det()}")
+</div>
+
+        <h3>Ejercicios Asignados:</h3>
+        <div id="ejercicios">
+            <!-- Los ejercicios se generarán aquí con JavaScript -->
+        </div>
+
+        <div class="note">
+            <strong>Instrucciones de entrega:</strong> 
+            Manda como evidencia un archivo PDF o imágenes que incluyan:
+            <ol>
+                <li>Tus cálculos hechos a mano detallados para resolver los ejercicios asignados y realizar sus respectivas **comprobaciones matriciales** (Suma, Resta e Inversa de la división).</li>
+                <li>Tus respuestas analíticas y la explicación geométrica del inciso e) sobre la transpuesta y el determinante.</li>
+                <li>Una captura de pantalla de esta página web con las matrices generadas para tu sesión.</li>
+                <li>Captura de pantalla de la terminal de Python ejecutando el código que verifique e implemente las soluciones a las matrices asignadas.</li>
+            </ol>
+        </div>
+        <div class="note">
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+        </div>
+    </main>
+</body>
+
+</html>

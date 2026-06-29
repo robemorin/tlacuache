@@ -702,7 +702,64 @@ class tlacuache_histograma extends HTMLElement {
       
     }
     if(this.mc==null || this.paso==null || this.f==null){
-      console.log("Falta documentación tlacuache-histograma")
+      this.innerHTML=`<div>
+  <fieldset style="font-family: sans-serif; border: 2px solid #444; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
+    <legend style="font-weight: bold; font-size: 1.2em; padding: 0 5px;">&lt;tlacuache-histograma&gt;</legend>
+
+    <p style="margin-top:0">Dibuja un histograma de frecuencias (barras verticales) dentro de un contenedor cartesiano (como <code>&lt;tlacuache-ejes&gt;</code>).</p>
+
+    <strong>Atributos Principales:</strong>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr style="background:#eee;">
+        <th style="text-align:left">Atributo</th>
+        <th style="text-align:left">Descripción y Ejemplo</th>
+      </tr>
+      <tr>
+        <td><b>inicio</b></td>
+        <td>(Requerido) Marca de clase o posición inicial en X de la primera barra.<br>Ej: <code>inicio="10"</code></td>
+      </tr>
+      <tr>
+        <td><b>paso</b></td>
+        <td>(Requerido) Ancho de cada barra / intervalo.<br>Ej: <code>paso="5"</code></td>
+      </tr>
+      <tr>
+        <td><b>frecuencias</b></td>
+        <td>(Requerido) Lista de frecuencias o alturas de cada barra.<br>Ej: <code>frecuencias="5, 12, 8, 3"</code></td>
+      </tr>
+    </table>
+
+    <strong>Estilos de las Barras:</strong>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr>
+        <td><b>fill</b></td>
+        <td>Color de relleno de las barras. Default: <code>'LightCyan'</code>.<br>Ej: <code>fill="skyblue"</code></td>
+      </tr>
+      <tr>
+        <td><b>stroke</b></td>
+        <td>Color de línea del borde de las barras. Default: <code>'DimGray'</code>.<br>Ej: <code>stroke="navy"</code></td>
+      </tr>
+      <tr>
+        <td><b>lineWidth</b></td>
+        <td>Grosor de la línea del borde. Default: <code>1</code>.<br>Ej: <code>lineWidth="2"</code></td>
+      </tr>
+    </table>
+
+    <strong>Ejemplo de Uso:</strong>
+    <pre style="background: #333; color: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.85em;">
+&lt;tlacuache-ejes size="[300,400]" xlim="[5,30]" ylim="[0,15]" dx="5" dy="2"&gt;
+    &lt;tlacuache-histograma 
+        inicio="10" 
+        paso="5" 
+        frecuencias="5, 12, 8, 3" 
+        fill="LightSteelBlue" 
+        stroke="MidnightBlue" 
+        lineWidth="1.5"&gt;
+    &lt;/tlacuache-histograma&gt;
+&lt;/tlacuache-ejes&gt;
+</pre>
+
+  </fieldset>
+</div>`
       return
     }
     const padre = this.parentElement;
@@ -858,9 +915,94 @@ class tlacuache_venn extends HTMLElement {
   }
   connectedCallback() {
     if(this.width==null){
-      this.innerHTML=`pendiente`
+      this.innerHTML=`<div>
+  <fieldset style="font-family: sans-serif; border: 2px solid #444; padding: 15px; background-color: #f9f9f9; border-radius: 5px;">
+    <legend style="font-weight: bold; font-size: 1.2em; padding: 0 5px;">&lt;tlacuache-venn&gt;</legend>
 
-return
+    <p style="margin-top:0">Dibuja diagramas de Venn configurables de 2 o 3 conjuntos, con soporte para texto y LaTeX.</p>
+
+    <strong>Atributos Principales:</strong>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr style="background:#eee;">
+        <th style="text-align:left">Atributo</th>
+        <th style="text-align:left">Descripción y Ejemplo</th>
+      </tr>
+      <tr>
+        <td><b>ancho</b></td>
+        <td>(Requerido) Ancho en pixeles.<br>Ej: <code>ancho="400"</code></td>
+      </tr>
+      <tr>
+        <td><b>n</b></td>
+        <td>Número de conjuntos (2 o 3). Default: <code>2</code>.<br>Ej: <code>n="3"</code></td>
+      </tr>
+      <tr>
+        <td><b>conjuntos</b></td>
+        <td>Nombres de los conjuntos principales.<br>Ej: <code>conjuntos="'A','B','C'"</code></td>
+      </tr>
+    </table>
+
+    <strong>Contenido de Regiones (s1 a s8):</strong>
+    <p style="font-size: 0.9em; margin-bottom: 5px;">Puedes usar texto regular o LaTeX encerrado entre <code>$$</code>. Ej: <code>s2="$$\\frac{1}{2}$$"</code></p>
+    <table border="1" cellpadding="5" style="border-collapse: collapse; width: 100%; background: white; font-size: 0.9em; margin: 5px 0 15px 0;">
+      <tr style="background:#eee;">
+        <th style="text-align:left">Región</th>
+        <th style="text-align:left">Para 2 conjuntos (n="2")</th>
+        <th style="text-align:left">Para 3 conjuntos (n="3")</th>
+      </tr>
+      <tr>
+        <td><b>s1</b></td>
+        <td>Universo (exterior)</td>
+        <td>Universo (exterior)</td>
+      </tr>
+      <tr>
+        <td><b>s2</b></td>
+        <td>A solamente (A \\ B)</td>
+        <td>A solamente (A \\ (B U C))</td>
+      </tr>
+      <tr>
+        <td><b>s3</b></td>
+        <td>Intersección (A ∩ B)</td>
+        <td>A ∩ B solamente (sin C)</td>
+      </tr>
+      <tr>
+        <td><b>s4</b></td>
+        <td>B solamente (B \\ A)</td>
+        <td>B solamente (B \\ (A U C))</td>
+      </tr>
+      <tr>
+        <td><b>s5</b></td>
+        <td>-</td>
+        <td>A ∩ C solamente (sin B)</td>
+      </tr>
+      <tr>
+        <td><b>s6</b></td>
+        <td>-</td>
+        <td>Intersección triple (A ∩ B ∩ C)</td>
+      </tr>
+      <tr>
+        <td><b>s7</b></td>
+        <td>-</td>
+        <td>B ∩ C solamente (sin A)</td>
+      </tr>
+      <tr>
+        <td><b>s8</b></td>
+        <td>-</td>
+        <td>C solamente (C \\ (A U B))</td>
+      </tr>
+    </table>
+
+    <strong>Ejemplos de Uso:</strong>
+    <pre style="background: #333; color: #fff; padding: 10px; border-radius: 4px; overflow-x: auto; font-size: 0.85em;">
+&lt;!-- Diagrama de Venn de 2 conjuntos --&gt;
+&lt;tlacuache-venn ancho="300" conjuntos="'A','B'" s1="Universo" s2="Solo A" s3="A e B" s4="Solo B"&gt;&lt;/tlacuache-venn&gt;
+
+&lt;!-- Diagrama de Venn de 3 conjuntos con LaTeX --&gt;
+&lt;tlacuache-venn ancho="400" n="3" conjuntos="'A','B','C'" s6="$$A \\cap B \\cap C$$" s1="$$U$$"&gt;&lt;/tlacuache-venn&gt;
+</pre>
+
+  </fieldset>
+</div>`
+      return
     }
     
     const ancho = this.width

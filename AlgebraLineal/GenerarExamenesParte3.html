@@ -1,0 +1,687 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generador de Exámenes de Álgebra Lineal - Parte 3 (Números Complejos)</title>
+    <style>
+        /* Base & Theme Variables (Premium Dark Mode Interface, Clean Print Mode) */
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-color: #f8fafc;
+            --text-secondary: #94a3b8;
+            --primary: #3b82f6;
+            --primary-hover: #2563eb;
+            --border-color: #334155;
+            --success: #10b981;
+        }
+
+        body {
+            font-family: 'Outfit', 'Inter', -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Control Panel Styles */
+        .control-panel {
+            background-color: var(--card-bg);
+            border-bottom: 1px solid var(--border-color);
+            padding: 20px 40px;
+            width: 100%;
+            max-width: 1200px;
+            box-sizing: border-box;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 20px;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+            border-bottom-left-radius: 12px;
+            border-bottom-right-radius: 12px;
+            margin-bottom: 40px;
+        }
+
+        .brand h1 {
+            font-size: 1.5rem;
+            margin: 0;
+            background: linear-gradient(135deg, #60a5fa, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 700;
+        }
+
+        .brand p {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin: 4px 0 0 0;
+        }
+
+        .controls {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .input-group label {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+            color: var(--text-secondary);
+            font-weight: 600;
+        }
+
+        .controls input[type="number"] {
+            background-color: var(--bg-color);
+            border: 1px solid var(--border-color);
+            color: var(--text-color);
+            padding: 8px 12px;
+            border-radius: 6px;
+            font-size: 1rem;
+            width: 80px;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .controls input[type="number"]:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            background-color: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 6px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn:hover {
+            background-color: var(--primary-hover);
+            transform: translateY(-1px);
+        }
+
+        .btn-success {
+            background-color: var(--success);
+        }
+
+        .btn-success:hover {
+            background-color: #059669;
+        }
+
+        /* Preview Container */
+        .exams-container {
+            width: 100%;
+            max-width: 850px;
+            padding: 0 20px 40px 20px;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+            gap: 40px;
+        }
+
+        /* Printable Page Styles (Screen Preview) */
+        .exam-sheet {
+            background-color: white;
+            color: #1e293b;
+            padding: 25mm 20mm;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+            position: relative;
+            min-height: 297mm;
+            box-sizing: border-box;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* Exam Header */
+        .exam-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 15px;
+            margin-bottom: 20px;
+        }
+
+        .exam-header img {
+            height: 80px;
+            width: auto;
+        }
+
+        .exam-header-text {
+            text-align: right;
+        }
+
+        .exam-header-text h1 {
+            font-size: 1.4rem;
+            margin: 0;
+            color: #0f172a;
+        }
+
+        .exam-header-text h2 {
+            font-size: 1rem;
+            margin: 4px 0 0 0;
+            color: #475569;
+            font-weight: 500;
+        }
+
+        .exam-header-text h3 {
+            font-size: 0.85rem;
+            margin: 2px 0 0 0;
+            color: #64748b;
+            font-weight: 400;
+        }
+
+        /* Student Details Form */
+        .student-info {
+            display: grid;
+            grid-template-columns: 2fr 1fr 1fr;
+            gap: 15px;
+            margin-bottom: 25px;
+            background-color: #f8fafc;
+            padding: 12px;
+            border-radius: 6px;
+            border: 1px solid #e2e8f0;
+        }
+
+        .info-field {
+            display: flex;
+            flex-direction: column;
+            font-size: 0.8rem;
+            color: #64748b;
+            font-weight: 600;
+            text-transform: uppercase;
+        }
+
+        .info-field span {
+            border-bottom: 1px solid #cbd5e1;
+            margin-top: 6px;
+            height: 20px;
+        }
+
+        /* Exam Body */
+        .exam-body h2 {
+            font-size: 1.1rem;
+            border-bottom: 1px solid #e2e8f0;
+            padding-bottom: 8px;
+            margin-top: 0;
+            margin-bottom: 15px;
+            color: #0f172a;
+            display: flex;
+            justify-content: space-between;
+        }
+
+        .exam-body h2 span.exam-code {
+            font-size: 0.9rem;
+            background-color: #e2e8f0;
+            padding: 2px 8px;
+            border-radius: 4px;
+            color: #475569;
+        }
+
+        .instructions {
+            font-size: 0.9rem;
+            color: #475569;
+            margin-bottom: 20px;
+            line-height: 1.4;
+        }
+
+        /* Question Styles */
+        .questions-list {
+            margin: 0;
+            padding: 0;
+            list-style: none;
+            counter-reset: question-counter;
+        }
+
+        .question-item {
+            margin-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .question-item::before {
+            counter-increment: question-counter;
+            content: counter(question-counter) ". ";
+            font-weight: 700;
+            color: #0f172a;
+            font-size: 1rem;
+        }
+
+        .question-text {
+            display: inline;
+            font-size: 0.95rem;
+            line-height: 1.5;
+            color: #1e293b;
+        }
+
+        /* Matrix/Vector Display within exams */
+        .matrix-display-container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 30px;
+            justify-content: center;
+            align-items: center;
+            margin: 15px 0;
+            padding: 10px;
+            background-color: #f8fafc;
+            border-radius: 6px;
+            border: 1px dashed #cbd5e1;
+        }
+
+        .mjx-chtml {
+            margin: 5px 0 !important;
+        }
+
+        /* Print styles */
+        @media print {
+            body {
+                background-color: white !important;
+                color: black !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+
+            .control-panel {
+                display: none !important;
+            }
+
+            .exams-container {
+                max-width: 100% !important;
+                padding: 0 !important;
+                gap: 0 !important;
+            }
+
+            .exam-sheet, .answers-sheet {
+                box-shadow: none !important;
+                border-radius: 0 !important;
+                padding: 15mm 15mm !important;
+                page-break-after: always !important;
+                page-break-inside: avoid !important;
+                height: auto !important;
+                min-height: 0 !important;
+            }
+
+            .answers-sheet:last-child {
+                page-break-after: avoid !important;
+            }
+        }
+
+        /* Answers Sheet Styling */
+        .answers-sheet {
+            background-color: white;
+            color: #1e293b;
+            padding: 25mm 20mm;
+            border-radius: 8px;
+            box-shadow: 0 10px 15px -3px rgb(0 0 0 / 0.3), 0 4px 6px -4px rgb(0 0 0 / 0.3);
+            margin-top: 40px;
+            box-sizing: border-box;
+        }
+
+        .answers-sheet h2 {
+            font-size: 1.4rem;
+            border-bottom: 2px solid #1e293b;
+            padding-bottom: 8px;
+            color: #0f172a;
+            text-align: center;
+            margin-top: 0;
+            margin-bottom: 25px;
+        }
+
+        .exam-answer-block {
+            margin-bottom: 40px;
+            border-bottom: 1px dashed #cbd5e1;
+            padding-bottom: 20px;
+            page-break-inside: avoid;
+        }
+
+        .exam-answer-block:last-child {
+            border-bottom: none;
+            padding-bottom: 0;
+            margin-bottom: 0;
+        }
+
+        .exam-answer-block h3 {
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-top: 0;
+            margin-bottom: 15px;
+            background-color: #f1f5f9;
+            padding: 6px 12px;
+            border-radius: 4px;
+            display: inline-block;
+        }
+
+        .answer-item {
+            margin-bottom: 15px;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .answer-item strong {
+            color: #0f172a;
+        }
+    </style>
+    <script>
+        // Exact fraction class for math solvers
+        function gcd(a, b) {
+            return b ? gcd(b, a % b) : Math.abs(a);
+        }
+
+        class Fraction {
+            constructor(num, den = 1) {
+                if (den < 0) {
+                    num = -num;
+                    den = -den;
+                }
+                let g = gcd(num, den);
+                this.num = g === 0 ? 0 : num / g;
+                this.den = g === 0 ? 1 : den / g;
+            }
+            add(o) { return new Fraction(this.num * o.den + o.num * this.den, this.den * o.den); }
+            sub(o) { return new Fraction(this.num * o.den - o.num * this.den, this.den * o.den); }
+            mul(o) { return new Fraction(this.num * o.num, this.den * o.den); }
+            div(o) { return new Fraction(this.num * o.den, this.den * o.num); }
+            neg() { return new Fraction(-this.num, this.den); }
+            isZero() { return this.num === 0; }
+            toString() {
+                if (this.den === 1) return this.num.toString();
+                return `${this.num}/${this.den}`;
+            }
+            toLatex() {
+                if (this.den === 1) return this.num.toString();
+                return `\\frac{${this.num}}{${this.den}}`;
+            }
+        }
+
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']]
+            },
+            startup: {
+                pageReady: () => {
+                    return MathJax.startup.defaultPageReady().then(() => {
+                        generateExams();
+                        return MathJax.typesetPromise();
+                    });
+                }
+            }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script>
+        // --- Complex Numbers Generator ---
+        function generateComplex() {
+            let re = Math.floor(Math.random() * 7) - 3; // -3 to 3
+            let im = Math.floor(Math.random() * 7) - 3; // -3 to 3
+            if (im === 0) im = 2;
+            if (re === 0) re = 1;
+            return { re, im };
+        }
+
+        function formatComplexMathJax(z) {
+            let sign = z.im >= 0 ? "+" : "";
+            return `${z.re}${sign}${z.im}i`;
+        }
+
+        function formatMatrixMathJax(matrix, name = "") {
+            let rows = matrix.map(row => row.join(" & "));
+            let prefix = name ? name + " = " : "";
+            return prefix + "\\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix}";
+        }
+
+        // Ficha 11: Aritmética básica de complejos con comprobaciones inversas
+        function getComplexArithmeticProblem() {
+            let z1 = generateComplex();
+            let z2 = generateComplex();
+
+            // Sum: s_re + s_im * i
+            let s_re = z1.re + z2.re;
+            let s_im = z1.im + z2.im;
+            let s_sign = s_im >= 0 ? "+" : "";
+            
+            // Sub: d_re + d_im * i
+            let d_re = z1.re - z2.re;
+            let d_im = z1.im - z2.im;
+            let d_sign = d_im >= 0 ? "+" : "";
+
+            // Mult: (ac - bd) + (ad + bc)i
+            let m_re = z1.re * z2.re - z1.im * z2.im;
+            let m_im = z1.re * z2.im + z1.im * z2.re;
+            let m_sign = m_im >= 0 ? "+" : "";
+
+            // Div: (ac + bd)/(c^2+d^2) + (bc - ad)/(c^2+d^2) i
+            let den = z2.re * z2.re + z2.im * z2.im;
+            let q_num_re = z1.re * z2.re + z1.im * z2.im;
+            let q_num_im = z1.im * z2.re - z1.re * z2.im;
+            
+            let q_re_frac = new Fraction(q_num_re, den);
+            let q_im_frac = new Fraction(q_num_im, den);
+            let q_sign = q_im_frac.num >= 0 ? "+" : "-";
+            let q_im_abs_frac = new Fraction(Math.abs(q_im_frac.num), q_im_frac.den);
+
+            return {
+                text: "Realiza las siguientes operaciones:.<br>&nbsp;&nbsp;&nbsp;&nbsp;a)  $z_1 + z_2$.<br>&nbsp;&nbsp;&nbsp;&nbsp;b) $z_1 - z_2$.<br>&nbsp;&nbsp;&nbsp;&nbsp;c) $\\frac{z_1}{z_2}$.",
+                latex: `\\[ z_1 = ${formatComplexMathJax(z1)}, \\quad z_2 = ${formatComplexMathJax(z2)} \\]`,
+                answer: `Suma: $${s_re}${s_sign}${s_im}i$, Resta: $${d_re}${d_sign}${d_im}i$, División: $${q_re_frac.toLatex()} ${q_sign} ${q_im_abs_frac.toLatex()}i$`
+            };
+        }
+
+        // Ficha 12: Representación Matricial
+        function getMatrixComplexProblem() {
+            let z1 = generateComplex();
+            let z2 = generateComplex();
+
+            // M = Z1 * Z2
+            let m_re = z1.re * z2.re - z1.im * z2.im;
+            let m_im = z1.re * z2.im + z1.im * z2.re;
+            let M = [[m_re, -m_im], [m_im, m_re]];
+
+            // Q = Z1 * Z2^-1
+            let den = z2.re * z2.re + z2.im * z2.im;
+            let q_num_re = z1.re * z2.re + z1.im * z2.im;
+            let q_num_im = z1.im * z2.re - z1.re * z2.im;
+
+            let q_re = new Fraction(q_num_re, den);
+            let q_im = new Fraction(q_num_im, den);
+            let q_im_neg = q_im.neg();
+
+            let Q_latex = `\\begin{bmatrix} ${q_re.toLatex()} & ${q_im_neg.toLatex()} \\\\ ${q_im.toLatex()} & ${q_re.toLatex()} \\end{bmatrix}`;
+
+            let Z1_latex = `\\begin{bmatrix} ${z1.re} & ${-z1.im} \\\\ ${z1.im} & ${z1.re} \\end{bmatrix}`;
+            let Z2_latex = `\\begin{bmatrix} ${z2.re} & ${-z2.im} \\\\ ${z2.im} & ${z2.re} \\end{bmatrix}`;
+
+            let detZ1 = z1.re * z1.re + z1.im * z1.im;
+            let Z1_T = `\\begin{bmatrix} ${z1.re} & ${z1.im} \\\\ ${-z1.im} & ${z1.re} \\end{bmatrix}`;
+
+            return {
+                text: "Sean $Z_1$ y $Z_2$ las representaciones matriciales de $z_1$ y $z_2$ en dimensión $2 \\times 2$, resuelve:<br>&nbsp;&nbsp;&nbsp;&nbsp;a) $Z_1 \\cdot Z_2$.<br>&nbsp;&nbsp;&nbsp;&nbsp;b)$Z_1 \\cdot Z_2^{-1}$.<br>&nbsp;&nbsp;&nbsp;&nbsp;c) Calcula el determinante $\\det(Z_1)$ y la transpuesta $Z_1^T$, explicando qué propiedad representan en los complejos.",
+                latex: `\\[ Z_1 = ${Z1_latex}, \\quad Z_2 = ${Z2_latex} \\]`,
+                answer: `a) $Z_1 Z_2 = ${formatMatrixMathJax(M)}$, b) $Z_1 Z_2^{-1} = ${Q_latex}$, c) $\\det(Z_1) = ${detZ1}$ (módulo al cuadrado $|z_1|^2$), $Z_1^T = ${Z1_T}$ (conjugado $\\bar{z}_1$).`
+            };
+        }
+
+        // Ficha 13: Conversión Cartesiana a Exponencial
+        function getCartesianToExponentialProblem() {
+            let list = [
+                { cart: "1 + i", r: "\\sqrt{2}", theta: "\\frac{\\pi}{4}" },
+                { cart: "-2 + 2i", r: "2\\sqrt{2}", theta: "\\frac{3\\pi}{4}" },
+                { cart: "-\\sqrt{3} - i", r: "2", theta: "\\frac{7\\pi}{6}" },
+                { cart: "3 - 3i", r: "3\\sqrt{2}", theta: "\\frac{7\\pi}{4}" },
+                { cart: "-3i", r: "3", theta: "-\\frac{\\pi}{2}" }
+            ];
+            let choice = list[Math.floor(Math.random() * list.length)];
+
+            return {
+                text: "Convierte el siguiente número complejo dado en forma cartesiana a su <strong>forma exponencial o de Euler</strong> ($z = r e^{i \\theta}$).",
+                latex: `\\[ z = ${choice.cart} \\]`,
+                answer: `Módulo: $r = ${choice.r}$, Ángulo: $\\theta = ${choice.theta}$, Forma Exponencial: $z = ${choice.r} e^{i ${choice.theta}}$`
+            };
+        }
+
+        // Ficha 13: Conversión Exponencial a Cartesiana
+        function getExponentialToCartesianProblem() {
+            let list = [
+                { exp: "2 e^{i \\frac{\\pi}{4}}", cart: "\\sqrt{2} + \\sqrt{2}i" },
+                { exp: "4 e^{i \\frac{2\\pi}{3}}", cart: "-2 + 2\\sqrt{3}i" },
+                { exp: "3 e^{-i \\frac{\\pi}{6}}", cart: "\\frac{3\\sqrt{3}}{2} - \\frac{3}{2}i" },
+                { exp: "2 e^{i \\pi}", cart: "-2" },
+                { exp: "5 e^{-i \\frac{\\pi}{2}}", cart: "-5i" }
+            ];
+            let choice = list[Math.floor(Math.random() * list.length)];
+
+            return {
+                text: "Convierte el siguiente número complejo expresado en forma exponencial a su <strong>forma cartesiana</strong> ($z = a + bi$).",
+                latex: `\\[ w = ${choice.exp} \\]`,
+                answer: `Forma Cartesiana: $w = ${choice.cart}$`
+            };
+        }
+
+        // --- Exam Generator Logic ---
+
+        function generateExams() {
+            const countInput = document.getElementById('examCount');
+            const numExams = parseInt(countInput.value) || 1;
+            const container = document.getElementById('examsContainer');
+            container.innerHTML = '';
+
+            let answerSheetHtml = `
+                <div class="answers-sheet">
+                    <h2>Clave de Respuestas (Parte 3)</h2>
+            `;
+
+            for (let examIndex = 1; examIndex <= numExams; examIndex++) {
+                const examCode = "AL3-" + examIndex;
+                const sheet = document.createElement('div');
+                sheet.className = 'exam-sheet';
+
+                // Questions & Solver
+                const p1 = getComplexArithmeticProblem();
+                const p2 = getMatrixComplexProblem();
+                const p3 = getCartesianToExponentialProblem();
+                const p4 = getExponentialToCartesianProblem();
+
+                // Header
+                let html = `
+                    <div class="exam-header">
+                        <img src="http://www.uadec.mx/wp-content/uploads/2019/01/EscudoUAdeC-C.png" alt="Escudo UAdeC">
+                        <div class="exam-header-text">
+                            <h1>Universidad Autónoma de Coahuila</h1>
+                            <h2>FIME Monclova</h2>
+                            <h3>Álgebra Lineal &bull; Docente: MC. Roberto Morin</h3>
+                        </div>
+                    </div>
+                    <div class="student-info">
+                        <div class="info-field">Nombre del Alumno:<span></span></div>
+                        <div class="info-field">Matrícula:<span></span></div>
+                        <div class="info-field">Fecha:<span></span></div>
+                    </div>
+                    <div class="exam-body">
+                        <h2>Examen Parcial de Álgebra Lineal - Parte 3 <span class="exam-code">Clave: ${examCode}</span></h2>
+                        <div class="instructions">
+                            <strong>Instrucciones:</strong> Resuelve a mano cada uno de los problemas planteados, mostrando detalladamente las operaciones de cálculo y comprobación en tu hoja de respuestas.
+                        </div>
+                        <ul class="questions-list">
+                `;
+
+                html += `
+                            <li class="question-item">
+                                <div class="question-text">${p1.text}</div>
+                                <div class="matrix-display-container">${p1.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p2.text}</div>
+                                <div class="matrix-display-container">${p2.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p3.text}</div>
+                                <div class="matrix-display-container">${p3.latex}</div>
+                            </li>
+                            <li class="question-item">
+                                <div class="question-text">${p4.text}</div>
+                                <div class="matrix-display-container">${p4.latex}</div>
+                            </li>
+                `;
+
+                html += `
+                        </ul>
+                    </div>
+                `;
+
+                sheet.innerHTML = html;
+                container.appendChild(sheet);
+
+                // Add to answer sheet
+                answerSheetHtml += `
+                    <div class="exam-answer-block">
+                        <h3>Examen Clave: ${examCode}</h3>
+                        <div class="answer-item"><strong>1. Aritmética Complejos:</strong> ${p1.answer}</div>
+                        <div class="answer-item"><strong>2. Representación Matricial:</strong> ${p2.answer}</div>
+                        <div class="answer-item"><strong>3. Cartesiana a Exponencial:</strong> ${p3.answer}</div>
+                        <div class="answer-item"><strong>4. Exponencial a Cartesiana:</strong> ${p4.answer}</div>
+                    </div>
+                `;
+            }
+
+            answerSheetHtml += `</div>`;
+
+            // Append answers sheet to container
+            container.innerHTML += answerSheetHtml;
+
+            // Typeset MathJax
+            if (window.MathJax && MathJax.typesetPromise) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function printPDF() {
+            window.print();
+        }
+    </script>
+</head>
+<body>
+    <div class="control-panel">
+        <div class="brand">
+            <h1>Generador de Exámenes (Parte 3)</h1>
+            <p>Álgebra Lineal &bull; FIME Monclova</p>
+        </div>
+        <div class="controls">
+            <div class="input-group">
+                <label for="examCount">Cantidad</label>
+                <input type="number" id="examCount" min="1" max="100" value="5">
+            </div>
+            <button class="btn" onclick="generateExams()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M4 4v5h.582m15.356 2A8.001 8.001 0 1121.21 8H17" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Generar Nuevos
+            </button>
+            <button class="btn btn-success" onclick="printPDF()">
+                <svg width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24"><path d="M17 17h2a2 2 0 002-2v-4a2 2 0 00-2-2H5a2 2 0 00-2 2v4a2 2 0 002 2h2m2 4h6a2 2 0 002-2v-4a2 2 0 00-2-2H9a2 2 0 00-2 2v4a2 2 0 002 2zm8-12V5a2 2 0 00-2-2H9a2 2 0 00-2 2v4h10z" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Imprimir / Guardar PDF
+            </button>
+        </div>
+    </div>
+
+    <div class="exams-container" id="examsContainer">
+        <!-- Generando exámenes... -->
+    </div>
+</body>
+</html>
