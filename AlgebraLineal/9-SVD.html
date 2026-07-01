@@ -106,7 +106,7 @@
             margin-top: 10px;
             text-align: center;
         }
-        
+
         .tiempo-estimado {
             text-align: center;
             font-weight: bold;
@@ -134,6 +134,12 @@
         function generate2x2NiceMatrix() {
             // Genera una matriz A de 2x2 simple para que A^T*A tenga valores propios enteros bonitos.
             // Por ejemplo, matrices con entradas pequeñas:
+            let s2 = Math.round(Math.random() * 3)
+            let s1 = s2 + Math.ceil(Math.random() * 3);
+            return [[[s1 + s2, 0], [s1 - s2, `2\\sqrt{${s1 * s2}}`]], 2 * (s1 + s2)]
+
+
+            /*
             let list = [
                 [[3, 0], [4, 5]],
                 [[1, 2], [2, 1]],
@@ -142,6 +148,7 @@
                 [[2, 2], [-1, 1]]
             ];
             return list[Math.floor(Math.random() * list.length)];
+            */
         }
 
         function generate3x2Matrix() {
@@ -173,20 +180,20 @@
             return [[a, b], [c, d]];
         }
 
-        function formatMatrixMathJax(matrix, name) {
+        function formatMatrixMathJax(matrix, name, v = '') {
             let rows = matrix.map(row => row.join(" & "));
-            return "\\[ " + name + " = \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
+            return "\\[ " + name + " = " + (v != '' ? `\\frac{1}{\\sqrt{${v / 2}}}` : '') + " \\begin{bmatrix} " + rows.join(" \\\\ ") + " \\end{bmatrix} \\]";
         }
 
         function main() {
             let container = document.getElementById('ejercicios');
             let content = "<ol class='mainP'>";
-            
+
             // Problema 1: SVD 2x2 (A mano y verificar con Python)
-            let A1 = generate2x2NiceMatrix();
+            let [A1, v] = generate2x2NiceMatrix();
             content += "<li><strong>(Descomposición SVD a mano y Python)</strong> Dada la siguiente matriz de $2 \\times 2$ $A$:<br>";
             content += "<div class='matrix-display' style='font-size: 1.1em;'>";
-            content += formatMatrixMathJax(A1, "A");
+            content += formatMatrixMathJax(A1, "A", v);
             content += "</div>";
             content += "<div style='margin-top: 10px; margin-left: 20px;'>";
             content += "Lleva a cabo la Descomposición en Valores Singulares ($A = U S V^T$) realizando lo siguiente:";
@@ -247,59 +254,63 @@
     <main>
         <h2>Ficha de Trabajo: Descomposición en Valores Singulares (SVD) y Potencia de Matrices</h2>
         <div class="tiempo-estimado">Tiempo estimado de realización: 1 hora</div>
-        
-        <p>En esta ficha de trabajo, estudiarás la <strong>Descomposición en Valores Singulares (SVD)</strong>, viendo cómo se relaciona con los valores propios de la matriz de covarianza $A^T A$. Además, analizarás la eficiencia de la diagonalización para calcular potencias grandes de matrices ($A^n$) y medirás el tiempo de ejecución en Python para comprender la enorme ventaja algorítmica de este método.</p>
-        
+
+        <p>En esta ficha de trabajo, estudiarás la <strong>Descomposición en Valores Singulares (SVD)</strong>, viendo
+            cómo se relaciona con los valores propios de la matriz de covarianza $A^T A$. Además, analizarás la
+            eficiencia de la diagonalización para calcular potencias grandes de matrices ($A^n$) y medirás el tiempo de
+            ejecución en Python para comprender la enorme ventaja algorítmica de este método.</p>
+
         <h3>Ejemplo de SVD y Medición de Tiempo para $A^n$ en Python:</h3>
-        <p>El siguiente código ilustra cómo obtener la SVD usando NumPy y cómo medir la diferencia en tiempo de cómputo para la potencia de una matriz:</p>
-        
+        <p>El siguiente código ilustra cómo obtener la SVD usando NumPy y cómo medir la diferencia en tiempo de cómputo
+            para la potencia de una matriz:</p>
+
         <div class="no-copy">import numpy as np
-import time
+            import time
 
-# --- Parte 1: Descomposición SVD ---
-A = np.array([[3.0, 0.0],
-              [4.0, 5.0]])
+            # --- Parte 1: Descomposición SVD ---
+            A = np.array([[3.0, 0.0],
+            [4.0, 5.0]])
 
-# linalg.svd retorna U, la diagonal S (como vector de valores singulares) y V^T
-U, s, Vt = np.linalg.svd(A)
-S = np.diag(s) # Convertir el vector s a matriz diagonal
+            # linalg.svd retorna U, la diagonal S (como vector de valores singulares) y V^T
+            U, s, Vt = np.linalg.svd(A)
+            S = np.diag(s) # Convertir el vector s a matriz diagonal
 
-print("--- Descomposición SVD de A ---")
-print("U =\n", U)
-print("S =\n", S)
-print("V^T =\n", Vt)
-print("Reconstrucción (U * S * V^T) =\n", U.dot(S).dot(Vt), "\n")
+            print("--- Descomposición SVD de A ---")
+            print("U =\n", U)
+            print("S =\n", S)
+            print("V^T =\n", Vt)
+            print("Reconstrucción (U * S * V^T) =\n", U.dot(S).dot(Vt), "\n")
 
 
-# --- Parte 2: Eficiencia en Potencias de Matrices (C^n) ---
-C = np.array([[2.0, 1.0],
-              [0.0, 3.0]])
+            # --- Parte 2: Eficiencia en Potencias de Matrices (C^n) ---
+            C = np.array([[2.0, 1.0],
+            [0.0, 3.0]])
 
-n = 50000
+            n = 50000
 
-# Método 1: Multiplicación sucesiva iterativa
-start_time = time.time()
-C_mult = np.eye(2)
-for _ in range(n):
-    C_mult = C_mult.dot(C)
-time_mult = time.time() - start_time
+            # Método 1: Multiplicación sucesiva iterativa
+            start_time = time.time()
+            C_mult = np.eye(2)
+            for _ in range(n):
+            C_mult = C_mult.dot(C)
+            time_mult = time.time() - start_time
 
-# Método 2: Usando Diagonalización C = P * D * P^-1
-# Obtenemos valores y vectores propios de C
-eigenvalues, P = np.linalg.eig(C)
-P_inv = np.linalg.inv(P)
+            # Método 2: Usando Diagonalización C = P * D * P^-1
+            # Obtenemos valores y vectores propios de C
+            eigenvalues, P = np.linalg.eig(C)
+            P_inv = np.linalg.inv(P)
 
-start_time = time.time()
-D_n = np.diag(eigenvalues ** n)
-C_diag = P.dot(D_n).dot(P_inv)
-time_diag = time.time() - start_time
+            start_time = time.time()
+            D_n = np.diag(eigenvalues ** n)
+            C_diag = P.dot(D_n).dot(P_inv)
+            time_diag = time.time() - start_time
 
-print("--- Comparación de Tiempos para C^n (n = 50,000) ---")
-print(f"Método por multiplicación iterativa: {time_mult:.6f} segundos")
-print(f"Método por diagonalización: {time_diag:.6f} segundos")
-print(f"¿Los resultados coinciden?: {np.allclose(C_mult, C_diag)}")
-print(f"La diagonalización es {time_mult / max(time_diag, 1e-9):.2f} veces más rápida.")
-</div>
+            print("--- Comparación de Tiempos para C^n (n = 50,000) ---")
+            print(f"Método por multiplicación iterativa: {time_mult:.6f} segundos")
+            print(f"Método por diagonalización: {time_diag:.6f} segundos")
+            print(f"¿Los resultados coinciden?: {np.allclose(C_mult, C_diag)}")
+            print(f"La diagonalización es {time_mult / max(time_diag, 1e-9):.2f} veces más rápida.")
+        </div>
 
         <h3>Ejercicios Asignados:</h3>
         <div id="ejercicios">
@@ -307,17 +318,21 @@ print(f"La diagonalización es {time_mult / max(time_diag, 1e-9):.2f} veces más
         </div>
 
         <div class="note">
-            <strong>Instrucciones de entrega:</strong> 
+            <strong>Instrucciones de entrega:</strong>
             Manda como evidencia un archivo PDF o imágenes que incluyan:
             <ol>
                 <li>Tus cálculos manuales detallados del <strong>Problema 1</strong> (incisos a, b, c, d, e).</li>
                 <li>Tus cálculos manuales detallados del <strong>Problema 3</strong> (incisos a y b).</li>
                 <li>Una captura de pantalla de esta página web con las matrices generadas para tu práctica.</li>
-                <li>Capturas de pantalla del código de Python y su terminal de salida resolviendo la SVD del <strong>Problema 2</strong>, y la medición de tiempos del <strong>Problema 3</strong> (mostrando la diferencia de velocidad obtenida en tu computadora).</li>
+                <li>Capturas de pantalla del código de Python y su terminal de salida resolviendo la SVD del
+                    <strong>Problema 2</strong>, y la medición de tiempos del <strong>Problema 3</strong> (mostrando la
+                    diferencia de velocidad obtenida en tu computadora).
+                </li>
             </ol>
         </div>
         <div class="note">
-            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
+            <strong>Nota:</strong> Esta página genera ejercicios aleatorios cada vez que se carga. Asegúrate de tomar tu
+            captura de pantalla de los ejercicios antes de recargar o cerrar la ventana.
         </div>
     </main>
 </body>
