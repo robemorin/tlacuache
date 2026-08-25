@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad: Eliminación de Gauss-Jordan (Parte I)</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 25px;
+            font-size: 1.2em;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-left: 6px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            color: #0c5460;
+        }
+        .ai-allowed {
+            background-color: #d4edda;
+            border-left: 6px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            color: #155724;
+        }
+        code {
+            background-color: #eef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #eef;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Actividades: Gauss-Jordan Parte I, II y III.</h1>
+
+    <p><strong>Objetivo:</strong> Comprender y programar operaciones matemáticas entre filas de una matriz utilizando ciclos <code>for</code>. Esto es el fundamento principal para poder programar el método de eliminación de Gauss-Jordan en futuras actividades.</p>
+
+    <h2>Ejemplo Base: Operaciones con Matrices</h2>
+    <p>A continuación se proporciona un código inicial. En este código se define una matriz grande de 5x6 y una función para imprimirla de manera ordenada con dos decimales. Además, se incluye un ejemplo de cómo modificar los valores de una fila completa basándose en los valores de otra fila, utilizando un ciclo <code>for</code>.</p>
+
+    <pre><code>import numpy as np
+
+# 1. Definición de una matriz
+A = np.array([
+    [ 2.5,  1.0, -3.2,  4.1,  5.0,  8.2],
+    [-1.2,  3.5,  2.0, -1.5,  0.5, -3.1],
+    [ 4.0, -2.1,  1.5,  3.2, -1.0,  6.0],
+    [ 0.5,  2.2, -4.0,  1.1,  3.3, -2.0],
+    [-3.0,  1.5,  2.5, -0.5,  4.2,  1.5]
+])
+
+# 2. Función para imprimir la matriz cómodamente con 2 decimales
+def imprimir_matriz(m):
+    for fila in m:
+        print("[", end="")
+        for val in fila:
+            # {:7.2f} asegura que cada número ocupe 7 espacios y tenga 2 decimales
+            print(f"{val:7.2f}", end="")
+        print(" ]")
+    print("-" * 50)
+
+print("Matriz Original:")
+imprimir_matriz(A)
+
+# 3. Ejemplo de operación entre filas usando un 'for'
+# Objetivo: A la Fila 1 (índice 1) le vamos a sumar 2 veces la Fila 0 (índice 0)
+# Fórmula matemática: F1 = F1 + (2 * F0)
+
+alpha = 2.0
+columnas = len(A[0]) # Obtenemos el número total de columnas
+
+# Usamos un ciclo 'for' para recorrer elemento por elemento de la fila
+for j in range(0, columnas):
+    A[1][j] = A[1][j] + alpha * A[0][j]
+
+print("Matriz después de la operación con 'for' (F1 = F1 + 2*F0):")
+imprimir_matriz(A)
+
+# ---------------------------------------------------------
+# 4. Operación directa (vectorizada)
+# En bibliotecas como NumPy, la misma operación se puede hacer
+# de forma directa sin necesidad de escribir el ciclo 'for',
+# pero es importante entender la lógica interna primero.
+#
+# El equivalente directo del ciclo 'for' anterior sería:
+# matriz[1] = matriz[1] + factor * matriz[0]
+# ---------------------------------------------------------
+</code></pre>
+
+
+
+</body>
+</html>
