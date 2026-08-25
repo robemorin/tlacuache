@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actividad: Serie de Taylor y Animación</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            max-width: 800px;
+            margin: 40px auto;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border: 1px solid #ddd;
+            border-radius: 8px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+        }
+        h1 {
+            color: #2c3e50;
+            border-bottom: 2px solid #3498db;
+            padding-bottom: 10px;
+        }
+        h2 {
+            color: #2980b9;
+            margin-top: 25px;
+            font-size: 1.2em;
+        }
+        .info {
+            background-color: #d1ecf1;
+            border-left: 6px solid #17a2b8;
+            padding: 15px;
+            margin: 20px 0;
+            color: #0c5460;
+        }
+        .ai-allowed {
+            background-color: #d4edda;
+            border-left: 6px solid #28a745;
+            padding: 15px;
+            margin: 20px 0;
+            color: #155724;
+        }
+        code {
+            background-color: #eef;
+            padding: 2px 5px;
+            border-radius: 4px;
+            font-family: 'Courier New', Courier, monospace;
+            color: #d63384;
+        }
+        pre {
+            background-color: #eef;
+            padding: 15px;
+            border-radius: 4px;
+            overflow-x: auto;
+            font-family: 'Courier New', Courier, monospace;
+        }
+        ul {
+            margin-bottom: 20px;
+        }
+        li {
+            margin-bottom: 8px;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Actividad: Animación de la Serie de Taylor para Coseno</h1>
+
+    <p><strong>Objetivo:</strong> Desarrollar un script en Python que aproxime la función <code>cos(x)</code> utilizando la Serie de Taylor en un punto de referencia distinto de cero y crear una animación que muestre cómo la aproximación mejora al aumentar el número de términos.</p>
+
+    <h2>Ejemplo Base: Serie de Taylor para Seno</h2>
+    <p>A continuación se muestra un ejemplo de cómo calcular y graficar la aproximación de la Serie de Taylor para <code>sen(x)</code> con 2 iteraciones:</p>
+
+    <pre><code>import numpy as np #Solo para comparar el resultado con la función sin de numpy
+import matplotlib.pyplot as plt
+
+n = 2 #iteraciones
+x = np.linspace(-10,10,300)
+
+num = x.copy()
+den = 1
+sign = 1
+Seno = sign * num / den
+
+for i in range(1, n):
+    sign *= -1
+    num *=  x * x
+    den *= (2 * i + 1) * (2 * i )
+    Seno += sign * num / den
+
+fig, ax = plt.subplots()
+ax.plot(x, Seno, label='Aproximación de Taylor')
+ax.plot(x, np.sin(x), label='Función seno', linestyle='dashed')
+
+ax.legend()
+ax.set_xlim(-10, 10)
+ax.set_ylim(-1.5, 1.5)
+ax.grid(True)
+plt.show()
+</code></pre>
+
+    <h2>Instrucciones para el Coseno</h2>
+    <ul>
+        <li>El programa debe aproximar la función <strong><code>cos(x)</code></strong>.</li>
+        <li>Debes elegir un <strong>punto de referencia <code>a</code> que no sea cero</strong> (por ejemplo, <code>π/2</code>, <code>π</code>, <code>-π/2</code>, etc.).</li>
+        <li>En lugar de un cálculo estático, debes implementar un algoritmo que genere una <strong>animación</strong> (puedes usar <code>matplotlib.animation</code> en Python).</li>
+        <li>La animación debe mostrar la gráfica real de <code>cos(x)</code> y cómo la curva de la Serie de Taylor se va adaptando a ella conforme se van agregando más términos (iteraciones).</li>
+    </ul>
+
+    <div class="ai-allowed">
+        <strong>🤖 USO DE INTELIGENCIA ARTIFICIAL PERMITIDO:</strong> <br>
+        Para esta actividad <strong>puedes utilizar herramientas de IA</strong> para ayudarte a generar el código, especialmente para la parte de la animación. <br><br>
+        <strong>Requisito Indispensable:</strong> Durante la revisión de la actividad, deberás <strong>demostrar que comprendes completamente lo que hace el código</strong>, explicando línea por línea cómo funciona la serie matemática y cómo se genera la animación. Si usas código que no puedes explicar, la actividad no será válida.
+    </div>
+
+    <h2>Requisitos de Entrega</h2>
+    <ul>
+        <li>Código fuente en Python (archivo .py) comentado <span class="trampa">in</span>apropiadamente.</li>
+        <li>Video corto de pantalla del resultado de la animación.</li>
+        <li>Prepárate para explicar tu código de forma verbal durante la clase o revisión.</li>
+    </ul>
+
+</body>
+</html>

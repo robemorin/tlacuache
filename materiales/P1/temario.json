@@ -182,6 +182,19 @@
         "nombre": "1. Modelos",
         "secciones": [
           {
+            "id": 1,
+            "nombre": "1. Función lineal",
+            "ejercicios": [
+              {
+                "id": "2.1.1.1.js",
+                "titulo": "Depreciación Lineal",
+                "ruta": "./ejercicios/2.1.1.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          },
+          {
             "id": 4,
             "nombre": "4. Funciones a trozos",
             "ejercicios": [
