@@ -662,6 +662,18 @@ export function polyToShiftedLatex(coefs, a, variable = 'h') {
         }
         return str;
     }
+export function shiftPolynomial(coefs, a) {
+        let res = [...coefs]; // Hacemos una copia del arreglo original
+        let n = res.length;
+        
+        // Algoritmo de división sintética iterativa
+        for (let i = 0; i < n; i++) {
+            for (let j = 1; j < n - i; j++) {
+                res[j] = res[j] + a * res[j - 1];
+            }
+        }
+        return res;
+    }
 export function conv(a1, a2) {
     //Funciona de la misma manera que conv de matlab/octave
     let result = [];
