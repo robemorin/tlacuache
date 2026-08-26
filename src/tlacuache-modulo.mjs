@@ -637,6 +637,31 @@ export function metTrapecio(a, b, n, fun) {
 
     return { x: x, y: y, A: A, h: h }
 }
+export function polyToShiftedLatex(coefs, a, variable = 'h') {
+        let str = "";
+        let n = coefs.length - 1;
+        let base = a >= 0 ? `(${a}+${variable})` : `(${a}${variable})`; // Ej: (3+h)
+        
+        for (let i = 0; i <= n; i++) {
+            let coef = coefs[i];
+            if (coef === 0) continue;
+            
+            let power = n - i;
+            let term = "";
+            
+            if (coef > 0 && str !== "") term += "+";
+            else if (coef < 0) term += "-";
+            
+            let absCoef = Math.abs(coef);
+            if (absCoef !== 1 || power === 0) term += absCoef;
+            
+            if (power === 1) term += base;
+            else if (power > 1) term += `${base}^{${power}}`;
+            
+            str += term;
+        }
+        return str;
+    }
 export function conv(a1, a2) {
     //Funciona de la misma manera que conv de matlab/octave
     let result = [];
