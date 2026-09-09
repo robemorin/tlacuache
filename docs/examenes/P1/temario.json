@@ -1,5 +1,30 @@
 [
   {
+    "id": 0,
+    "nombre": "5. Cálculo",
+    "subtemas": [
+      {
+        "id": 1,
+        "nombre": "5.2. Derivadas",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "5.2.1. Reglas de derivación y antiderivadas",
+            "ejercicios": [
+              {
+                "id": "0.1.1.1.js",
+                "titulo": "Integración de función racional por sustitución con potencia negativa",
+                "ruta": "./ejercicios/0.1.1.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      }
+    ]
+  },
+  {
     "id": 1,
     "nombre": "1. Álgebra",
     "subtemas": [
@@ -62,6 +87,76 @@
                 "ruta": "./ejercicios/1.2.1.1.js",
                 "puntos": 5,
                 "orden": 1
+              },
+              {
+                "id": "1.2.1.2.js",
+                "titulo": "Distribución de butacas en un teatro",
+                "ruta": "./ejercicios/1.2.1.2.js",
+                "puntos": 4,
+                "orden": 2
+              },
+              {
+                "id": "1.2.1.3.js",
+                "titulo": "Término enésimo y suma de una progresión aritmética",
+                "ruta": "./ejercicios/1.2.1.3.js",
+                "puntos": 4,
+                "orden": 3
+              },
+              {
+                "id": "1.2.1.4.js",
+                "titulo": "Cálculo de término y posición en progresión aritmética",
+                "ruta": "./ejercicios/1.2.1.4.js",
+                "puntos": 6,
+                "orden": 4
+              },
+              {
+                "id": "1.2.1.5.js",
+                "titulo": "Diferencia, término enésimo y suma de diez términos",
+                "ruta": "./ejercicios/1.2.1.5.js",
+                "puntos": 6,
+                "orden": 5
+              },
+              {
+                "id": "1.2.1.6.js",
+                "titulo": "Progresión aritmética con logaritmos",
+                "ruta": "./ejercicios/1.2.1.6.js",
+                "puntos": 6,
+                "orden": 6
+              },
+              {
+                "id": "1.2.1.7.js",
+                "titulo": "Deducción de términos a partir de sumas parciales compuestas",
+                "ruta": "./ejercicios/1.2.1.7.js",
+                "puntos": 8,
+                "orden": 7
+              },
+              {
+                "id": "1.2.1.8.js",
+                "titulo": "Término general lineal y parámetros de progresión aritmética",
+                "ruta": "./ejercicios/1.2.1.8.js",
+                "puntos": 5,
+                "orden": 8
+              },
+              {
+                "id": "1.2.1.9.js",
+                "titulo": "Programa de reforestación (Término, Suma y Promedio)",
+                "ruta": "./ejercicios/1.2.1.9.js",
+                "puntos": 7,
+                "orden": 9
+              },
+              {
+                "id": "1.2.1.10.js",
+                "titulo": "Suma cuadrática aritmética y conexión con sucesión geométrica",
+                "ruta": "./ejercicios/1.2.1.10.js",
+                "puntos": 14,
+                "orden": 10
+              },
+              {
+                "id": "1.2.1.11.js",
+                "titulo": "Diferencia, octavo término y suma de ocho términos",
+                "ruta": "./ejercicios/1.2.1.11.js",
+                "puntos": 6,
+                "orden": 11
               }
             ]
           },
@@ -75,6 +170,34 @@
                 "ruta": "./ejercicios/1.2.2.1.js",
                 "puntos": 6,
                 "orden": 1
+              },
+              {
+                "id": "1.2.2.2.js",
+                "titulo": "Crecimiento poblacional porcentual retrospectivo",
+                "ruta": "./ejercicios/1.2.2.2.js",
+                "puntos": 4,
+                "orden": 2
+              },
+              {
+                "id": "1.2.2.3.js",
+                "titulo": "Términos consecutivos de una progresión geométrica",
+                "ruta": "./ejercicios/1.2.2.3.js",
+                "puntos": 6,
+                "orden": 3
+              },
+              {
+                "id": "1.2.2.4.js",
+                "titulo": "Progresión geométrica infinita y suma finita",
+                "ruta": "./ejercicios/1.2.2.4.js",
+                "puntos": 16,
+                "orden": 4
+              },
+              {
+                "id": "1.2.2.5.js",
+                "titulo": "Progresión geométrica trigonométrica y suma infinita",
+                "ruta": "./ejercicios/1.2.2.5.js",
+                "puntos": 7,
+                "orden": 5
               }
             ]
           }
@@ -101,6 +224,27 @@
                 "ruta": "./ejercicios/1.3.1.2.js",
                 "puntos": 7,
                 "orden": 2
+              },
+              {
+                "id": "1.3.1.3.js",
+                "titulo": "Valor futuro con interés compuesto anual",
+                "ruta": "./ejercicios/1.3.1.3.js",
+                "puntos": 3,
+                "orden": 3
+              },
+              {
+                "id": "1.3.1.4.js",
+                "titulo": "Plan de ahorro e inversión con interés compuesto mensual",
+                "ruta": "./ejercicios/1.3.1.4.js",
+                "puntos": 5,
+                "orden": 4
+              },
+              {
+                "id": "1.3.1.5.js",
+                "titulo": "Amortización de préstamo para compra de vehículo",
+                "ruta": "./ejercicios/1.3.1.5.js",
+                "puntos": 4,
+                "orden": 5
               }
             ]
           }
@@ -448,11 +592,11 @@
       },
       {
         "id": 3,
-        "nombre": "Geometría de coordenadas",
+        "nombre": "3.1 Geometría de coordenadas",
         "secciones": [
           {
             "id": 1,
-            "nombre": "Punto medio y distancia entre dos puntos",
+            "nombre": "3.3.1 Punto medio y distancia entre dos puntos",
             "ejercicios": [
               {
                 "id": "3.3.1.1.js",
@@ -663,6 +807,13 @@
                 "ruta": "./ejercicios/4.4.1.2.js",
                 "puntos": 8,
                 "orden": 2
+              },
+              {
+                "id": "4.4.1.3.js",
+                "titulo": "Distribución de probabilidad discreta y progresión aritmética",
+                "ruta": "./ejercicios/4.4.1.3.js",
+                "puntos": 6,
+                "orden": 3
               }
             ]
           },
@@ -839,6 +990,107 @@
     "id": 5,
     "nombre": "5. Cálculo",
     "subtemas": [
+      {
+        "id": 2,
+        "nombre": "5.2. Derivadas",
+        "secciones": [
+          {
+            "id": 1,
+            "nombre": "5.2.1. Reglas de derivación y cinemática",
+            "ejercicios": [
+              {
+                "id": "5.2.1.1.js",
+                "titulo": "Cinemática: aceleración y desplazamiento a partir de la velocidad",
+                "ruta": "./ejercicios/5.2.1.1.js",
+                "puntos": 6,
+                "orden": 1
+              },
+              {
+                "id": "5.2.1.2.js",
+                "titulo": "Determinación de una función a partir de su derivada y una condición inicial",
+                "ruta": "./ejercicios/5.2.1.2.js",
+                "puntos": 6,
+                "orden": 2
+              },
+              {
+                "id": "5.2.1.3.js",
+                "titulo": "Ecuación de la recta tangente a una función exponencial",
+                "ruta": "./ejercicios/5.2.1.3.js",
+                "puntos": 6,
+                "orden": 3
+              },
+              {
+                "id": "5.2.1.4.js",
+                "titulo": "Recta tangente y regla de la cadena para funciones compuestas",
+                "ruta": "./ejercicios/5.2.1.4.js",
+                "puntos": 7,
+                "orden": 4
+              },
+              {
+                "id": "5.2.1.5.js",
+                "titulo": "Integración logarítmica con condición inicial",
+                "ruta": "./ejercicios/5.2.1.5.js",
+                "puntos": 5,
+                "orden": 5
+              },
+              {
+                "id": "5.2.1.6.js",
+                "titulo": "Recta tangente en el origen, área bajo la curva y razón de áreas",
+                "ruta": "./ejercicios/5.2.1.6.js",
+                "puntos": 16,
+                "orden": 6
+              },
+              {
+                "id": "5.2.1.7.js",
+                "titulo": "Integración de función racional por sustitución con potencia negativa",
+                "ruta": "./ejercicios/5.2.1.7.js",
+                "puntos": 6,
+                "orden": 7
+              }
+            ]
+          },
+          {
+            "id": 2,
+            "nombre": "5.2.2. Derivación de funciones trigonométricas e integración",
+            "ejercicios": [
+              {
+                "id": "5.2.2.1.js",
+                "titulo": "Derivada e integral de una función seno compuesta",
+                "ruta": "./ejercicios/5.2.2.1.js",
+                "puntos": 4,
+                "orden": 1
+              },
+              {
+                "id": "5.2.2.2.js",
+                "titulo": "Pendiente de la recta tangente a una curva trigonométrica",
+                "ruta": "./ejercicios/5.2.2.2.js",
+                "puntos": 4,
+                "orden": 2
+              },
+              {
+                "id": "5.2.2.3.js",
+                "titulo": "Integración de función trigonométrica con valor inicial",
+                "ruta": "./ejercicios/5.2.2.3.js",
+                "puntos": 6,
+                "orden": 3
+              }
+            ]
+          },
+          {
+            "id": 3,
+            "nombre": "5.2.3. Interpretación gráfica y análisis de derivadas",
+            "ejercicios": [
+              {
+                "id": "5.2.3.1.js",
+                "titulo": "Gráfica de la función derivada y comparación de valores",
+                "ruta": "./ejercicios/5.2.3.1.js",
+                "puntos": 6,
+                "orden": 1
+              }
+            ]
+          }
+        ]
+      },
       {
         "id": 5,
         "nombre": "5.5. Integración",

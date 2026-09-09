@@ -7,7 +7,62 @@ let previewTimer = null; // Temporizador para evitar parpadeos al mover el mouse
 document.addEventListener('DOMContentLoaded', async () => {
     crearContenedorPreview(); // Crear el div oculto para la vista previa
     await cargarTemario();
+    await cargarEjercicioDefault();
 });
+
+async function cargarEjercicioDefault() {
+    const lienzo = document.getElementById('examen-lienzo');
+    if (!lienzo) return;
+
+    try {
+        const rutaAbsoluta = new URL('./ejercicios/0.1.1.1.js', document.baseURI).href;
+        const modulo = await import(rutaAbsoluta);
+        const data = await modulo.generar(1);
+        const puntos = modulo.metadata && modulo.metadata.puntos ? modulo.metadata.puntos : 6;
+        const titulo = modulo.metadata && modulo.metadata.titulo ? modulo.metadata.titulo : "Ejercicio en Revisión";
+
+        const labelPuntos = `[Puntos del ejercicio: ${puntos}]`;
+
+        const htmlPreguntas = `
+            <div class="no-print" style="background:#e3f2fd; border:1px solid #90caf9; padding:8px 12px; margin-bottom:15px; border-radius:4px; font-size:0.9rem; color:#0d47a1;">
+                <strong>Vista Rápida por Defecto:</strong> <code>0.1.1.1.js</code> (${titulo})
+            </div>
+            <article class="pregunta-wrapper">
+                <aside class="info-pregunta">
+                    ${labelPuntos}
+                </aside>
+                
+                <div class="contenido-pregunta">
+                    ${data.html}
+                </div>
+            </article>
+        `;
+
+        const textoRespuesta = data.respuesta ? data.respuesta : "<i>Sin respuesta definida</i>";
+        const bloqueSolucionario = `
+            <section class="seccion-respuestas">
+                <h2>Hoja de Claves y Respuestas</h2>
+                <div class="lista-respuestas">
+                    <div class="item-respuesta">
+                        <strong>1.</strong> ${textoRespuesta}
+                    </div>
+                </div>
+            </section>
+        `;
+
+        lienzo.innerHTML = htmlPreguntas + bloqueSolucionario;
+
+        if (data.postRender && typeof data.postRender === 'function') {
+            try { data.postRender(); } catch (e) { console.error(e); }
+        }
+
+        if (window.MathJax) {
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub, lienzo]);
+        }
+    } catch (err) {
+        console.log("No hay 0.1.1.1.js provisional o ocurrió un error:", err);
+    }
+}
 
 // --- 1. LÓGICA DE VISTA PREVIA ---
 

@@ -16,6 +16,12 @@
                 displayMath: [['$$','$$'], ["\\[","\\]"]],
                 processEscapes: true
             },
+            TeX: {
+                extensions: ["AMSmath.js", "AMSsymbols.js"],
+                Macros: {
+                    implies: "\\Longrightarrow"
+                }
+            },
             "HTML-CSS": { availableFonts: ["TeX"] },
             messageStyle: "none"
         });

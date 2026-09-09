@@ -812,19 +812,20 @@ export function interpolate_mono(xs, ys) {
         return ys[i] + c1s[i] * diff + c2s[i] * diffSq + c3s[i] * diff * diffSq;
     };
 }
+/*
 export function financiera(N, I, PV, PMT, FV, PY, CY) {//Versión 1
-    /*
-    Inspirada en la función financiera de TI-84 CE
-    N: Número de periodos
-    I: Tasa de interés
-    PV: Valor presente
-    FV: Valor futuro
-    PY: Pago anual
-    CY: Pago por periodo
+    
+    //Inspirada en la función financiera de TI-84 CE
+    //N: Número de periodos
+    //I: Tasa de interés
+    //PV: Valor presente
+    //FV: Valor futuro
+    //PY: Pago anual
+    /CY: Pago por periodo
 
-    Para calcular una variable se debe poner como null
-    e.g. tlacu.MatFinanciera.NM(12,10,-1000,null,2,2) para calcular el FV
-    */
+    //Para calcular una variable se debe poner como null
+    //e.g. tlacu.MatFinanciera.NM(12,10,-1000,null,2,2) para calcular el FV
+    
     if (PMT == 0 && PY == CY) {
         if (N == null) {
             return Math.log(FV / PV) / Math.log(1 + I / (100 * CY));
@@ -844,6 +845,68 @@ export function financiera(N, I, PV, PMT, FV, PY, CY) {//Versión 1
     }
 
 
+}*/
+// Función TVM Solver completa (TI-84 Finance Solver)
+// Convención estándar:
+// PV, PMT, FV respetan los flujos de efectivo (salidas = negativo, entradas = positivo).
+// Ecuación base: PV*(1+i)^N + PMT*(1+i*BGN)*(( (1+i)^N - 1 ) / i) + FV = 0
+export function financiera(N, I, PV, PMT, FV, PY, CY, BGN = 0) {
+  if (I === null) {
+    // Resolver tasa nominal anual I% usando Newton-Raphson
+    let r = 0.05 / CY; // Estimación inicial periódica
+    for (let iter = 0; iter < 100; iter++) {
+      let comp = Math.pow(1 + r, N);
+      let factor = 1 + (BGN ? r : 0);
+      let geom = (comp - 1) / r;
+      let dgeom = (N * Math.pow(1 + r, N - 1) * r - (comp - 1)) / (r * r);
+      let f = PV * comp + PMT * factor * geom + FV;
+      let df = PV * N * Math.pow(1 + r, N - 1) + PMT * ((BGN ? 1 : 0) * geom + factor * dgeom);
+      
+      let rNext = r - f / df;
+      if (Math.abs(rNext - r) < 1e-12) {
+        return rNext * 100 * CY;
+      }
+      r = rNext;
+    }
+    return r * 100 * CY;
+  }
+
+  let i;
+  if (PY !== CY) {
+    const rCY = (I / 100) / CY;
+    i = Math.pow(1 + rCY, CY / PY) - 1;
+  } else {
+    i = (I / 100) / CY;
+  }
+
+  const factor = 1 + (BGN ? i : 0);
+
+  if (FV === null) {
+    if (Math.abs(i) < 1e-12) return -(PV + PMT * N);
+    const comp = Math.pow(1 + i, N);
+    return -(PV * comp + PMT * factor * ((comp - 1) / i));
+  }
+
+  if (PV === null) {
+    if (Math.abs(i) < 1e-12) return -(FV + PMT * N);
+    const comp = Math.pow(1 + i, N);
+    return -(FV + PMT * factor * ((comp - 1) / i)) / comp;
+  }
+
+  if (PMT === null) {
+    if (Math.abs(i) < 1e-12) return -(PV + FV) / N;
+    const comp = Math.pow(1 + i, N);
+    return -(PV * comp + FV) / (factor * ((comp - 1) / i));
+  }
+
+  if (N === null) {
+    if (Math.abs(i) < 1e-12) return -(PV + FV) / PMT;
+    const num = PMT * factor - FV * i;
+    const den = PV * i + PMT * factor;
+    return Math.log(num / den) / Math.log(1 + i);
+  }
+
+  return "Error parámetros";
 }
 export function cs(num, precision = 3) {
     /*
